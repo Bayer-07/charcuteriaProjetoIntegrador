@@ -11,7 +11,9 @@
 - Ter o JDK 21 instalado 
 
 ### Para clonar
--> git clone https://github.com/charcuteria/backend
+```bash 
+git clone https://github.com/charcuteria/backend
+```
 
 ### Jira things
 - Para linkarmos o github com o jira, todas as branchs, commits e PRs tem que, obrigatóriamente, ter um código definido pelo Jira no COMEÇO.
