@@ -1,0 +1,2 @@
+## 🚀 Ponto de Entrada (`DemoApplication.java`)
+Localizado na raiz do pacote principal para garantir que o **Component Scan** do Spring Boot identifique corretamente todos os serviços, repositórios e configurações distribuídos nas subpastas.
