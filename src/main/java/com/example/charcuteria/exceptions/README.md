@@ -1,2 +1,2 @@
 ### ⚠️ `exceptions/`
-Implementa o tratamento global de erros da aplicação. Captura falhas de negócio e as converte em respostas HTTP padronizadas (ex: 404 Not Found, 400 Bad Request), garantindo uma API limpa e previsível.
+Implementa o tratamento global de erros da aplicação. Captura falhas de negócio e as converte em respostas HTTP padronizadas (ex: 404 Not Found, 400 Bad Request), garantindo uma API limpa e previsível. 
