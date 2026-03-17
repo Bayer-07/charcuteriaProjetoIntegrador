@@ -16,8 +16,8 @@ INSERT INTO orders (user_id, address_id, total_amount, shipping_cost, status) VA
 (2, 1, 153.80, 15.00, 'PAID');
 
 INSERT INTO order_products (order_id, product_id, quantity, unit_price) VALUES
-(1, 1, 2, 45.90), -- Salame
-(1, 2, 1, 62.00); -- Copa
+(1, 1, 2, 45.90);
+(1, 2, 1, 62.00);
 
 INSERT INTO subscription (user_id, plan_type, status) VALUES
 (2, 'Plano Mensal Premium', 'ACTIVE');
