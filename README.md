@@ -15,7 +15,7 @@
 ### Para clonar
 
 ```bash
-git clone https://github.com/charcuteria/backend
+git clone https://github.com/Bayer-07/charcuteriaProjetoIntegrador.git
 ```
 
 ### Para rodar
