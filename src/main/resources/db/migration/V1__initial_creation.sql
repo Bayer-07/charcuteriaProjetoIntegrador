@@ -1,3 +1,8 @@
+DROP TABLE users;
+DROP TABLE addresses;
+DROP TABLE subscription;
+DROP TABLE orders;
+
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -18,5 +23,29 @@ CREATE TABLE addresses (
     state VARCHAR(2) NOT NULL,
     zip_code VARCHAR(9) NOT NULL,
     is_default BOOLEAN DEFAULT FALSE,
+
     CONSTRAINT fk_user_address FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE subscription (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    plan_type VARCHAR(50) NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    started_at DATE NOT NULL DEFAULT CURRENT_DATE,
+
+    CONSTRAINT fk_user_subscription FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE orders (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    address_id INTEGER NOT NULL,
+    total_amount DECIMAL(10,2) NOT NULL,
+    shipping_cost DECIMAL(10,2),
+    status VARCHAR(20) NOT NULL,
+    order_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_orders_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_orders_address FOREIGN KEY (address_id) REFERENCES addresses(id) ON DELETE CASCADE
 );
