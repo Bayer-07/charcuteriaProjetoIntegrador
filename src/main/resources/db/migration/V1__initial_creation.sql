@@ -1,7 +1,7 @@
-DROP TABLE users;
+DROP TABLE orders;
 DROP TABLE addresses;
 DROP TABLE subscription;
-DROP TABLE orders;
+DROP TABLE users;
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
