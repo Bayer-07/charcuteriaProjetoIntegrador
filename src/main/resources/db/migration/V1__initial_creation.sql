@@ -37,7 +37,7 @@ CREATE TABLE orders (
     user_id INTEGER NOT NULL,
     address_id INTEGER NOT NULL,
     total_amount DECIMAL(10,2) NOT NULL,
-    shipping_cost DECIMAL(10,2),
+    shipping_cost DECIMAL(10,2) NOT NULL,
     status VARCHAR(20) NOT NULL,
     order_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -65,4 +65,16 @@ CREATE TABLE order_products (
     CONSTRAINT fk_order FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
     CONSTRAINT fk_product FOREIGN KEY (product_id) REFERENCES products(id),
     CONSTRAINT uq_order_product UNIQUE (order_id, product_id)
+);
+
+CREATE TABLE cart_items (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    product_id INTEGER NOT NULL,
+    quantity INTEGER NOT NULL DEFAULT 1,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_cart_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_cart_product FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+    CONSTRAINT uq_user_product_cart UNIQUE (user_id, product_id)
 );

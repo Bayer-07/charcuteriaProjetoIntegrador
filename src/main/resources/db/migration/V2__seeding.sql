@@ -1,5 +1,5 @@
 INSERT INTO users (name, email, password_hash, role) VALUES
-('teste Admin', 'admin@koch.com', 'hash_seguro_admin', 'ADMIN'),
+('Eduardo Admin', 'admin@koch.com', 'hash_seguro_admin', 'ADMIN'),
 ('Cliente Teste', 'cliente@gmail.com', 'hash_seguro_cliente', 'CUSTOMER');
 
 INSERT INTO addresses (user_id, street, number, neighborhood, city, state, zip_code, is_default) VALUES
@@ -18,6 +18,10 @@ INSERT INTO orders (user_id, address_id, total_amount, shipping_cost, status) VA
 INSERT INTO order_products (order_id, product_id, quantity, unit_price) VALUES
 (1, 1, 2, 45.90),
 (1, 2, 1, 62.00);
+
+INSERT INTO cart_items (user_id, product_id, quantity) VALUES
+(2, 3, 2),
+(2, 2, 1);
 
 INSERT INTO subscription (user_id, plan_type, status) VALUES
 (2, 'Plano Mensal Premium', 'ACTIVE');
