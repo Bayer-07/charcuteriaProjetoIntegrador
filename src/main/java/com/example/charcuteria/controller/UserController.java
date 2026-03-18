@@ -32,6 +32,7 @@ public class UserController {
     @PostMapping("/register")
     public String createUser(@Valid @ModelAttribute("userDto") UserRegistrationDto userDto, BindingResult result, Model model) {
         if (result.hasErrors()) {
+            System.out.println("ERROR: " + result.getAllErrors());
             return "user/registration-view";
         }
 
@@ -39,6 +40,7 @@ public class UserController {
             userService.createUser(userDto);
             return "redirect:/user/success";
         } catch (Exception e) {
+            System.out.println("ERROR: " + result.getAllErrors());
         }
 
         return "redirect:/user/success";
