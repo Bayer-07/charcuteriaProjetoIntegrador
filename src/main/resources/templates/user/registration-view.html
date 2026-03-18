@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form th:action="@{/user/register}" th:object="${userDto}" method="post">
+    <input type="text" th:field="*{name}" placeholder="Name" />
+    <input type="email" th:field="*{email}" placeholder="Email" />
+    <input type="password" th:field="*{password}" placeholder="Password" />
+
+    <select th:field="*{role}">
+        <option th:each="role : ${T(com.example.charcuteria.model.enums.UserRoleEnum).values()}"
+                th:value="${role}" th:text="${role}"></option>
+    </select>
+
+    <button type="submit">Create User</button>
+</form>
+</body>
+</html>
