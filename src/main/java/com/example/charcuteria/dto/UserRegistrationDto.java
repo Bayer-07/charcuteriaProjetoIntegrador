@@ -1,10 +1,23 @@
-package com.example.charcuteria.model.dto;
+package com.example.charcuteria.dto;
 
-import com.example.charcuteria.model.enums.UserRoleEnum;
+import com.example.charcuteria.enums.UserRoleEnum;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public class UserRegistrationDto {
+
+    @NotBlank(message = "The name cannot be empty")
+    @Size(min = 3, max = 100, message = "The name has to be between 3 and 100 characteres")
     private String name;
+
+    @NotBlank(message = "The email cannot be empty")
+    @Email(message = "The email format its invalid")
     private String email;
+
+    @NotBlank(message = "The password cannot be empty")
+    @Size(min = 8, message = "The password has to be, at least 8 characteres")
     private String password;
     private UserRoleEnum role;
 

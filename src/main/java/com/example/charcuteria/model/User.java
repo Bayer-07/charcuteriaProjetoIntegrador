@@ -2,7 +2,7 @@ package com.example.charcuteria.model;
 
 import java.security.Timestamp;
 
-import com.example.charcuteria.model.enums.UserRoleEnum;
+import com.example.charcuteria.enums.UserRoleEnum;
 
 public class User {
     private Integer id;
