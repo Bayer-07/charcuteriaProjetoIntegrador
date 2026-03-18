@@ -1,4 +1,4 @@
 package com.example.charcuteria.model;
 
-public class productModel {
+public class OrderModel {
 }
