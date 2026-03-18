@@ -12,7 +12,7 @@
     <input type="password" th:field="*{password}" placeholder="Password" />
 
     <select th:field="*{role}">
-        <option th:each="role : ${T(com.example.charcuteria.model.enums.UserRoleEnum).values()}"
+        <option th:each="role : ${T(com.example.charcuteria.enums.UserRoleEnum).values()}"
                 th:value="${role}" th:text="${role}"></option>
     </select>
 

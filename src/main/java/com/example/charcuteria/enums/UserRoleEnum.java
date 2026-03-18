@@ -1,4 +1,4 @@
-package com.example.charcuteria.model.enums;
+package com.example.charcuteria.enums;
 
 public enum UserRoleEnum {
     CUSTOMER,
