@@ -20,14 +20,14 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/user/register", "/user/success").permitAll()
+            .requestMatchers("/register", "/success").permitAll()
 
             .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
 
             .anyRequest().authenticated()
         )
         .formLogin(form -> form
-            .loginPage("/user/login")
+            .loginPage("/login")
             .permitAll()
         );
 
