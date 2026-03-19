@@ -14,7 +14,7 @@ import com.example.charcuteria.service.UserService;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("")
 public class UserController {
 
     private final UserService userService;
@@ -48,7 +48,7 @@ public class UserController {
 
     @GetMapping("/login")
     public String showLoginForm() {
-        return "user/login";
+        return "login";
     }
 
 }
