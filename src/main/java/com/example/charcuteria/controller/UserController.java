@@ -45,4 +45,10 @@ public class UserController {
 
         return "redirect:/user/success";
     }
+
+    @GetMapping("/login")
+    public String showLoginForm() {
+        return "user/login";
+    }
+
 }
