@@ -27,7 +27,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
             .anyRequest().authenticated()
         )
         .formLogin(form -> form
-            .loginPage("/login")
+            .loginPage("/index")
             .permitAll()
         );
 
