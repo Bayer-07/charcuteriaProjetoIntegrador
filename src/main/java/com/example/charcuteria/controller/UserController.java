@@ -54,6 +54,22 @@ public class UserController {
         return "login";
     }
 
+    @PostMapping("/login")
+    public String showLoginForm(@Valid @ModelAttribute("userDto") UserLoginDto userDto, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            System.out.println("ERROR: " + result.getAllErrors());
+            System.out.println("Erro 1 " + result.getAllErrors());
+            return "/login";
+        }
+
+        try {
+            userService.loginUser(userDto.getEmail(), userDto.getPassword());
+            return "redirect:/success";
+        } catch (Exception e) {
+            System.out.println("ERROR: " + result.getAllErrors());
+        }
+        return "redirect:/register";
+    }
 
 
     @GetMapping("/index")
