@@ -15,6 +15,8 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    // atualmente a validação de login é feita no codigo e eu tive que liberar o dashboard por aqui
+    // todo: fazer um jeito disso verificar as permissoes para liberar as paginas
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
