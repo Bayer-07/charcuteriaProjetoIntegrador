@@ -20,7 +20,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/register", "/success").permitAll()
+            .requestMatchers("/register", "/success", "/login").permitAll()
 
             .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
 
