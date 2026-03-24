@@ -1,9 +1,12 @@
 package com.example.charcuteria.service;
 
+import java.util.Optional;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.charcuteria.dto.UserRegistrationDto;
+import com.example.charcuteria.dto.UserResponseDto;
 import com.example.charcuteria.model.User;
 import com.example.charcuteria.repository.UserRepository;
 
@@ -22,6 +25,7 @@ public class UserService {
         if (userRepository.existsByEmail(user.getEmail())) {
             // erro decente quando eu tiver vontade
             // throw new BusinessException("Email already registered");
+            System.out.println("Email ja ta cadastrado krl");
             throw new RuntimeException();
         }
 
@@ -35,5 +39,24 @@ public class UserService {
         );
 
         userRepository.createUser(newUser);
+    }
+
+    public Optional<UserResponseDto> loginUser(String email, String password) {
+        Optional<User> userOpt = userRepository.findByEmail(email);
+
+        if (userOpt.isEmpty()) {
+            // erro decente quando eu tiver saco
+            // throw new BusinessException("Invalid email/password");
+            System.out.println("Email nao existe cadastrado");
+            return Optional.empty();
+        }
+
+        User user = userOpt.get();
+
+        if (passwordEncoder.matches(password, user.getPasswordHash())) {
+            return Optional.of(new UserResponseDto(user.getId(), user.getName()));
+        } else {
+            return Optional.empty();
+        }
     }
 }

@@ -1,8 +1,12 @@
 package com.example.charcuteria.repository;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.example.charcuteria.enums.UserRoleEnum;
 import com.example.charcuteria.model.User;
 
 @Repository
@@ -29,8 +33,42 @@ public class UserRepository {
             sql,
             user.getName(),
             user.getEmail(),
-            user.getPassword(),
+            user.getPasswordHash(),
             user.getRole().name()
         );
+    }
+
+    // public Optional<UserResponseDto> findUser(String email, String password) {
+    // String sql = "SELECT u.id, u.name FROM users u WHERE u.email = ? AND u.password_hash = ?";
+
+    // List<UserResponseDto> results = jdbcTemplate.query(
+    //     sql,
+    //     (rs, rowNum) -> new UserResponseDto(
+    //         rs.getInt("id"),
+    //         rs.getString("name")
+    //     ),
+    //     email,
+    //     password
+    //     );
+
+    //     return results.stream().findFirst();
+    // }
+
+    public Optional<User> findByEmail(String email) {
+    String sql = "SELECT u.id, u.name, u.email, u.password_hash, u.role FROM users u WHERE u.email = ?";
+
+    List<User> results = jdbcTemplate.query(
+            sql,
+            (rs, rowNum) -> new User(
+                rs.getInt("id"),
+                rs.getString("name"),
+                rs.getString("email"),
+                rs.getString("password_hash"),
+                Enum.valueOf(UserRoleEnum.class, rs.getString("role"))
+            ),
+            email
+        );
+
+        return results.stream().findFirst();
     }
 }
