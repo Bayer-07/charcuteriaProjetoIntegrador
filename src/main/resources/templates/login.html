@@ -14,14 +14,14 @@
     <div class="card-login">
         <img th:src="@{/images/logo.png}" src="/images/logo.png" alt="Logo Charcuteria">
         <p>Faça login na sua conta</p>
-        <form class="form-login">
+        <form class="form-login" th:action="@{/login}" th:object="${userDto}" method="post">
             <div class="form-login-input-field">
                 <label>E-mail</label>
-                <input type="email" required="" placeholder="name@email.com" name="email">
+                <input type="email" th:field="*{email}" placeholder="name@email.com" name="email">
             </div>
             <div class="form-login-input-field">
                 <label>Senha</label>
-                <input type="password" required="" placeholder="******" name="password">
+                <input type="password" th:field="*{password}" placeholder="******" name="password">
             </div>
             <button class="form-login-button" type="submit">Entrar</button>
         </form>

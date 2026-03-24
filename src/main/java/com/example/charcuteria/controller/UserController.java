@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.charcuteria.dto.UserLoginDto;
 import com.example.charcuteria.dto.UserRegistrationDto;
 import com.example.charcuteria.service.UserService;
 
@@ -43,8 +44,17 @@ public class UserController {
             System.out.println("ERROR: " + result.getAllErrors());
         }
 
-        return "redirect:/user/success";
+        return "redirect:/login";
     }
+
+    // esse é o q retorna a pagina de login, muda pro endpoint que quiser @bayer
+    @GetMapping("/login")
+    public String showLoginForm(Model model) {
+        model.addAttribute("userDto", new UserLoginDto());
+        return "login";
+    }
+
+
 
     @GetMapping("/index")
     public String showLoginForm() {
