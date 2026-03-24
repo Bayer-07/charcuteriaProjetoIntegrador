@@ -7,6 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/styleLogin.css}" href="../../static/css/style.css" />
 </head>
 <body>
+    <div th:if="${registrationError}" class="error"><p th:text="${registrationError}"></p></div>
     <form th:action="@{/register}" th:object="${userDto}" method="post">
     <input type="text" th:field="*{name}" placeholder="Name" />
     <input type="email" th:field="*{email}" placeholder="Email" />

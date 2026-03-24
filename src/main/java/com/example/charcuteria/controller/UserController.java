@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.charcuteria.dto.UserLoginDto;
 import com.example.charcuteria.dto.UserRegistrationDto;
 import com.example.charcuteria.dto.UserResponseDto;
+import com.example.charcuteria.exceptions.BusinessException;
 import com.example.charcuteria.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
@@ -43,8 +44,12 @@ public class UserController {
         try {
             userService.createUser(userDto);
             return "redirect:/login";
+        } catch (BusinessException ex) {
+            model.addAttribute("registrationError", ex.getErrorCode().getMessage());
+            return "user/registration-view";
+
         } catch (Exception e) {
-            model.addAttribute("registrationError", "Ocorreu um erro ao criar usuário");
+            model.addAttribute("registrationError", "Internal server error, try again later please");
             return "user/registration-view";
         }
     }
@@ -73,12 +78,14 @@ public class UserController {
                 return "login";
             }
 
+        } catch (BusinessException ex) {
+            model.addAttribute("loginError", ex.getErrorCode().getMessage());
+            return "login";
         } catch (Exception e) {
             model.addAttribute("loginError", "Internal server error, try again later please");
             return "login";
         }
     }
-
 
     @GetMapping("/index")
     public String showLoginForm() {

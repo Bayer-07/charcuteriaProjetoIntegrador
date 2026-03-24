@@ -26,6 +26,24 @@ public class UserRepository {
         return count != null && count > 0;
     }
 
+    public Optional<User> findByEmail(String email) {
+        String sql = "SELECT id, name, email, password_hash, role FROM users WHERE email = ?";
+
+        List<User> results = jdbcTemplate.query(
+            sql,
+            (rs, rowNum) -> new User(
+                rs.getInt("id"),
+                rs.getString("name"),
+                rs.getString("email"),
+                rs.getString("password_hash"),
+                Enum.valueOf(UserRoleEnum.class, rs.getString("role"))
+            ),
+            email
+        );
+        // acha o primeiro, nesse caso acha o certo, nao tem como ter 2 emails iguais
+        return results.stream().findFirst();
+    }
+
     public void createUser(User user) {
         String sql = "INSERT INTO users (name, email, password_hash, role, created_at) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)";
 
@@ -38,37 +56,5 @@ public class UserRepository {
         );
     }
 
-    // public Optional<UserResponseDto> findUser(String email, String password) {
-    // String sql = "SELECT u.id, u.name FROM users u WHERE u.email = ? AND u.password_hash = ?";
 
-    // List<UserResponseDto> results = jdbcTemplate.query(
-    //     sql,
-    //     (rs, rowNum) -> new UserResponseDto(
-    //         rs.getInt("id"),
-    //         rs.getString("name")
-    //     ),
-    //     email,
-    //     password
-    //     );
-
-    //     return results.stream().findFirst();
-    // }
-
-    public Optional<User> findByEmail(String email) {
-    String sql = "SELECT u.id, u.name, u.email, u.password_hash, u.role FROM users u WHERE u.email = ?";
-
-    List<User> results = jdbcTemplate.query(
-            sql,
-            (rs, rowNum) -> new User(
-                rs.getInt("id"),
-                rs.getString("name"),
-                rs.getString("email"),
-                rs.getString("password_hash"),
-                Enum.valueOf(UserRoleEnum.class, rs.getString("role"))
-            ),
-            email
-        );
-
-        return results.stream().findFirst();
-    }
 }
