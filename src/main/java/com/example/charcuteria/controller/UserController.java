@@ -29,12 +29,56 @@ public class UserController {
         this.userService = userService;
     }
 
+    // Get
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         model.addAttribute("userDto", new UserRegistrationDto());
         return "user/registration-view";
     }
 
+    // esse é o q retorna a pagina de login, muda pro endpoint que quiser @bayer
+    @GetMapping("/login")
+    public String showUserLoginForm(Model model) {
+        model.addAttribute("userDto", new UserLoginDto());
+        return "login";
+    }
+
+    @GetMapping("/loginAdmin")
+    public String showAdminLoginForm(Model model) {
+        model.addAttribute("userDto", new UserLoginDto());
+        return "loginAdmin";
+    }
+
+    @GetMapping("/index")
+    public String showLoginForm() {
+        return "index";
+    }
+
+    @GetMapping("/user/dashboard")
+    public String showDashboard(HttpSession session, Model model) {
+        UserResponseDto user = (UserResponseDto) session.getAttribute("loggedUser");
+
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        model.addAttribute("user", user);
+        return "user/dashboard";
+    }
+
+    @GetMapping("/user/dashboardAdmin")
+    public String showDashboardAdmin(HttpSession session, Model model) {
+        UserResponseDto user = (UserResponseDto) session.getAttribute("loggedAdmin");
+
+        if (user == null) {
+            return "redirect:/loginAdmin";
+        }
+
+        model.addAttribute("user", user);
+        return "user/dashboard";
+    }
+
+    // Post
     @PostMapping("/register")
     public String createUser(@Valid @ModelAttribute("userDto") UserRegistrationDto userDto, BindingResult result, Model model) {
         if (result.hasErrors()) {
@@ -52,13 +96,6 @@ public class UserController {
             model.addAttribute("registrationError", "Internal server error, try again later please");
             return "user/registration-view";
         }
-    }
-
-    // esse é o q retorna a pagina de login, muda pro endpoint que quiser @bayer
-    @GetMapping("/login")
-    public String showLoginForm(Model model) {
-        model.addAttribute("userDto", new UserLoginDto());
-        return "login";
     }
 
     @PostMapping("/login")
@@ -87,20 +124,30 @@ public class UserController {
         }
     }
 
-    @GetMapping("/index")
-    public String showLoginForm() {
-        return "index";
-    }
-
-    @GetMapping("/user/dashboard")
-    public String showDashboard(HttpSession session, Model model) {
-        UserResponseDto user = (UserResponseDto) session.getAttribute("loggedUser");
-
-        if (user == null) {
-            return "redirect:/login";
+    @PostMapping("/adminLogin")
+    public String loginAdmin(@Valid @ModelAttribute("userDto") UserLoginDto userDto, HttpSession session, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "/adminLogin";
         }
 
-        model.addAttribute("user", user);
-        return "user/dashboard";
+        try {
+            Optional<UserResponseDto> userOpt = userService.loginAdmin(userDto.getEmail(), userDto.getPassword());
+
+            if (userOpt.isPresent()) {
+                session.setAttribute("loggedAdmin", userOpt.get());
+                return "redirect:/user/dashboardAdmin";
+            } else {
+                model.addAttribute("loginError", "Email or passoword incorrect");
+                return "adminLogin";
+            }
+
+        } catch (BusinessException ex) {
+            model.addAttribute("registrationError", ex.getErrorCode().getMessage());
+            return "user/registration-view";
+
+        } catch (Exception e) {
+            model.addAttribute("registrationError", "Internal server error, try again later please");
+            return "user/registration-view";
+        }
     }
 }

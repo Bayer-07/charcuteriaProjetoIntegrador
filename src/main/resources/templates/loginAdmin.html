@@ -14,9 +14,9 @@
     <div th:if="${loginError}" class="error"><p th:text="${loginError}"></p></div>
     <div class="card-login">
         <img th:src="@{/images/logo.png}" src="/images/logo.png" alt="Logo Charcuteria">
-        <h1>Login</h1>
-        <p>Preencha os campos abaixo para acessar sua conta</p>
-        <form class="form-login" th:action="@{/login}" th:object="${userDto}" method="post">
+        <h1>Login Admin</h1>
+        <p>Preencha os campos abaixo para acessar sua conta admin</p>
+        <form class="form-login" th:action="@{/adminLogin}" th:object="${userDto}" method="post">
             <div class="form-login-input-field">
                 <label>E-mail</label>
                 <input type="email" th:field="*{email}" placeholder="name@email.com" name="email">
@@ -27,7 +27,7 @@
             </div>
             <button class="form-login-button" type="submit">Entrar</button>
         </form>
-        <a href="/loginAdmin">Ir para login admin</a>
+        <a href="/login">Ir para login</a>
     </div>
 </body>
 
