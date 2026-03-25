@@ -30,7 +30,8 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String createUser(@Valid @ModelAttribute("userDto") UserRegistrationDto userDto, BindingResult result, Model model) {
+    public String createUser(@Valid @ModelAttribute("userDto") UserRegistrationDto userDto, BindingResult result,
+            Model model) {
         if (result.hasErrors()) {
             System.out.println("ERROR: " + result.getAllErrors());
             return "user/registration-view";
@@ -50,5 +51,4 @@ public class UserController {
     public String showLoginForm() {
         return "index";
     }
-
 }
