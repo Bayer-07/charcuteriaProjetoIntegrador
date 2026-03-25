@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.charcuteria.dto.UserRegistrationDto;
 import com.example.charcuteria.dto.UserResponseDto;
+import com.example.charcuteria.enums.UserRoleEnum;
 import com.example.charcuteria.exceptions.BusinessException;
 import com.example.charcuteria.exceptions.ErrorCode;
 import com.example.charcuteria.model.User;
@@ -34,7 +35,7 @@ public class UserService {
             user.getName(),
             user.getEmail(),
             hashedPassword,
-            user.getRole()
+            UserRoleEnum.CUSTOMER
         );
 
         userRepository.createUser(newUser);
@@ -44,15 +45,37 @@ public class UserService {
         Optional<User> userOpt = userRepository.findByEmail(email);
 
         if (userOpt.isEmpty()) {
-            throw new BusinessException(ErrorCode.USER_NOT_FOUND);
+            throw new BusinessException(ErrorCode.INVALID_PASSWORD);
         }
 
         User user = userOpt.get();
 
-        if (passwordEncoder.matches(password, user.getPasswordHash())) {
-            return Optional.of(new UserResponseDto(user.getId(), user.getName()));
-        } else {
+        if (user.getRole().equals(UserRoleEnum.CUSTOMER)) {
+            if (passwordEncoder.matches(password, user.getPasswordHash())) {
+                return Optional.of(new UserResponseDto(user.getId(), user.getName(), user.getRole()));
+            } else {
+                throw new BusinessException(ErrorCode.INVALID_PASSWORD);
+            }
+        }
+        throw new BusinessException(ErrorCode.INVALID_PASSWORD);
+    }
+
+    public Optional<UserResponseDto> loginAdmin(String email, String password) {
+        Optional<User> userOpt = userRepository.findByEmail(email);
+
+        if (userOpt.isEmpty()) {
             throw new BusinessException(ErrorCode.INVALID_PASSWORD);
         }
+
+        User user = userOpt.get();
+
+        if (user.getRole().equals(UserRoleEnum.ADMIN)) {
+            if (passwordEncoder.matches(password, user.getPasswordHash())) {
+                return Optional.of(new UserResponseDto(user.getId(), user.getName(), user.getRole()));
+            } else {
+                throw new BusinessException(ErrorCode.INVALID_PASSWORD);
+            }
+        }
+        throw new BusinessException(ErrorCode.INVALID_PASSWORD);
     }
 }

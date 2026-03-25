@@ -13,11 +13,6 @@
     <input type="email" th:field="*{email}" placeholder="Email" />
     <input type="password" th:field="*{password}" placeholder="Password" />
 
-    <select th:field="*{role}">
-        <option th:each="role : ${T(com.example.charcuteria.enums.UserRoleEnum).values()}"
-                th:value="${role}" th:text="${role}"></option>
-    </select>
-
     <button type="submit">Create User</button>
 </form>
 </body>
