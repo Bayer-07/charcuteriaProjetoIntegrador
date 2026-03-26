@@ -14,6 +14,7 @@ import com.example.charcuteria.dto.UserLoginDto;
 import com.example.charcuteria.dto.UserRegistrationDto;
 import com.example.charcuteria.dto.UserResponseDto;
 import com.example.charcuteria.exceptions.BusinessException;
+import com.example.charcuteria.exceptions.ErrorCode;
 import com.example.charcuteria.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
@@ -86,6 +87,7 @@ public class UserController {
         }
 
         try {
+            if (!userDto.getPassword().equals(userDto.getPasswordControl())) throw new BusinessException(ErrorCode.DIFFERENT_PASSWORDS);
             userService.createUser(userDto);
             return "redirect:/login";
         } catch (BusinessException ex) {
@@ -124,10 +126,10 @@ public class UserController {
         }
     }
 
-    @PostMapping("/adminLogin")
+    @PostMapping("/loginAdmin")
     public String loginAdmin(@Valid @ModelAttribute("userDto") UserLoginDto userDto, HttpSession session, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "/adminLogin";
+            return "/loginAdmin";
         }
 
         try {
@@ -138,7 +140,7 @@ public class UserController {
                 return "redirect:/user/dashboardAdmin";
             } else {
                 model.addAttribute("loginError", "Email or passoword incorrect");
-                return "adminLogin";
+                return "loginAdmin";
             }
 
         } catch (BusinessException ex) {
@@ -150,4 +152,5 @@ public class UserController {
             return "user/registration-view";
         }
     }
+
 }
