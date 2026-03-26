@@ -18,6 +18,10 @@ public class UserRegistrationDto {
     @Size(min = 8, message = "The password has to be, at least 8 characteres")
     private String password;
 
+    @NotBlank(message = "The password cannot be empty")
+    @Size(min = 8, message = "The password has to be, at least 8 characteres")
+    private String passwordControl;
+
     public UserRegistrationDto() {}
 
     public String getName() {
@@ -42,5 +46,13 @@ public class UserRegistrationDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPasswordControl() {
+        return passwordControl;
+    }
+
+    public void setPasswordControl(String passwordControl) {
+        this.passwordControl = passwordControl;
     }
 }

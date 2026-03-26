@@ -49,33 +49,29 @@ public class UserService {
         }
 
         User user = userOpt.get();
+        if (user.getRole().equals(UserRoleEnum.CUSTOMER)) throw new BusinessException(ErrorCode.INVALID_PASSWORD);
 
-        if (user.getRole().equals(UserRoleEnum.CUSTOMER)) {
-            if (passwordEncoder.matches(password, user.getPasswordHash())) {
-                return Optional.of(new UserResponseDto(user.getId(), user.getName(), user.getRole()));
-            } else {
-                throw new BusinessException(ErrorCode.INVALID_PASSWORD);
-            }
+        if (passwordEncoder.matches(password, user.getPasswordHash())) {
+            return Optional.of(new UserResponseDto(user.getId(), user.getName(), user.getRole()));
+        } else {
+            throw new BusinessException(ErrorCode.INVALID_PASSWORD);
         }
-        throw new BusinessException(ErrorCode.INVALID_PASSWORD);
     }
 
     public Optional<UserResponseDto> loginAdmin(String email, String password) {
         Optional<User> userOpt = userRepository.findByEmail(email);
 
         if (userOpt.isEmpty()) {
-            throw new BusinessException(ErrorCode.INVALID_PASSWORD);
+           throw new BusinessException(ErrorCode.INVALID_PASSWORD);
         }
 
         User user = userOpt.get();
+        if (!user.getRole().equals(UserRoleEnum.ADMIN)) throw new BusinessException(ErrorCode.INVALID_PASSWORD);
 
-        if (user.getRole().equals(UserRoleEnum.ADMIN)) {
-            if (passwordEncoder.matches(password, user.getPasswordHash())) {
+        if (passwordEncoder.matches(password, user.getPasswordHash())) {
                 return Optional.of(new UserResponseDto(user.getId(), user.getName(), user.getRole()));
-            } else {
+        } else {
                 throw new BusinessException(ErrorCode.INVALID_PASSWORD);
-            }
         }
-        throw new BusinessException(ErrorCode.INVALID_PASSWORD);
     }
 }
