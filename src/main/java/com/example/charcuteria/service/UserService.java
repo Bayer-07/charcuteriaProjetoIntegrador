@@ -24,7 +24,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void createUser(UserRegistrationDto user) {
+    public void createUser(UserRegistrationDto user, UserRoleEnum role) {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new BusinessException(ErrorCode.EMAIL_ALREADY_EXISTS);
         }
@@ -35,7 +35,7 @@ public class UserService {
             user.getName(),
             user.getEmail(),
             hashedPassword,
-            UserRoleEnum.CUSTOMER
+            role
         );
 
         userRepository.createUser(newUser);
