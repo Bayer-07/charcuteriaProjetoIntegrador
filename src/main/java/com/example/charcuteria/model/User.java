@@ -21,6 +21,14 @@ public class User {
         this.role = role;
     }
 
+    public User(Integer id, String name, String email, String password, UserRoleEnum role) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
     public User(Integer id, String name, String email, String password, UserRoleEnum role, Timestamp created_at) {
         this.id = id;
         this.name = name;
@@ -57,11 +65,11 @@ public class User {
         return this;
     }
 
-    public String getPassword() {
+    public String getPasswordHash() {
         return password;
     }
 
-    public User setPassword(String password) {
+    public User setPasswordHash(String password) {
         this.password = password;
         return this;
     }
