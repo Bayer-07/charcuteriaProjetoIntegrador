@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.charcuteria.dto.UserLoginDto;
 import com.example.charcuteria.dto.UserRegistrationDto;
 import com.example.charcuteria.dto.UserResponseDto;
+import com.example.charcuteria.enums.UserRoleEnum;
 import com.example.charcuteria.exceptions.BusinessException;
 import com.example.charcuteria.exceptions.ErrorCode;
 import com.example.charcuteria.service.UserService;
@@ -37,7 +38,12 @@ public class UserController {
         return "user/registration-view";
     }
 
-    // esse é o q retorna a pagina de login, muda pro endpoint que quiser @bayer
+    @GetMapping("/registerAdmin")
+    public String showAdminRegistrationAdmin(Model model) {
+        model.addAttribute("userDto", new UserRegistrationDto());
+        return "user/adminRegistration-view";
+    }
+
     @GetMapping("/login")
     public String showUserLoginForm(Model model) {
         model.addAttribute("userDto", new UserLoginDto());
@@ -76,7 +82,7 @@ public class UserController {
         }
 
         model.addAttribute("user", user);
-        return "user/dashboard";
+        return "user/dashboardAdmin";
     }
 
     // Post
@@ -88,7 +94,7 @@ public class UserController {
 
         try {
             if (!userDto.getPassword().equals(userDto.getPasswordControl())) throw new BusinessException(ErrorCode.DIFFERENT_PASSWORDS);
-            userService.createUser(userDto);
+            userService.createUser(userDto, UserRoleEnum.CUSTOMER);
             return "redirect:/login";
         } catch (BusinessException ex) {
             model.addAttribute("registrationError", ex.getErrorCode().getMessage());
@@ -99,6 +105,25 @@ public class UserController {
             return "user/registration-view";
         }
     }
+
+    @PostMapping("/registerAdmin")
+    public String createAdmin(@Valid @ModelAttribute("userDto") UserRegistrationDto userDto, BindingResult result, Model model) {
+        if (result.hasErrors()) return "user/adminRegistration-view";
+
+        try {
+            if (!userDto.getPassword().equals(userDto.getPasswordControl())) throw new BusinessException(ErrorCode.DIFFERENT_PASSWORDS);
+            userService.createUser(userDto, UserRoleEnum.ADMIN);
+            return "redirect:/loginAdmin";
+        } catch (BusinessException ex) {
+            model.addAttribute("registrationError", ex.getErrorCode().getMessage());
+            return "user/registration-view";
+
+        } catch (Exception e) {
+            model.addAttribute("registrationError", "Internal server error, try again later please");
+            return "user/registration-view";
+        }
+    }
+
 
     @PostMapping("/login")
     public String loginUser(@Valid @ModelAttribute("userDto") UserLoginDto userDto, HttpSession session, BindingResult result, Model model) {
@@ -145,11 +170,11 @@ public class UserController {
 
         } catch (BusinessException ex) {
             model.addAttribute("registrationError", ex.getErrorCode().getMessage());
-            return "user/registration-view";
+            return "loginAdmin";
 
         } catch (Exception e) {
             model.addAttribute("registrationError", "Internal server error, try again later please");
-            return "user/registration-view";
+            return "loginAdmin";
         }
     }
 
