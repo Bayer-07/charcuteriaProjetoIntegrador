@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/css/styleLogin.css}" href="/css/styleLogin.css" />
+    <link rel="shortcut icon" th:href="@{/images/logo.png}" href="/images/logo.png" type="image/x-icon">
+    <meta property="og:description" content="Embutidos artesanais, defumados e queijos do sul do Brasil.">
+</head>
+
+<body>
+    <div th:if="${loginError}" class="error"><p th:text="${loginError}"></p></div>
+    <div class="card-login">
+        <img th:src="@{/images/logo.png}" src="/images/logo.png" alt="Logo Charcuteria">
+        <h1>Login Admin</h1>
+        <p>Preencha os campos abaixo para acessar sua conta admin</p>
+        <form class="form-login" th:action="@{/loginAdmin}" th:object="${userDto}" method="post">
+            <div class="form-login-input-field">
+                <label>E-mail</label>
+                <input type="email" th:field="*{email}" placeholder="name@email.com" name="email">
+            </div>
+            <div class="form-login-input-field">
+                <label>Senha</label>
+                <input type="password" th:field="*{password}" placeholder="******" name="password">
+            </div>
+            <button class="form-login-button" type="submit">Entrar</button>
+        </form>
+        <a href="/login">Ir para login</a>
+    </div>
+</body>
+
+</html>
