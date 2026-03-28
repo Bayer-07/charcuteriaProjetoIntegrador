@@ -15,22 +15,24 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    // atualmente a validação de login é feita no codigo e eu tive que liberar o dashboard por aqui
+    // todo: fazer um jeito disso verificar as permissoes para liberar as paginas
     @Bean
-public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http
-        .csrf(csrf -> csrf.disable())
-        .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/register", "/success").permitAll()
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/register", "/registerAdmin", "/login", "/loginAdmin", "/user/dashboard", "/user/dashboardAdmin").permitAll()
 
-            .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
 
-            .anyRequest().authenticated()
-        )
-        .formLogin(form -> form
-            .loginPage("/index")
-            .permitAll()
-        );
+                .anyRequest().authenticated()
+            )
+            .formLogin(form -> form
+                .loginPage("/index")
+                .permitAll()
+            );
 
-    return http.build();
-}
+        return http.build();
+    }
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | Koch Charcutaria</title>
+    <title>Login Admin| Koch Charcutaria</title>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/styleLogin.css}" href="/css/styleLogin.css" />
     <link rel="stylesheet" th:href="@{/css/header.css}" href="/css/header.css" />
@@ -43,10 +43,10 @@
                 <img th:src="@{/images/logo.png}" src="/images/logo.png" alt="Logo Charcuteria" class="circular-logo">
             </div>
 
-            <h1 class="login-title">Login</h1>
-            <p class="subtitle">Preencha os campos abaixo para acessar sua conta</p>
+            <h1 class="login-title">Login Admin</h1>
+            <p class="subtitle">Preencha os campos abaixo para acessar sua conta admin</p>
 
-            <form class="form-login" th:action="@{/login}" th:object="${userDto}" method="post">
+            <form class="form-login" th:action="@{/loginAdmin}" th:object="${userDto}" method="post">
                 <div class="input-group">
                     <label>E-mail</label>
                     <input type="email" th:field="*{email}" placeholder="nome@nome.com.br" required>
@@ -59,8 +59,7 @@
             </form>
 
             <div class="card-footer">
-                <p>Não tem uma conta? <a href="/cadastro" class="bold-link">Crie Uma</a></p>
-                <a href="/loginAdmin" class="admin-link">Entrar como administrador</a>
+                <a href="/login" class="admin-link">Entrar como usuário</a>
             </div>
         </div>
     </main>
