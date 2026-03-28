@@ -49,8 +49,7 @@ public class UserService {
         }
 
         User user = userOpt.get();
-        if (!user.getRole().equals(UserRoleEnum.CUSTOMER)) {
-            throw new BusinessException(ErrorCode.INVALID_PASSWORD);}
+        if (!user.getRole().equals(UserRoleEnum.CUSTOMER) throw new BusinessException(ErrorCode.INVALID_PASSWORD);
 
         if (passwordEncoder.matches(password, user.getPasswordHash())) {
             return Optional.of(new UserResponseDto(user.getId(), user.getName(), user.getRole()));
