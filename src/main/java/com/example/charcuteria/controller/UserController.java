@@ -32,6 +32,11 @@ public class UserController {
     }
 
     // Get
+    @GetMapping("/teste")
+    public String showTeste(Model model) {
+        return "teste";
+    }
+
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         model.addAttribute("userDto", new UserRegistrationDto());
@@ -54,6 +59,24 @@ public class UserController {
     public String showAdminLoginForm(Model model) {
         model.addAttribute("userDto", new UserLoginDto());
         return "loginAdmin";
+    }
+
+    @GetMapping("/handleProfile")
+    public String handleProfile(HttpSession session, Model model) {
+        UserResponseDto user = (UserResponseDto) session.getAttribute("loggedUser");
+        UserResponseDto admin = (UserResponseDto) session.getAttribute("loggedAdmin");
+
+        if (user == null && admin == null) {
+            return "redirect:/login";
+        }
+
+        if (admin != null) {
+            model.addAttribute("user", admin);
+            return "redirect:/user/dashboardAdmin";
+        }
+
+        model.addAttribute("user", user);
+        return "redirect:/user/dashboard";
     }
 
     @GetMapping("/index")
