@@ -1,4 +1,4 @@
-package com.example.charcuteria.controller;
+package com.example.charcuteria.controller.user;
 
 import java.util.Optional;
 
@@ -16,7 +16,7 @@ import com.example.charcuteria.dto.UserResponseDto;
 import com.example.charcuteria.enums.UserRoleEnum;
 import com.example.charcuteria.exceptions.BusinessException;
 import com.example.charcuteria.exceptions.ErrorCode;
-import com.example.charcuteria.service.UserService;
+import com.example.charcuteria.service.user.UserService;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
