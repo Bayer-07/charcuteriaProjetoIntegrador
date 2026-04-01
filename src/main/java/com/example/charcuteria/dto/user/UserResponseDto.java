@@ -1,4 +1,4 @@
-package com.example.charcuteria.dto;
+package com.example.charcuteria.dto.user;
 
 import com.example.charcuteria.enums.UserRoleEnum;
 

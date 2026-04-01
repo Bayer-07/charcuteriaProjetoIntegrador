@@ -1,0 +1,65 @@
+/* dashboard.css */
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff; /* Clean white background for admin */
+}
+
+.dashboard-content {
+    /* CRITICAL FIX: Offset by sidebar width */
+    margin-left: 260px;
+
+    padding: 40px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-sizing: border-box;
+}
+
+.content-header {
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 15px;
+    margin-bottom: 35px;
+}
+
+.content-header h1 {
+    font-size: 24px;
+    margin: 0;
+    color: #1a1a1a;
+    font-weight: 500;
+}
+
+/* Grid for the KPI Cards */
+.stats-grid {
+    display: grid;
+    /* Responsive columns: will shrink if screen gets smaller */
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.stat-card {
+    background: #fff;
+    border: 1px solid #c8c8c8; /* Grey border matching your photo */
+    border-radius: 8px;
+    padding: 30px 20px;
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.stat-label {
+    color: #555;
+    font-size: 17px;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.stat-value {
+    color: #000;
+    font-size: 26px;
+    font-weight: 800; /* Heavy weight for the numbers */
+    margin: 0;
+}

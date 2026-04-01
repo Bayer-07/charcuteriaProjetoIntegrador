@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.example.charcuteria.dto.UserLoginDto;
-import com.example.charcuteria.dto.UserRegistrationDto;
+import com.example.charcuteria.dto.user.UserLoginDto;
+import com.example.charcuteria.dto.user.UserRegistrationDto;
 import com.example.charcuteria.enums.UserRoleEnum;
 import com.example.charcuteria.exceptions.BusinessException;
 import com.example.charcuteria.exceptions.ErrorCode;
@@ -69,7 +69,7 @@ public class UserController {
             .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
 
         if (isAdmin) {
-            return "redirect:/user/dashboardAdmin";
+            return "redirect:/admin/dashboard";
         }
 
         return "redirect:/user/dashboard";
@@ -84,12 +84,6 @@ public class UserController {
     public String showDashboard(@AuthenticationPrincipal User loggedUser, Model model) {
         model.addAttribute("user", loggedUser);
         return "user/dashboard";
-    }
-
-    @GetMapping("/user/dashboardAdmin")
-    public String showDashboardAdmin(@AuthenticationPrincipal User loggedUser, Model model) {
-        model.addAttribute("user", loggedUser);
-        return "user/dashboardAdmin";
     }
 
     // Post
