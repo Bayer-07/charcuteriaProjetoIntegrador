@@ -1,4 +1,4 @@
-package com.example.charcuteria.service;
+package com.example.charcuteria.service.user;
 
 import java.util.Optional;
 

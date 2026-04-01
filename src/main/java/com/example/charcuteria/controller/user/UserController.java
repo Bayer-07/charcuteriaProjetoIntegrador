@@ -1,7 +1,6 @@
-package com.example.charcuteria.controller;
+package com.example.charcuteria.controller.user;
 
-import java.util.Optional;
-
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,13 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.charcuteria.dto.UserLoginDto;
 import com.example.charcuteria.dto.UserRegistrationDto;
-import com.example.charcuteria.dto.UserResponseDto;
 import com.example.charcuteria.enums.UserRoleEnum;
 import com.example.charcuteria.exceptions.BusinessException;
 import com.example.charcuteria.exceptions.ErrorCode;
-import com.example.charcuteria.service.UserService;
+import com.example.charcuteria.model.User;
+import com.example.charcuteria.service.user.UserService;
 
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @Controller
@@ -62,20 +60,18 @@ public class UserController {
     }
 
     @GetMapping("/handleProfile")
-    public String handleProfile(HttpSession session, Model model) {
-        UserResponseDto user = (UserResponseDto) session.getAttribute("loggedUser");
-        UserResponseDto admin = (UserResponseDto) session.getAttribute("loggedAdmin");
-
-        if (user == null && admin == null) {
+    public String handleProfile(@AuthenticationPrincipal User loggedUser) {
+        if (loggedUser == null) {
             return "redirect:/login";
         }
 
-        if (admin != null) {
-            model.addAttribute("user", admin);
+        boolean isAdmin = loggedUser.getAuthorities().stream()
+            .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
+
+        if (isAdmin) {
             return "redirect:/user/dashboardAdmin";
         }
 
-        model.addAttribute("user", user);
         return "redirect:/user/dashboard";
     }
 
@@ -85,26 +81,14 @@ public class UserController {
     }
 
     @GetMapping("/user/dashboard")
-    public String showDashboard(HttpSession session, Model model) {
-        UserResponseDto user = (UserResponseDto) session.getAttribute("loggedUser");
-
-        if (user == null) {
-            return "redirect:/login";
-        }
-
-        model.addAttribute("user", user);
+    public String showDashboard(@AuthenticationPrincipal User loggedUser, Model model) {
+        model.addAttribute("user", loggedUser);
         return "user/dashboard";
     }
 
     @GetMapping("/user/dashboardAdmin")
-    public String showDashboardAdmin(HttpSession session, Model model) {
-        UserResponseDto user = (UserResponseDto) session.getAttribute("loggedAdmin");
-
-        if (user == null) {
-            return "redirect:/loginAdmin";
-        }
-
-        model.addAttribute("user", user);
+    public String showDashboardAdmin(@AuthenticationPrincipal User loggedUser, Model model) {
+        model.addAttribute("user", loggedUser);
         return "user/dashboardAdmin";
     }
 
@@ -144,60 +128,6 @@ public class UserController {
         } catch (Exception e) {
             model.addAttribute("registrationError", "Internal server error, try again later please");
             return "user/registration-view";
-        }
-    }
-
-
-    @PostMapping("/login")
-    public String loginUser(@Valid @ModelAttribute("userDto") UserLoginDto userDto, HttpSession session, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            return "/login";
-        }
-
-        try {
-            Optional<UserResponseDto> userOpt = userService.loginUser(userDto.getEmail(), userDto.getPassword());
-
-            if (userOpt.isPresent()) {
-                session.setAttribute("loggedUser", userOpt.get());
-                return "redirect:/user/dashboard";
-            } else {
-                model.addAttribute("loginError", "Email or password incorrect");
-                return "login";
-            }
-
-        } catch (BusinessException ex) {
-            model.addAttribute("loginError", ex.getErrorCode().getMessage());
-            return "login";
-        } catch (Exception e) {
-            model.addAttribute("loginError", "Internal server error, try again later please");
-            return "login";
-        }
-    }
-
-    @PostMapping("/loginAdmin")
-    public String loginAdmin(@Valid @ModelAttribute("userDto") UserLoginDto userDto, HttpSession session, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            return "/loginAdmin";
-        }
-
-        try {
-            Optional<UserResponseDto> userOpt = userService.loginAdmin(userDto.getEmail(), userDto.getPassword());
-
-            if (userOpt.isPresent()) {
-                session.setAttribute("loggedAdmin", userOpt.get());
-                return "redirect:/user/dashboardAdmin";
-            } else {
-                model.addAttribute("loginError", "Email or passoword incorrect");
-                return "loginAdmin";
-            }
-
-        } catch (BusinessException ex) {
-            model.addAttribute("registrationError", ex.getErrorCode().getMessage());
-            return "loginAdmin";
-
-        } catch (Exception e) {
-            model.addAttribute("registrationError", "Internal server error, try again later please");
-            return "loginAdmin";
         }
     }
 

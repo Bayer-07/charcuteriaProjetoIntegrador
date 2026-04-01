@@ -46,7 +46,7 @@
             <h1 class="login-title">Login Admin</h1>
             <p class="subtitle">Preencha os campos abaixo para acessar sua conta admin</p>
 
-            <form class="form-login" th:action="@{/loginAdmin}" th:object="${userDto}" method="post">
+            <form class="form-login" th:action="@{/login}" th:object="${userDto}" method="post">
                 <div class="input-group">
                     <label>E-mail</label>
                     <input type="email" th:field="*{email}" placeholder="nome@nome.com.br" required>
