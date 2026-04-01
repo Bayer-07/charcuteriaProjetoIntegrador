@@ -59,7 +59,7 @@ public class SecurityConfig {
                 .loginProcessingUrl("/login") // URL que o Spring vai interceptar (o POST do seu form)
                 .usernameParameter("email")    // <--- username == email
                 .passwordParameter("password") // <--- password == password
-                .defaultSuccessUrl("/user/dashboard", true) // redirect pra onde vc vai depois de logar
+                .defaultSuccessUrl("/handleProfile", true) // redirect pra onde vc vai depois de logar
                 .permitAll()
             )
             .logout(logout -> logout
