@@ -5,13 +5,13 @@ import java.util.Optional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.charcuteria.dto.UserRegistrationDto;
-import com.example.charcuteria.dto.UserResponseDto;
+import com.example.charcuteria.dto.user.UserRegistrationDto;
+import com.example.charcuteria.dto.user.UserResponseDto;
 import com.example.charcuteria.enums.UserRoleEnum;
 import com.example.charcuteria.exceptions.BusinessException;
 import com.example.charcuteria.exceptions.ErrorCode;
 import com.example.charcuteria.model.User;
-import com.example.charcuteria.repository.UserRepository;
+import com.example.charcuteria.repository.user.UserRepository;
 
 
 @Service

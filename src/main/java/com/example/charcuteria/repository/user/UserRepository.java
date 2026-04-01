@@ -1,4 +1,4 @@
-package com.example.charcuteria.repository;
+package com.example.charcuteria.repository.user;
 
 import java.util.List;
 import java.util.Optional;
