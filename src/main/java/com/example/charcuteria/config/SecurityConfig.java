@@ -43,10 +43,10 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 // rotas publicas
-                .requestMatchers("/", "/index", "/login", "/register", "/css/**", "/js/**", "/images/**").permitAll()
+                .requestMatchers("/", "/index", "/login", "/loginAdmin", "/register", "/css/**", "/js/**", "/images/**").permitAll()
 
                 // rotas admin where getAuthorities.rote = "ROLE_ADMIN"
-                .requestMatchers("/user/dashboardAdmin/**").hasRole("ADMIN")
+                .requestMatchers("/user/dashboardAdmin/**", "/registerAdmin").hasRole("ADMIN")
 
                 // rotas com permissao geral
                 .requestMatchers("/user/dashboard/**").hasAnyRole("CUSTOMER", "ADMIN")
