@@ -86,12 +86,6 @@ public class UserController {
         return "user/dashboard";
     }
 
-    @GetMapping("/user/dashboardAdmin")
-    public String showDashboardAdmin(@AuthenticationPrincipal User loggedUser, Model model) {
-        model.addAttribute("user", loggedUser);
-        return "user/dashboardAdmin";
-    }
-
     // Post
     @PostMapping("/register")
     public String createUser(@Valid @ModelAttribute("userDto") UserRegistrationDto userDto, BindingResult result, Model model) {
