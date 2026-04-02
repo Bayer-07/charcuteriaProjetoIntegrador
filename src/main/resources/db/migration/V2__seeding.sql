@@ -1,27 +1,23 @@
+INSERT INTO categories (name, description) VALUES
+('Embutidos', 'Produtos ensacados e curados'),
+('Defumados', 'Carnes expostas à fumaça de lenha'),
+('Kits', 'Kits prontos para presente');
+
+INSERT INTO subscription_plans (name, description, price) VALUES
+('Plano Mensal Premium', 'Receba 3 produtos surpresa todo mês', 89.90),
+('Clube do Salame', 'Seleção de salames artesanais', 55.00);
+
 INSERT INTO users (name, email, password_hash, role) VALUES
-('Eduardo Admin', 'admin@koch.com', 'hash_seguro_admin', 'ADMIN'),
-('Cliente Teste', 'cliente@gmail.com', 'hash_seguro_cliente', 'CUSTOMER');
+('Admin Teste', 'admin@koch.com', 'hash_seguro', 'ADMIN'),
+('Cliente Teste', 'cliente@gmail.com', 'hash_seguro', 'CUSTOMER');
 
 INSERT INTO addresses (user_id, street, number, neighborhood, city, state, zip_code, is_default) VALUES
-(2, 'Rua das Flores', '123', 'Centro', 'Toledo', 'PR', '85900-000', TRUE),
-(2, 'Av. Maripá', '456', 'Vila Industrial', 'Toledo', 'PR', '85905-000', FALSE);
+(2, 'Rua das Flores', '123', 'Centro', 'Toledo', 'PR', '85900-000', TRUE);
 
-INSERT INTO products (name, description, price, stock_quantity, image_path, is_active) VALUES
-('Salame Italiano', 'Salame artesanal curado por 30 dias', 45.90, 50, '/uploads/salame.jpg', TRUE),
-('Copa Lombo', 'Copa maturada com especiarias finas', 62.00, 30, '/uploads/copa.jpg', TRUE),
-('Bacon Defumado', 'Bacon defumado em lenha de macieira', 35.50, 100, '/uploads/bacon.jpg', TRUE),
-('Linguiça Suína', 'Linguiça caseira para churrasco', 28.00, 0, '/uploads/linguica.jpg', TRUE);
+INSERT INTO products (category_id, name, description, price, stock_quantity, is_active) VALUES
+(1, 'Salame Italiano', 'Curado por 30 dias', 45.90, 50, TRUE),
+(2, 'Bacon Defumado', 'Defumação artesanal', 35.50, 100, TRUE);
 
-INSERT INTO orders (user_id, address_id, total_amount, shipping_cost, status) VALUES
-(2, 1, 153.80, 15.00, 'PAID');
+INSERT INTO cart_items (user_id, product_id, quantity) VALUES (2, 2, 3);
 
-INSERT INTO order_products (order_id, product_id, quantity, unit_price) VALUES
-(1, 1, 2, 45.90),
-(1, 2, 1, 62.00);
-
-INSERT INTO cart_items (user_id, product_id, quantity) VALUES
-(2, 3, 2),
-(2, 2, 1);
-
-INSERT INTO subscription (user_id, plan_type, status) VALUES
-(2, 'Plano Mensal Premium', 'ACTIVE');
+INSERT INTO subscriptions (user_id, plan_id, status) VALUES (2, 1, 'ACTIVE');

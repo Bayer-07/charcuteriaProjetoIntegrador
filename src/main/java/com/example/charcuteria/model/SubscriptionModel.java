@@ -1,4 +1,4 @@
 package com.example.charcuteria.model;
 
-public class userModel {
+public class SubscriptionModel {
 }
