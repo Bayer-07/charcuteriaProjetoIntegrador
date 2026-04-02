@@ -41,6 +41,7 @@ public class UserController {
         return "user/registration-view";
     }
 
+    // vai pra rota privada pra admin quando acabarem os testes
     @GetMapping("/registerAdmin")
     public String showAdminRegistrationAdmin(Model model) {
         model.addAttribute("userDto", new UserRegistrationDto());
@@ -107,6 +108,7 @@ public class UserController {
         }
     }
 
+    // vai pra rota privada pra admin quando acabarem os testes
     @PostMapping("/registerAdmin")
     public String createAdmin(@Valid @ModelAttribute("userDto") UserRegistrationDto userDto, BindingResult result, Model model) {
         if (result.hasErrors()) return "user/adminRegistration-view";
