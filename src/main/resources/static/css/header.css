@@ -1,0 +1,73 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.main-header {
+  width: 100%;
+  padding: 20px 50px;
+  background-color: #fff;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.logo {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.brand-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #800000;
+}
+
+.brand-suffix {
+  font-family: 'Great Vibes', cursive;
+  font-size: 28px;
+  color: #f4a460;
+  margin-left: 8px;
+}
+
+.nav-menu ul {
+  display: flex;
+  list-style: none;
+  gap: 30px;
+}
+
+.nav-menu a {
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+  transition: color 0.2s ease;
+}
+
+.nav-menu a:hover {
+  color: #800000;
+}
+
+.header-icons {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.icon-link {
+  color: #333;
+  transition: transform 0.2s;
+}
+
+.icon-link:hover {
+  transform: scale(1.1);
+}

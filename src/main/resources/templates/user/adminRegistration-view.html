@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/css/styleLogin.css}" href="../../static/css/style.css" />
+</head>
+<body>
+    <div th:if="${registrationError}" class="error"><p th:text="${registrationError}"></p></div>
+    <form th:action="@{/registerAdmin}" th:object="${userDto}" method="post">
+    <input type="text" th:field="*{name}" placeholder="Name" />
+    <input type="email" th:field="*{email}" placeholder="Email" />
+    <input type="password" th:field="*{password}" placeholder="Password" />
+    <input type="password" th:field="*{passwordControl}" placeholder="Password" />
+
+    <button type="submit">Create Admin</button>
+</form>
+</body>
+</html>

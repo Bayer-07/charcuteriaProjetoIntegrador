@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Koch Charcutaria</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styleLogin.css}" href="/css/styleLogin.css" />
+    <link rel="stylesheet" th:href="@{/css/header.css}" href="/css/header.css" />
+    <link rel="stylesheet" th:href="@{/css/footer.css}" href="/css/footer.css" />
+    <link rel="shortcut icon" th:href="@{/images/logo.png}" href="/images/logo.png" type="image/x-icon">
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <span class="brand-name">Koch</span>
+                <span class="brand-suffix">Charcutaria</span>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="catalogo.html">Catálogo</a></li>
+                    <li><a href="assinaturas.html">Assinaturas</a></li>
+                    <li><a href="parcerias.html">Parcerias</a></li>
+                </ul>
+            </nav>
+            <div class="header-icons">
+                <a href="#" class="icon-link">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><circle cx="9" cy="21" r="1"></circle><circle cx="21" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </a>
+                <a href="/handleProfile" class="icon-link">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="login-wrapper">
+        <div class="card-login">
+            <div class="logo-wrapper">
+                <img th:src="@{/images/logo.png}" src="/images/logo.png" alt="Logo Charcuteria" class="circular-logo">
+            </div>
+
+            <h1 class="login-title">Registrar</h1>
+            <p class="subtitle">Preencha os campos abaixo para criar sua conta</p>
+
+            <form class="form-login" th:action="@{/register}" th:object="${userDto}" method="post">
+                <div class="input-group">
+                    <label>Nome de usuário</label>
+                    <input type="text" th:field="*{name}" required>
+                </div>
+                <div class="input-group">
+                    <label>E-mail</label>
+                    <input type="email" th:field="*{email}" placeholder="nome@nome.com.br" required>
+                </div>
+                <div class="input-group">
+                    <label>Senha</label>
+                    <input type="password" th:field="*{password}" placeholder="********" required>
+                </div>
+                <div class="input-group">
+                    <label>Confirme sua senha</label>
+                    <input type="password" th:field="*{passwordControl}" placeholder="********" required>
+                </div>
+                <button class="btn-login" type="submit">Entrar</button>
+            </form>
+
+            <div class="card-footer">
+                <p>Já tem uma conta? <a href="/login" class="bold-link">Entrar</a></p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-column footer-logo">
+                <img th:src="@{/images/logo.png}" src="/images/logo.png" alt="Koch Charcutaria Logo">
+            </div>
+
+            <div class="footer-column">
+                <h3>Catálogo</h3>
+                <ul>
+                    <li><a href="/catalogo">Catálogo</a></li>
+                    <li><a href="/assinaturas">Assinaturas</a></li>
+                    <li><a href="/parcerias">Parcerias</a></li>
+                    <li><a href="/privacidade">Política de privacidade</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h3>Contato</h3>
+                <address>
+                    <p>Endereço, número - Cidade, Estado</p>
+                    <p>Contato</p>
+                    <p><a href="mailto:contato@koch.com.br">E-mail</a></p>
+                </address>
+                <div class="social-icons">
+                    <a href="https://instagram.com" target="_blank" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" width="32" height="32" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <hr>
+            <p>&copy; 2026 Koch Charcutaria. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+</body>
+
+</html>
