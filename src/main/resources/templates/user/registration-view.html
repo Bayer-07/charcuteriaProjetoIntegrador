@@ -63,6 +63,7 @@
                     <label>Confirme sua senha</label>
                     <input type="password" th:field="*{passwordControl}" placeholder="********" required>
                 </div>
+                <div class="input-group" th:text="${registrationError}"></div>
                 <button class="btn-login" type="submit">Entrar</button>
             </form>
 
