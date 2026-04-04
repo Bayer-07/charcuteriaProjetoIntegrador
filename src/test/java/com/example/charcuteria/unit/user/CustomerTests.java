@@ -1,16 +1,21 @@
-package com.example.charcuteria.user;
+package com.example.charcuteria.unit.user;
 
 import static org.hamcrest.Matchers.instanceOf;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -18,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 import com.example.charcuteria.config.SecurityConfig;
 import com.example.charcuteria.controller.user.UserController;
@@ -35,6 +41,12 @@ public class CustomerTests {
 
     @MockBean
     private UserService userService;
+
+    @MockBean
+    private UserDetailsService userDetailsService;
+
+    @MockBean
+    private PasswordEncoder passwordEncoder;
 
     // testing get view returns
     @Test
@@ -112,10 +124,26 @@ public class CustomerTests {
         .andExpect(model().attribute("registrationError", "Internal server error, try again later please"));
     }
 
-    // testing login customer
     @Test
-    void testLoginUserSucess() throws Exception {
-        mockMvc.perform(post("/login"))
-            .andExpect(status().is3xxRedirection());
+    void testLoginUser_Sucess() throws Exception {
+        String email = "test@gmail.com";
+        String rawPassword = "123456789";
+        String encodedPassword = "mockEncodedPassword";
+
+        UserDetails mockUser = User.withUsername(email)
+                .password(encodedPassword)
+                .roles("CUSTOMER")
+                .build();
+
+        when(userDetailsService.loadUserByUsername(email)).thenReturn(mockUser);
+
+        when(passwordEncoder.matches(rawPassword, encodedPassword)).thenReturn(true);
+
+        mockMvc.perform(post("/login")
+                .param("email", email)
+                .param("password", rawPassword)
+                .with(csrf()))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(redirectedUrl("/handleProfile"));
     }
 }
