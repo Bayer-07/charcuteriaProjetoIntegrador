@@ -146,4 +146,27 @@ public class CustomerTests {
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl("/handleProfile"));
     }
+
+    @Test
+    void testLoginUser_WrongPassword() throws Exception {
+        String email = "test@gmail.com";
+        String rawPassword = "123456789";
+        String encodedPassword = "mockEncodedPassword";
+
+        UserDetails mockUser = User.withUsername(email)
+                .password(encodedPassword)
+                .roles("CUSTOMER")
+                .build();
+
+        when(userDetailsService.loadUserByUsername(email)).thenReturn(mockUser);
+
+        when(passwordEncoder.matches(rawPassword, encodedPassword)).thenReturn(true);
+
+        mockMvc.perform(post("/login")
+                .param("email", email)
+                .param("password", "wrong-password")
+            )
+            .andExpect(status().is3xxRedirection())
+            .andExpect(redirectedUrl("/login?error"));
+    }
 }
