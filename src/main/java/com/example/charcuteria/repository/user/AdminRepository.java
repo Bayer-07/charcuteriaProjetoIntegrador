@@ -36,13 +36,13 @@ public class AdminRepository {
     }
 
     public int getProductStorage() {
-        String sql = "SELECT COUNT(*) FROM products p WHERE p.stock_quantity < 51 AND p.is_active = 't'";
+        String sql = "SELECT COUNT(*) FROM products p WHERE p.stock_quantity < 51 AND p.is_active = TRUE";
 
         return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
     public List<AdminProductsResponseDto> findAllProducts() {
-        String sql = "SELECT p.id, c.name AS category, p.name, p.price, p.is_active FROM products p JOIN categories c ON p.category_id = c.id ORDER BY p.id ASC";
+        String sql = "SELECT p.id, c.name AS category, p.name, p.price, p.is_active FROM products p JOIN categories c ON p.category_id = c.id WHERE p.is_active = TRUE ORDER BY p.id ASC";
 
         return jdbcTemplate.query(sql, (rs, rowNum) ->
             new AdminProductsResponseDto(
