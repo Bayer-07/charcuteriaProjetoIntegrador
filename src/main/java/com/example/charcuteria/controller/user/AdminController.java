@@ -40,4 +40,14 @@ public class AdminController {
             return "user/dashboardAdmin";
         }
     }
+
+    @GetMapping("/products")
+    public String showProductsDashboard(@AuthenticationPrincipal User loggedUser, Model model) {
+        try {
+            model.addAttribute("products", adminService.listProducts());
+            return "admin/productsDashboard";
+        } catch (Exception e) {
+            return "admin/productsDashboard";
+        }
+    }
 }
