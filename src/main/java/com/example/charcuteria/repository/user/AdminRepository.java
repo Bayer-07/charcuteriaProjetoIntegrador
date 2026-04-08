@@ -1,7 +1,11 @@
 package com.example.charcuteria.repository.user;
 
+import java.util.List;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import com.example.charcuteria.dto.user.AdminProductsResponseDto;
 
 @Repository
 public class AdminRepository {
@@ -35,5 +39,19 @@ public class AdminRepository {
         String sql = "SELECT COUNT(*) FROM products p WHERE p.stock_quantity < 51 AND p.is_active = 't'";
 
         return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+
+    public List<AdminProductsResponseDto> findAllProducts() {
+        String sql = "SELECT p.id, c.name AS category, p.name, p.price, p.is_active FROM products p JOIN categories c ON p.category_id = c.id ORDER BY p.id ASC";
+
+        return jdbcTemplate.query(sql, (rs, rowNum) ->
+            new AdminProductsResponseDto(
+                rs.getInt("id"),
+                rs.getString("category"),
+                rs.getString("name"),
+                rs.getDouble("price"),
+                rs.getBoolean("is_active")
+            )
+        );
     }
 }
