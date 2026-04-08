@@ -8,7 +8,7 @@ public class ErrorResponse {
     private String errorCode;
     private LocalDateTime timestamp;
 
-    public ErrorResponse(ErrorCode errorCode) {
+    public ErrorResponse(UserErrorCode errorCode) {
         this.status = errorCode.getStatus();
         this.message = errorCode.getMessage();
         this.errorCode = errorCode.name();

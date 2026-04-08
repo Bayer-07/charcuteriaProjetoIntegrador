@@ -1,11 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/sidebar.css}" href="/css/sidebar.css" />
+    <link rel="stylesheet" th:href="@{/css/modal.css}" href="/css/modal.css" />
     <link rel="stylesheet" th:href="@{/css/products.css}" href="/css/products.css" />
+    <script th:src="@{/js/products.js}"></script>
+    <link rel="shortcut icon" th:href="@{/images/logo.png}" href="/images/logo.png" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Produtos | Koch Charcutaria</title>
 </head>
 <body>
     <aside class="admin-sidebar">
@@ -83,14 +87,30 @@
                             <a th:href="@{/admin/produtos/editar/{id}(id=${product.id})}" class="action-btn edit">
                                 <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4L18.5 2.5z"></path></svg>
                             </a>
-                            <a th:href="@{/admin/produtos/deletar/{id}(id=${product.id})}" class="action-btn delete">
+
+                            <button type="button" class="action-btn delete" th:onclick="|openModal('${product.id}')|">
                                 <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                            </a>
+                            </button>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </main>
+    <div id="deleteModal" class="modal-overlay">
+        <div class="modal-card">
+            <h2>Deseja Excluir</h2>
+            <p>Deseja realmente excluir esse produto?<br>
+            <span>Essa ação é irreversível</span>
+            </p>
+
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+                <form id="deleteForm" method="post">
+                    <button type="submit" class="btn-confirm">Confirmar</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

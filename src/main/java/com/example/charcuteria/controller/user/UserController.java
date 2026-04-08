@@ -13,7 +13,7 @@ import com.example.charcuteria.dto.user.UserLoginDto;
 import com.example.charcuteria.dto.user.UserRegistrationDto;
 import com.example.charcuteria.enums.UserRoleEnum;
 import com.example.charcuteria.exceptions.BusinessException;
-import com.example.charcuteria.exceptions.ErrorCode;
+import com.example.charcuteria.exceptions.UserErrorCode;
 import com.example.charcuteria.model.User;
 import com.example.charcuteria.service.user.UserService;
 
@@ -95,11 +95,11 @@ public class UserController {
         }
 
         try {
-            if (!userDto.getPassword().equals(userDto.getPasswordControl())) throw new BusinessException(ErrorCode.DIFFERENT_PASSWORDS);
+            if (!userDto.getPassword().equals(userDto.getPasswordControl())) throw new BusinessException(UserErrorCode.DIFFERENT_PASSWORDS);
             userService.createUser(userDto, UserRoleEnum.CUSTOMER);
             return "redirect:/login";
         } catch (BusinessException ex) {
-            model.addAttribute("registrationError", ex.getErrorCode().getMessage());
+            model.addAttribute("registrationError", ex.getUserErrorCode().getMessage());
             return "user/registration-view";
 
         } catch (Exception e) {
@@ -114,11 +114,11 @@ public class UserController {
         if (result.hasErrors()) return "user/adminRegistration-view";
 
         try {
-            if (!userDto.getPassword().equals(userDto.getPasswordControl())) throw new BusinessException(ErrorCode.DIFFERENT_PASSWORDS);
+            if (!userDto.getPassword().equals(userDto.getPasswordControl())) throw new BusinessException(UserErrorCode.DIFFERENT_PASSWORDS);
             userService.createUser(userDto, UserRoleEnum.ADMIN);
             return "redirect:/loginAdmin";
         } catch (BusinessException ex) {
-            model.addAttribute("registrationError", ex.getErrorCode().getMessage());
+            model.addAttribute("registrationError", ex.getUserErrorCode().getMessage());
             return "user/registration-view";
 
         } catch (Exception e) {

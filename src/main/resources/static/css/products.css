@@ -112,3 +112,12 @@
 .action-btn:hover {
     transform: scale(1.2);
 }
+
+button.action-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font: inherit;
+    color: inherit;
+}
