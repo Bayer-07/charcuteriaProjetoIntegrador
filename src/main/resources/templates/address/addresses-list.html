@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Endereços</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <style>
+        .addresses-container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .addresses-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .addresses-header h1 {
+            margin: 0;
+            color: #333;
+        }
+
+        .btn-new-address {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+        }
+
+        .btn-new-address:hover {
+            background-color: #218838;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .addresses-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .address-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .address-card h3 {
+            margin-top: 0;
+            color: #333;
+            border-bottom: 2px solid #28a745;
+            padding-bottom: 10px;
+        }
+
+        .address-info {
+            margin: 10px 0;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .address-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-edit, .btn-delete {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-edit {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        .no-addresses {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .no-addresses p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .is-default-badge {
+            display: inline-block;
+            background-color: #28a745;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="addresses-container">
+        <div class="addresses-header">
+            <h1>Meus Endereços</h1>
+            <a th:href="@{/addresses/new}" class="btn-new-address">+ Novo Endereço</a>
+        </div>
+
+        <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+        <div th:if="${errorMessage}" class="alert alert-error" th:text="${errorMessage}"></div>
+
+        <div th:if="${#lists.isEmpty(addresses)}" class="no-addresses">
+            <p>Você não possui endereços cadastrados.</p>
+            <a th:href="@{/addresses/new}" class="btn-new-address">Cadastrar Primeiro Endereço</a>
+        </div>
+
+        <div th:unless="${#lists.isEmpty(addresses)}" class="addresses-list">
+            <div th:each="address : ${addresses}" class="address-card">
+                <h3 th:text="${address.street + ', ' + address.number}">
+                    Rua Principal, 123
+                </h3>
+
+                <div class="address-info">
+                    <strong>Complemento:</strong> <span th:text="${address.complement ?: 'N/A'}">-</span>
+                </div>
+
+                <div class="address-info">
+                    <strong>Bairro:</strong> <span th:text="${address.neighborhood}">Centro</span>
+                </div>
+
+                <div class="address-info">
+                    <strong>Cidade:</strong> <span th:text="${address.city}">São Paulo</span>
+                </div>
+
+                <div class="address-info">
+                    <strong>Estado:</strong> <span th:text="${address.state}">SP</span>
+                </div>
+
+                <div class="address-info">
+                    <strong>CEP:</strong> <span th:text="${address.zipCode}">01234-567</span>
+                    <span th:if="${address.isDefault}" class="is-default-badge">Padrão</span>
+                </div>
+
+                <div class="address-actions">
+                    <a th:href="@{/addresses/{id}/edit(id=${address.id})}" class="btn-edit">Editar</a>
+                    <form th:action="@{/addresses/{id}/delete(id=${address.id})}" method="POST" style="flex: 1;">
+                        <button type="submit" class="btn-delete" style="width: 100%; padding: 8px 12px;" onclick="return confirm('Tem certeza que deseja deletar este endereço?')">
+                            Deletar
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
