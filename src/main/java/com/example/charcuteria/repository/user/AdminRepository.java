@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.example.charcuteria.dto.user.AdminProductsResponseDto;
+import com.example.charcuteria.model.Category;
 
 @Repository
 public class AdminRepository {
@@ -53,5 +54,14 @@ public class AdminRepository {
                 rs.getBoolean("is_active")
             )
         );
+    }
+
+
+    public List<Category> getAllCategories() {
+        String sql = "SELECT name FROM categories";
+
+        return jdbcTemplate.query(sql, (rs, row) -> {
+            return new Category(rs.getString("name"));
+        });
     }
 }

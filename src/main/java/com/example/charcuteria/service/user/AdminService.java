@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.charcuteria.dto.user.AdminProductsResponseDto;
+import com.example.charcuteria.model.Category;
 import com.example.charcuteria.repository.user.AdminRepository;
 
 @Service
@@ -34,5 +35,9 @@ public class AdminService {
 
     public List<AdminProductsResponseDto> listProducts() {
         return adminRepository.findAllProducts();
+    }
+
+    public List<Category> getAllCategories() {
+        return adminRepository.getAllCategories();
     }
 }
