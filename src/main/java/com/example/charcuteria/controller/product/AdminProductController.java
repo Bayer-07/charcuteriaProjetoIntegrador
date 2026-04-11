@@ -40,7 +40,8 @@ public class AdminProductController {
         if (result.hasErrors()) return "/admin/products";
 
         try {
-            productService.createProduct(product);
+            int categoryId = productService.getCategoryIdByName(product.getCategory());
+            productService.createProduct(product, categoryId);
             return "redirect:/admin/products";
         } catch (Exception e) {
             System.out.println(e);

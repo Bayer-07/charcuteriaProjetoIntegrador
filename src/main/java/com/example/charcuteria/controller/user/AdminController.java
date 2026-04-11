@@ -46,6 +46,7 @@ public class AdminController {
     public String showProductsDashboard(@AuthenticationPrincipal User loggedUser, Model model) {
         try {
             model.addAttribute("products", adminService.listProducts());
+            model.addAttribute("categories", adminService.getAllCategories());
             model.addAttribute("productDto", new AdminProductsRequestDto());
             return "admin/productsDashboard";
         } catch (Exception e) {

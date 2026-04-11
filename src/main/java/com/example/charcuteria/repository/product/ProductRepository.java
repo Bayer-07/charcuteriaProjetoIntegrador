@@ -14,11 +14,17 @@ public class ProductRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public int createProduct(AdminProductsRequestDto product) {
+    public int getCategoryIdByName(String category) {
+        String sql = "Select id FROM categories WHERE name = ?";
+
+        return jdbcTemplate.queryForObject(sql, Integer.class, category);
+    }
+
+    public int createProduct(AdminProductsRequestDto product, int categoryId) {
         String sql = "INSERT INTO products (category_id, name, description, price, stock_quantity, image_path) VALUES (?, ?, ?, ?, ?, ?)";
 
         return jdbcTemplate.update(sql,
-            1,
+            categoryId,
             product.getName(),
             product.getDescription(),
             product.getPrice(),

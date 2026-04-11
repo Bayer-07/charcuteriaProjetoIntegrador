@@ -16,8 +16,12 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public void createProduct(AdminProductsRequestDto product) {
-        if (productRepository.createProduct(product) == 0) throw new BusinessException(ProductErrorCode.PRODUCT_NOT_FOUND);
+    public int getCategoryIdByName(String category) {
+        return productRepository.getCategoryIdByName(category);
+    }
+
+    public void createProduct(AdminProductsRequestDto product, int categoryId) {
+        if (productRepository.createProduct(product, categoryId) == 0) throw new BusinessException(ProductErrorCode.PRODUCT_NOT_FOUND);
     }
 
     public void deleteById(Integer id) {
