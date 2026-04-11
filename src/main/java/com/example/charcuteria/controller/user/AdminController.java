@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.charcuteria.dto.user.AdminDashboardResponseDto;
+import com.example.charcuteria.dto.user.AdminProductsRequestDto;
 import com.example.charcuteria.model.User;
 import com.example.charcuteria.service.user.AdminService;
 
@@ -45,6 +46,7 @@ public class AdminController {
     public String showProductsDashboard(@AuthenticationPrincipal User loggedUser, Model model) {
         try {
             model.addAttribute("products", adminService.listProducts());
+            model.addAttribute("productDto", new AdminProductsRequestDto());
             return "admin/productsDashboard";
         } catch (Exception e) {
             return "admin/productsDashboard";

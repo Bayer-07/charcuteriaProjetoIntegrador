@@ -1,34 +1,64 @@
-/* Overlay: O fundo escuro que cobre a tela toda */
 .modal-overlay {
-    display: none; /* Escondido por padrão */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
-    backdrop-filter: blur(3px); /* Efeito de desfoque ao fundo */
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
     z-index: 1000;
     justify-content: center;
     align-items: center;
 }
 
-/* O Card do Modal */
 .modal-card {
     background-color: #fff;
-    padding: 40px;
+    padding: 30px 40px;
     border-radius: 12px;
     width: 100%;
-    max-width: 450px;
+    max-width: 480px;
     text-align: center;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
     animation: modalAppear 0.3s ease-out;
 }
 
 .modal-card h2 {
     font-size: 22px;
     color: #333;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    font-weight: 500;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.input-group {
+    text-align: left;
+    margin-bottom: 18px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 15px;
+    color: #333;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    color: #444;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #8b0000;
+    background-color: #fff;
 }
 
 .modal-card p {
@@ -40,38 +70,55 @@
 
 .modal-card p span {
     font-size: 14px;
-    color: #888;
+    color: #999;
 }
 
-/* Botões */
 .modal-buttons {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 15px;
+    margin-top: 25px;
 }
 
 .btn-cancel {
-    padding: 12px 30px;
+    padding: 12px 0;
+    width: 130px;
     background: #fff;
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
     border-radius: 6px;
     cursor: pointer;
     font-weight: 500;
     color: #666;
+    transition: background 0.2s;
+}
+
+.btn-cancel:hover {
+    background: #f5f5f5;
 }
 
 .btn-confirm {
-    padding: 12px 30px;
-    background: #8b0000; /* Vermelho escuro da sua marca */
+    padding: 12px 0;
+    width: 130px;
+    background: #8b0000;
     color: #fff;
     border: none;
     border-radius: 6px;
     cursor: pointer;
     font-weight: 500;
+    transition: opacity 0.2s;
 }
 
-/* Animação de entrada */
+.btn-confirm:hover {
+    opacity: 0.9;
+}
+
 @keyframes modalAppear {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
 }
