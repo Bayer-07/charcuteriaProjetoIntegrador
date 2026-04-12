@@ -101,7 +101,7 @@
         <div class="modal-card">
             <h2>Novo Produto</h2>
 
-            <form id="createForm" th:action="@{/admin/product/create}" th:object="${productDto}" method="post">
+            <form id="createForm" th:action="@{/admin/product/create}" th:object="${productDto}" method="post" enctype="multipart/form-data">
                 <div class="input-group">
                     <label>Nome</label>
                     <input type="text" th:field="*{name}" placeholder="Ex: Salame Italiano" required>
@@ -127,11 +127,16 @@
                     <label>Preço</label>
                     <input type="text" th:field="*{price}" placeholder="Ex: 45.90" required>
                 </div>
-                <!--
+
                 <div class="input-group">
-                    <label>URL da imagem</label>
-                    <input type="text" th:field="*{imageUrl}" placeholder="http://...">
-                </div> -->
+                    <label>Estoque inicial</label>
+                    <input type="text" th:field="*{stock}" placeholder="40" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="image" class="form-label">Imagem do Produto</label>
+                    <input type="file" th:field="*{image}" class="form-control" id="image" accept="image/*">
+                </div>
 
                 <div class="modal-buttons">
                     <button type="button" class="btn-cancel" onclick="closeCreateModal()">Cancelar</button>
