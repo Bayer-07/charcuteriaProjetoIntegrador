@@ -43,15 +43,15 @@ public class AdminRepository {
     }
 
     public List<AdminProductsResponseDto> findAllProducts() {
-        String sql = "SELECT p.id, c.name AS category, p.name, p.price, p.is_active FROM products p JOIN categories c ON p.category_id = c.id WHERE p.is_active = TRUE ORDER BY p.id ASC";
+        String sql = "SELECT p.id, p.stock_quantity, c.name AS category, p.name, p.price FROM products p JOIN categories c ON p.category_id = c.id WHERE p.is_active = TRUE ORDER BY p.id ASC";
 
         return jdbcTemplate.query(sql, (rs, rowNum) ->
             new AdminProductsResponseDto(
                 rs.getInt("id"),
+                rs.getInt("stock_quantity"),
                 rs.getString("category"),
                 rs.getString("name"),
-                rs.getDouble("price"),
-                rs.getBoolean("is_active")
+                rs.getBigDecimal("price")
             )
         );
     }

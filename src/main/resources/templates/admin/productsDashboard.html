@@ -68,21 +68,21 @@
             <table class="products-table">
                 <thead>
                     <tr>
-                        <th class="col-id">ID</th>
                         <th class="col-name">Nome</th>
                         <th class="col-category">Categoria</th>
                         <th class="col-price">Preço</th>
+                        <th class="col-id">Estoque</th>
                         <th class="col-actions">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="product : ${products}">
-                        <td class="cell-id" th:text="${product.id}"></td>
                         <td class="cell-name" th:text="${product.name}"></td>
                         <td class="cell-category">
                             <span th:text="${product.category}"></span>
                         </td>
                         <td class="cell-price" th:text="${'R' + #numbers.formatCurrency(product.price)}"></td>
+                        <td class="cell-id" th:text="${product.stockQuantity}"></td>
                         <td class="cell-actions">
                             <button type="button" class="action-btn edit" th:onclick="|openModal('${product.id}')|">
                                 <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4L18.5 2.5z"></path></svg>
@@ -115,7 +115,7 @@
                 <div class="input-group">
                     <label>Categoria</label>
                     <select th:field="*{category}" required class="custom-select">
-                        <option value="" disabled selected>Selecione uma categoria</option>
+                        <option value="">Selecione uma categoria</option>
                         <option th:each="cat : ${categories}"
                                 th:value="${cat.name}"
                                 th:text="${cat.name}">
