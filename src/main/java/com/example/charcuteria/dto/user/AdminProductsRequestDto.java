@@ -1,14 +1,16 @@
 package com.example.charcuteria.dto.user;
 
+import java.math.BigDecimal;
+
 public class AdminProductsRequestDto {
     private String name;
     private String description;
     private String category;
-    private double price;
+    private BigDecimal price;
 
     public AdminProductsRequestDto() {}
 
-    public AdminProductsRequestDto(String name, String description, String category, double price) {
+    public AdminProductsRequestDto(String name, String description, String category, BigDecimal price) {
         this.name = name;
         this.description = description;
         this.category = category;
@@ -24,6 +26,6 @@ public class AdminProductsRequestDto {
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }
 
-    public double getPrice() { return price; }
-    public void setPrice(double price) { this.price = price; }
+    public BigDecimal getPrice() { return price; }
+    public void setPrice(BigDecimal price) { this.price = price; }
 }

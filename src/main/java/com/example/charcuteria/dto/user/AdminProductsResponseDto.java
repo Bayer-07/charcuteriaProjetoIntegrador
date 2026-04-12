@@ -1,23 +1,25 @@
 package com.example.charcuteria.dto.user;
 
+import java.math.BigDecimal;
+
 public class AdminProductsResponseDto {
     private final int id;
+    private final int stockQuantity;
     private final String category;
     private final String name;
-    private final double price;
-    private final Boolean isActive;
+    private final BigDecimal price;
 
-    public AdminProductsResponseDto(int id, String category, String name, double price, Boolean isActive) {
+    public AdminProductsResponseDto(int id, int stockQuantity, String category, String name, BigDecimal price) {
         this.id = id;
+        this.stockQuantity = stockQuantity;
         this.category = category;
         this.name = name;
         this.price = price;
-        this.isActive = isActive;
     }
 
     public int getId() {return id;}
+    public int getStockQuantity() {return stockQuantity;}
     public String getCategory() {return category;}
     public String getName() {return name;}
-    public double getPrice() {return price;}
-    public Boolean getIsActive() {return isActive;}
+    public BigDecimal getPrice() {return price;}
 }
