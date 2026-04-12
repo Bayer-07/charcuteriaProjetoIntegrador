@@ -20,11 +20,12 @@ public class ProductService {
         return productRepository.getCategoryIdByName(category);
     }
 
-    public void createProduct(AdminProductsRequestDto product, int categoryId) {
-        if (productRepository.createProduct(product, categoryId) == 0) throw new BusinessException(ProductErrorCode.PRODUCT_NOT_FOUND);
+    public void createProduct(AdminProductsRequestDto product, int categoryId, String image) {
+        if (productRepository.createProduct(product, categoryId, image) == 0) throw new BusinessException(ProductErrorCode.PRODUCT_NOT_FOUND);
     }
 
-    public void deleteById(Integer id) {
+    public String deleteById(Integer id) {
         if (productRepository.deleteById(id) == 0) throw new BusinessException(ProductErrorCode.PRODUCT_NOT_FOUND);
+        return productRepository.getFileNameById(id);
     }
 }

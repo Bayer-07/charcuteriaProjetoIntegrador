@@ -20,7 +20,7 @@ public class ProductRepository {
         return jdbcTemplate.queryForObject(sql, Integer.class, category);
     }
 
-    public int createProduct(AdminProductsRequestDto product, int categoryId) {
+    public int createProduct(AdminProductsRequestDto product, int categoryId, String image) {
         String sql = "INSERT INTO products (category_id, name, description, price, stock_quantity, image_path) VALUES (?, ?, ?, ?, ?, ?)";
 
         return jdbcTemplate.update(sql,
@@ -28,14 +28,20 @@ public class ProductRepository {
             product.getName(),
             product.getDescription(),
             product.getPrice(),
-            1,
-            "teste"
+            product.getStock(),
+            image
         );
     }
 
     public int deleteById(Integer id) {
-        String sql = "UPDATE products SET is_active = FALSE WHERE id = ?";
+        String sql = "UPDATE products SET is_active = FALSE, image_path = NULL WHERE id = ?";
 
         return jdbcTemplate.update(sql, id);
+    }
+
+    public String getFileNameById(Integer id) {
+        String sql = "SELECT image_path FROM products WHERE id = ?";
+
+        return jdbcTemplate.queryForObject(sql, String.class, id);
     }
 }
