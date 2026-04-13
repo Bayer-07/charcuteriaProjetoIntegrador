@@ -1,12 +1,18 @@
 package com.example.charcuteria.controller.product;
 
+import java.io.IOException;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.charcuteria.dto.user.AdminProductsEditResponseDto;
 import com.example.charcuteria.dto.user.AdminProductsRequestDto;
 import com.example.charcuteria.service.product.FileStorageService;
 import com.example.charcuteria.service.product.ProductService;
@@ -27,18 +33,6 @@ public class AdminProductController {
         this.fileStorageService = fileStorageService;
     }
 
-    @PostMapping("/delete/{id}")
-    public String deleteProductById(@PathVariable Integer id, Model model) {
-        try {
-            String fileName = productService.deleteById(id);
-            fileStorageService.deleteFile(fileName);
-            return "redirect:/admin/products";
-        } catch (Exception e) {
-            System.out.println(e);
-            return "redirect:/admin/products";
-        }
-    }
-
     @PostMapping("/create")
     public String createProduct(@Valid @ModelAttribute("productDto") AdminProductsRequestDto product, BindingResult result, Model model) {
         if (result.hasErrors()) return "redirect:/admin/products";
@@ -53,6 +47,35 @@ public class AdminProductController {
         } catch (Exception e) {
             System.out.println(e);
             return "redirect:/admin/dashboard";
+        }
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deleteProductById(@PathVariable Integer id, Model model) {
+        try {
+            String fileName = productService.deleteById(id);
+            fileStorageService.deleteFile(fileName);
+            return "redirect:/admin/products";
+        } catch (IOException e) {
+            System.out.println(e);
+            return "redirect:/admin/products";
+        }
+    }
+
+    @GetMapping("/{id}")
+    @ResponseBody
+    public AdminProductsEditResponseDto getProductById(@PathVariable Integer id) {
+        var response = productService.getById(id);
+        return response;
+    }
+
+    @PatchMapping("update/{id}")
+    public String updateProductById(@PathVariable Integer id, Model model) {
+        try {
+            return "redirect:/admin/products";
+        } catch(Exception e) {
+            System.out.println(e);
+            return "redirect:/admin/products";
         }
     }
 }

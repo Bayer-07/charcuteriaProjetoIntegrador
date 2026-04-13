@@ -3,6 +3,7 @@ package com.example.charcuteria.repository.product;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.example.charcuteria.dto.user.AdminProductsEditResponseDto;
 import com.example.charcuteria.dto.user.AdminProductsRequestDto;
 
 @Repository
@@ -30,6 +31,23 @@ public class ProductRepository {
             product.getPrice(),
             product.getStock(),
             image
+        );
+    }
+
+    public AdminProductsEditResponseDto getById(Integer id) {
+        String sql = "SELECT p.name, p.description, c.name AS category, p.price, p.stock_quantity AS stock, p.image_path AS file FROM products p JOIN categories c ON c.id = p.category_id WHERE p.id = ?";
+
+        return jdbcTemplate.queryForObject(
+            sql,
+            (rs, rowNum) -> new AdminProductsEditResponseDto(
+                rs.getString("name"),
+                rs.getString("description"),
+                rs.getString("category"),
+                rs.getBigDecimal("price"),
+                rs.getInt("stock"),
+                rs.getString("file")
+            ),
+            id
         );
     }
 
