@@ -1,5 +1,6 @@
 package com.example.charcuteria.service.product;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -10,6 +11,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class FileStorageService {
+
+    // Não sei muito sobre isso, essas 2 foram as docs q eu usei se precisarem
+    // https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/multipart/MultipartFile.html#isEmpty()
+    // https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/Files.html
 
     // path do diretorio que vai ser salva as imagens
     private final String uploadDir = "src/main/resources/static/uploads/products/";
@@ -29,20 +34,15 @@ public class FileStorageService {
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
             return fileName;
-        } catch (Exception e) {
+        } catch (IOException error) {
             // fazer um erro melhor pra aparecer no front
-            System.out.println(e);
-            throw new RuntimeException("Cannot save");
+            System.err.println("Error: " + error.getMessage());
+            throw new RuntimeException("Cannot save file", error);
         }
     }
 
-    public void deleteFile(String fileName) {
-        try {
-            Path filePath = Paths.get(uploadDir).resolve(fileName);
-            Files.deleteIfExists(filePath);
-        } catch (Exception e) {
-            // logar o erro, nao posso dar throw pq é void (nao sei oq faço com isso KKKKKKKKK)
-            System.out.println(e);
-        }
+    public void deleteFile(String fileName) throws IOException{
+        Path filePath = Paths.get(uploadDir).resolve(fileName);
+        Files.deleteIfExists(filePath);
     }
 }
