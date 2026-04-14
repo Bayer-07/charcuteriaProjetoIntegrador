@@ -2,6 +2,7 @@ package com.example.charcuteria.service.product;
 
 import org.springframework.stereotype.Service;
 
+import com.example.charcuteria.dto.user.AdminProductsEditRequestDto;
 import com.example.charcuteria.dto.user.AdminProductsEditResponseDto;
 import com.example.charcuteria.dto.user.AdminProductsRequestDto;
 import com.example.charcuteria.exceptions.BusinessException;
@@ -29,8 +30,17 @@ public class ProductService {
         return productRepository.getById(id);
     }
 
-    public String deleteById(Integer id) {
+    public void deleteById(Integer id) {
         if (productRepository.deleteById(id) == 0) throw new BusinessException(ProductErrorCode.PRODUCT_NOT_FOUND);
+    }
+
+    public String findFileNameById(Integer id) {
         return productRepository.getFileNameById(id);
     }
+
+    public void updateProductById(AdminProductsEditRequestDto product, String imageName) {
+        int categoryId = productRepository.getCategoryIdByName(product.getCategory());
+        if (productRepository.updateProductById(product, categoryId, imageName) == 0) throw new BusinessException(ProductErrorCode.PRODUCT_NOT_FOUND);
+    }
+
 }

@@ -37,8 +37,9 @@ async function loadAndOpenEditModal(productId) {
 
         const product = await response.json();
 
-        form.action = '/admin/product/update/' + productId;
+        form.action = '/admin/product/update';
 
+        modal.querySelector('#edit-id').value = productId;
         modal.querySelector('#edit-name').value = product.name || '';
         modal.querySelector('#edit-description').value = product.description || '';
         modal.querySelector('#edit-category').value = product.category || '';

@@ -3,6 +3,7 @@ package com.example.charcuteria.repository.product;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.example.charcuteria.dto.user.AdminProductsEditRequestDto;
 import com.example.charcuteria.dto.user.AdminProductsEditResponseDto;
 import com.example.charcuteria.dto.user.AdminProductsRequestDto;
 
@@ -58,8 +59,29 @@ public class ProductRepository {
     }
 
     public String getFileNameById(Integer id) {
-        String sql = "SELECT image_path FROM products WHERE id = ?";
+        String sql = "SELECT p.image_path FROM products p WHERE id = ?";
 
         return jdbcTemplate.queryForObject(sql, String.class, id);
+    }
+
+    public Integer getCategoryNameById(String categoryName) {
+        String sql = "SELECT c.id FROM categories c WHERE c.name = ?";
+
+        return jdbcTemplate.queryForObject(sql, Integer.class, categoryName);
+    }
+
+    public int updateProductById(AdminProductsEditRequestDto product, int categoryId, String fileName) {
+        String sql = "UPDATE products SET category_id = ?, name = ?,  description = ?,  price = ?, stock_quantity = ?, image_path = ? WHERE id = ?";
+
+        return jdbcTemplate.update(
+                            sql,
+                            categoryId,
+                            product.getName(),
+                            product.getDescription(),
+                            product.getPrice(),
+                            product.getStock(),
+                            fileName,
+                            product.getId()
+                        );
     }
 }

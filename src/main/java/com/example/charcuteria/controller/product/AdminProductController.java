@@ -6,12 +6,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.charcuteria.dto.user.AdminProductsEditRequestDto;
 import com.example.charcuteria.dto.user.AdminProductsEditResponseDto;
 import com.example.charcuteria.dto.user.AdminProductsRequestDto;
 import com.example.charcuteria.service.product.FileStorageService;
@@ -53,7 +53,8 @@ public class AdminProductController {
     @PostMapping("/delete/{id}")
     public String deleteProductById(@PathVariable Integer id, Model model) {
         try {
-            String fileName = productService.deleteById(id);
+            String fileName = productService.findFileNameById(id);
+            productService.deleteById(id);
             fileStorageService.deleteFile(fileName);
             return "redirect:/admin/products";
         } catch (IOException e) {
@@ -66,12 +67,28 @@ public class AdminProductController {
     @ResponseBody
     public AdminProductsEditResponseDto getProductById(@PathVariable Integer id) {
         var response = productService.getById(id);
-        return response;
+        if (response != null) return response;
+        throw new RuntimeException();
     }
 
-    @PatchMapping("update/{id}")
-    public String updateProductById(@PathVariable Integer id, Model model) {
+    @PostMapping("update")
+    public String updateProductById(@Valid @ModelAttribute("productDto") AdminProductsEditRequestDto product, Model model) {
         try {
+            // System.out.println(product.getId());
+            // System.out.println(product.getName());
+            // System.out.println(product.getDescription());
+            // System.out.println(product.getCategory());
+            // System.out.println(product.getPrice());
+            // System.out.println(product.getStock());
+            // System.out.println(product.getFile());
+
+            String fileName = productService.findFileNameById(product.getId());
+            String newImageName = fileStorageService.saveFile(product.getFile());
+
+            // essa SQL ta errada, tenho que pegar o id da categoria primeiro e depois passar pra trocar no db
+            productService.updateProductById(product, newImageName);
+
+            fileStorageService.deleteFile(fileName);
             return "redirect:/admin/products";
         } catch(Exception e) {
             System.out.println(e);
