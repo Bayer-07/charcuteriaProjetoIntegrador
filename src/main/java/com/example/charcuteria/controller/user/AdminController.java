@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.charcuteria.dto.product.ProductsRequestDto;
 import com.example.charcuteria.dto.user.AdminDashboardResponseDto;
 import com.example.charcuteria.model.User;
 import com.example.charcuteria.service.user.AdminService;
@@ -38,6 +39,18 @@ public class AdminController {
         } catch (Exception e) {
             model.addAttribute("registrationError", "Internal server error, try again later please");
             return "user/dashboardAdmin";
+        }
+    }
+
+    @GetMapping("/products")
+    public String showProductsDashboard(@AuthenticationPrincipal User loggedUser, Model model) {
+        try {
+            model.addAttribute("products", adminService.listProducts());
+            model.addAttribute("categories", adminService.getAllCategories());
+            model.addAttribute("productDto", new ProductsRequestDto());
+            return "admin/productsDashboard";
+        } catch (Exception e) {
+            return "admin/productsDashboard";
         }
     }
 }
