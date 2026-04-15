@@ -1,9 +1,10 @@
-package com.example.charcuteria.dto.user;
+package com.example.charcuteria.dto.product;
 
 import java.math.BigDecimal;
+
 import org.springframework.web.multipart.MultipartFile;
 
-public class AdminProductsEditRequestDto {
+public class ProductsEditRequestDto {
     private Integer id;
     private String name;
     private String description;
@@ -12,7 +13,7 @@ public class AdminProductsEditRequestDto {
     private Integer stock;
     private MultipartFile file;
 
-    public AdminProductsEditRequestDto() {}
+    public ProductsEditRequestDto() {}
 
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
