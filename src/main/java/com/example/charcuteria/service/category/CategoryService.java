@@ -1,4 +1,4 @@
-package com.example.charcuteria.service;
+package com.example.charcuteria.service.category;
 
 import java.util.List;
 import java.util.Optional;
@@ -7,9 +7,9 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.example.charcuteria.model.Category;
-import com.example.charcuteria.dto.CategoryRequest;
-import com.example.charcuteria.dto.CategoryResponse;
-import com.example.charcuteria.repository.CategoryRepository;
+import com.example.charcuteria.repository.category.CategoryRepository;
+import com.example.charcuteria.dto.category.CategoryRequest;
+import com.example.charcuteria.dto.category.CategoryResponse;
 
 @Service
 public class CategoryService {
