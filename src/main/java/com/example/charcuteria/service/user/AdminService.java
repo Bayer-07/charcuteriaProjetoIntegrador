@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.example.charcuteria.dto.user.AdminProductsResponseDto;
+import com.example.charcuteria.dto.product.ProductsResponseDto;
 import com.example.charcuteria.model.Category;
 import com.example.charcuteria.repository.user.AdminRepository;
 
@@ -33,7 +33,7 @@ public class AdminService {
         return adminRepository.getProductStorage();
     }
 
-    public List<AdminProductsResponseDto> listProducts() {
+    public List<ProductsResponseDto> listProducts() {
         return adminRepository.findAllProducts();
     }
 

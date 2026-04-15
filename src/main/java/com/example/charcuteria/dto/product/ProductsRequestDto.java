@@ -1,10 +1,10 @@
-package com.example.charcuteria.dto.user;
+package com.example.charcuteria.dto.product;
 
 import java.math.BigDecimal;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class AdminProductsRequestDto {
+public class ProductsRequestDto {
     private String name;
     private String description;
     private String category;
@@ -12,9 +12,9 @@ public class AdminProductsRequestDto {
     private Integer stock;
     private MultipartFile image;
 
-    public AdminProductsRequestDto() {}
+    public ProductsRequestDto() {}
 
-    public AdminProductsRequestDto(String name, String description, String category, BigDecimal price, Integer stock, MultipartFile image) {
+    public ProductsRequestDto(String name, String description, String category, BigDecimal price, Integer stock, MultipartFile image) {
         this.name = name;
         this.description = description;
         this.category = category;

@@ -30,11 +30,6 @@ public class UserController {
     }
 
     // Get
-    @GetMapping("/teste")
-    public String showTeste(Model model) {
-        return "teste";
-    }
-
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         model.addAttribute("userDto", new UserRegistrationDto());
@@ -74,11 +69,6 @@ public class UserController {
         }
 
         return "redirect:/user/dashboard";
-    }
-
-    @GetMapping("/index")
-    public String showLoginForm() {
-        return "index";
     }
 
     @GetMapping("/user/dashboard")

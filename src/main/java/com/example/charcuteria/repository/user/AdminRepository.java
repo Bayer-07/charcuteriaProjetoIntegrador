@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.example.charcuteria.dto.user.AdminProductsResponseDto;
+import com.example.charcuteria.dto.product.ProductsResponseDto;
 import com.example.charcuteria.model.Category;
 
 @Repository
@@ -42,11 +42,11 @@ public class AdminRepository {
         return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
-    public List<AdminProductsResponseDto> findAllProducts() {
+    public List<ProductsResponseDto> findAllProducts() {
         String sql = "SELECT p.id, p.stock_quantity, c.name AS category, p.name, p.price FROM products p JOIN categories c ON p.category_id = c.id WHERE p.is_active = TRUE ORDER BY p.id ASC";
 
         return jdbcTemplate.query(sql, (rs, rowNum) ->
-            new AdminProductsResponseDto(
+            new ProductsResponseDto(
                 rs.getInt("id"),
                 rs.getInt("stock_quantity"),
                 rs.getString("category"),
