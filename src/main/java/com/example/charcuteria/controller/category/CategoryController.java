@@ -1,12 +1,12 @@
-package com.example.charcuteria.controller;
+package com.example.charcuteria.controller.category;
 
 import java.util.List;
 
 import org.springframework.web.bind.annotation.*;
 
-import com.example.charcuteria.dto.CategoryRequest;
-import com.example.charcuteria.dto.CategoryResponse;
-import com.example.charcuteria.service.CategoryService;
+import com.example.charcuteria.dto.category.CategoryRequest;
+import com.example.charcuteria.dto.category.CategoryResponse;
+import com.example.charcuteria.service.category.CategoryService;
 
 @RestController
 @RequestMapping("/categories")
