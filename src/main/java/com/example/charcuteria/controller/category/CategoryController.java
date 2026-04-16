@@ -1,14 +1,14 @@
 package com.example.charcuteria.controller.category;
 
-import java.util.List;
-
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.charcuteria.dto.category.CategoryRequest;
 import com.example.charcuteria.dto.category.CategoryResponse;
 import com.example.charcuteria.service.category.CategoryService;
 
-@RestController
+@Controller
 @RequestMapping("/categories")
 public class CategoryController {
 
@@ -18,33 +18,47 @@ public class CategoryController {
         this.service = service;
     }
 
-    @GetMapping("/categories/all")
-    public List<CategoryResponse> getAll() {
-        return service.returnAll();
+    @GetMapping
+    public String listCategories(Model model) {
+        model.addAttribute("categories", service.returnAll());
+        return "category/list";
     }
 
-    @GetMapping("/categories/{id}")
-    public CategoryResponse getById(@PathVariable Integer id) {
-        return service.returnById(id);
+    @GetMapping("/{id}") 
+    public String getById(@PathVariable Integer id, Model model) {
+        model.addAttribute("category", service.returnById(id));
+        return "category/detail";
+    }
+    
+    @PostMapping("/new")
+    public String showCreateForm(Model model) {
+        model.addAttribute("category", new CategoryRequest());
+        return "category/form";
     }
 
-    @GetMapping("/categories/{name}")
-    public CategoryResponse getById(@PathVariable String name) {
-        return service.returnByName(name);
+    @GetMapping("edit/{id}")
+    public String showEditForm(@PathVariable Integer id, Model model) {
+        CategoryResponse response = service.returnById(id);
+        CategoryRequest request = new CategoryRequest();
+
+        request.setName(response.getName());
+        request.setDesc(response.getDesc());
+
+        model.addAttribute("category", request);
+        model.addAttribute("id", id);
+
+        return "category/form";
     }
 
-    @PostMapping
-    public CategoryResponse create(@RequestBody CategoryRequest request) {
-        return service.create(request);
+    @PostMapping("/update/{id}")
+    public String update(@PathVariable Integer id, @ModelAttribute("category") CategoryRequest request) {
+        service.update(id, request);
+        return "redirect:/categories";
     }
 
-    @PutMapping("/categories/update/{id}")
-    public CategoryResponse update(@PathVariable Integer id, @RequestBody CategoryRequest request) {
-        return service.update(id, request);
-    }
-
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Integer id) {
+    @PostMapping("/delete/{id}") 
+    public String delete(@PathVariable Integer id) {
         service.deleteById(id);
+        return "redirect:/categories";
     }
 }
