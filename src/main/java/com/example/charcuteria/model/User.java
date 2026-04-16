@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.example.charcuteria.enums.UserRoleEnum;
 
-public class User implements UserDetails{
+public class User implements UserDetails {
     private Integer id;
     private String name;
     private String email;
