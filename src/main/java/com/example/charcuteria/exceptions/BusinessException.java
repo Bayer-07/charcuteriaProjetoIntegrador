@@ -1,14 +1,24 @@
 package com.example.charcuteria.exceptions;
 
 public class BusinessException extends RuntimeException {
-    private final ErrorCode errorCode;
+    private UserErrorCode userErrorCode;
+    private ProductErrorCode productErrorCode;
 
-    public BusinessException(ErrorCode errorCode) {
-        super(errorCode.getMessage());
-        this.errorCode = errorCode;
+    public BusinessException(UserErrorCode userErrorCode) {
+        super(userErrorCode.getMessage());
+        this.userErrorCode = userErrorCode;
     }
 
-    public ErrorCode getErrorCode() {
-        return errorCode;
+    public BusinessException(ProductErrorCode productErrorCode) {
+        super(productErrorCode.getMessage());
+        this.productErrorCode = productErrorCode;
+    }
+
+    public UserErrorCode getUserErrorCode() {
+        return userErrorCode;
+    }
+
+    public ProductErrorCode getProductErrorCode() {
+        return productErrorCode;
     }
 }
