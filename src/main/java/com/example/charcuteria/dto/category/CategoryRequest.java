@@ -1,4 +1,4 @@
-package com.example.charcuteria.dto;
+package com.example.charcuteria.dto.category;
 
 public class CategoryRequest {
     private String name;
