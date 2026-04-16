@@ -9,7 +9,7 @@ import com.example.charcuteria.dto.user.UserRegistrationDto;
 import com.example.charcuteria.dto.user.UserResponseDto;
 import com.example.charcuteria.enums.UserRoleEnum;
 import com.example.charcuteria.exceptions.BusinessException;
-import com.example.charcuteria.exceptions.ErrorCode;
+import com.example.charcuteria.exceptions.UserErrorCode;
 import com.example.charcuteria.model.User;
 import com.example.charcuteria.repository.user.UserRepository;
 
@@ -26,7 +26,7 @@ public class UserService {
 
     public void createUser(UserRegistrationDto user, UserRoleEnum role) {
         if (userRepository.existsByEmail(user.getEmail())) {
-            throw new BusinessException(ErrorCode.EMAIL_ALREADY_EXISTS);
+            throw new BusinessException(UserErrorCode.EMAIL_ALREADY_EXISTS);
         }
 
         String hashedPassword = passwordEncoder.encode(user.getPassword());
@@ -45,16 +45,16 @@ public class UserService {
         Optional<User> userOpt = userRepository.findByEmail(email);
 
         if (userOpt.isEmpty()) {
-            throw new BusinessException(ErrorCode.INVALID_PASSWORD);
+            throw new BusinessException(UserErrorCode.INVALID_PASSWORD);
         }
 
         User user = userOpt.get();
-        if (!user.getRole().equals(UserRoleEnum.CUSTOMER)) throw new BusinessException(ErrorCode.INVALID_PASSWORD);
+        if (!user.getRole().equals(UserRoleEnum.CUSTOMER)) throw new BusinessException(UserErrorCode.INVALID_PASSWORD);
 
         if (passwordEncoder.matches(password, user.getPasswordHash())) {
             return Optional.of(new UserResponseDto(user.getId(), user.getName(), user.getRole()));
         } else {
-            throw new BusinessException(ErrorCode.INVALID_PASSWORD);
+            throw new BusinessException(UserErrorCode.INVALID_PASSWORD);
         }
     }
 
@@ -62,16 +62,16 @@ public class UserService {
         Optional<User> userOpt = userRepository.findByEmail(email);
 
         if (userOpt.isEmpty()) {
-           throw new BusinessException(ErrorCode.INVALID_PASSWORD);
+           throw new BusinessException(UserErrorCode.INVALID_PASSWORD);
         }
 
         User user = userOpt.get();
-        if (!user.getRole().equals(UserRoleEnum.ADMIN)) throw new BusinessException(ErrorCode.INVALID_PASSWORD);
+        if (!user.getRole().equals(UserRoleEnum.ADMIN)) throw new BusinessException(UserErrorCode.INVALID_PASSWORD);
 
         if (passwordEncoder.matches(password, user.getPasswordHash())) {
                 return Optional.of(new UserResponseDto(user.getId(), user.getName(), user.getRole()));
         } else {
-                throw new BusinessException(ErrorCode.INVALID_PASSWORD);
+                throw new BusinessException(UserErrorCode.INVALID_PASSWORD);
         }
     }
 }

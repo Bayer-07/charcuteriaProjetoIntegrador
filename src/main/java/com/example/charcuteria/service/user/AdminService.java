@@ -1,7 +1,11 @@
 package com.example.charcuteria.service.user;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
+import com.example.charcuteria.dto.product.ProductsResponseDto;
+import com.example.charcuteria.model.Category;
 import com.example.charcuteria.repository.user.AdminRepository;
 
 @Service
@@ -27,5 +31,13 @@ public class AdminService {
 
     public int getProductStorage() {
         return adminRepository.getProductStorage();
+    }
+
+    public List<ProductsResponseDto> listProducts() {
+        return adminRepository.findAllProducts();
+    }
+
+    public List<Category> getAllCategories() {
+        return adminRepository.getAllCategories();
     }
 }

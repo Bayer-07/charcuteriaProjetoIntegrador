@@ -33,6 +33,16 @@
     margin-left: 8px;
 }
 
+.icon-link {
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s;
+}
+
+.icon-link:hover {
+  transform: scale(1.1);
+}
+
 .sidebar-nav {
     flex: 1;
 }
