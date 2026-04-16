@@ -1,25 +1,9 @@
-package com.example.charcuteria.model;
+package com.example.charcuteria.dto.category;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "categories")
-
-public class Category {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class CategoryResponse {
     private Integer id;
-
     private String name;
     private String desc;
-
-    public Category() {}
-
-    public Category(String name, String desc) {
-        this.name = name;
-        this.desc = desc;
-    }
 
     public Integer getId() {
         return id;
@@ -31,6 +15,10 @@ public class Category {
 
     public String getDesc() {
         return desc;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public void setName(String name) {
