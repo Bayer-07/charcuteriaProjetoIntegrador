@@ -1,16 +1,13 @@
 package com.example.charcuteria.exceptions;
 
-public enum ErrorCode {
+public enum ProductErrorCode {
 
-    EMAIL_ALREADY_EXISTS(409, "Email already exists"),
-    USER_NOT_FOUND(404, "User not found"),
-    INVALID_PASSWORD(400, "Invalid credentials"),
-    DIFFERENT_PASSWORDS(403, "Different passwords");
+    PRODUCT_NOT_FOUND(404, "Product not found, cannot delete it");
 
     private final int status;
     private final String message;
 
-    ErrorCode(int status, String message) {
+    ProductErrorCode(int status, String message) {
         this.status = status;
         this.message = message;
     }

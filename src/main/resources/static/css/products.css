@@ -1,0 +1,123 @@
+.dashboard-content {
+    margin-left: 260px;
+    padding: 40px;
+    background-color: #ffffff;
+    min-height: 100vh;
+}
+
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+}
+
+.btn-new-product {
+    background-color: #6eff8b; /* Bright green from image */
+    color: #1a5a2a;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: filter 0.2s;
+}
+
+.btn-new-product:hover {
+    filter: brightness(0.95);
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.products-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 12px;
+}
+
+.products-table th {
+    text-align: left;
+    color: #888;
+    font-weight: 500;
+    padding: 0 20px;
+    font-size: 14px;
+}
+
+.products-table tbody tr {
+    background-color: #fff;
+    transition: transform 0.1s ease;
+}
+
+.products-table td {
+    padding: 15px 20px;
+    border-top: 1px solid #d1d1d1;
+    border-bottom: 1px solid #d1d1d1;
+    color: #444;
+}
+
+.products-table td:first-child {
+    border-left: 1px solid #d1d1d1;
+    border-radius: 8px 0 0 8px;
+}
+
+.products-table td:last-child {
+    border-right: 1px solid #d1d1d1;
+    border-radius: 0 8px 8px 0;
+}
+
+.cell-id { color: #999; width: 50px; }
+.cell-name { font-weight: 500; color: #555; }
+.cell-category { color: #888; }
+.cell-price { font-weight: 600; color: #555; width: 120px; }
+
+.col-actions,
+.cell-actions {
+    width: 120px;
+    text-align: right;
+    padding-right: 24px !important;
+}
+
+.cell-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    align-items: center;
+    border-left: none;
+}
+
+.products-table th.col-actions {
+    text-align: right;
+}
+
+.cell-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+}
+
+.action-btn {
+    text-decoration: none;
+    transition: transform 0.2s;
+}
+
+.action-btn.edit { color: #3498db; }
+.action-btn.delete { color: #e74c3c; }
+
+.action-btn:hover {
+    transform: scale(1.2);
+}
+
+button.action-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font: inherit;
+    color: inherit;
+}
