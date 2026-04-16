@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${addressId != null} ? 'Editar Endereço' : 'Novo Endereço'">Novo Endereço</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <style>
+        .form-container {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 30px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-header h1 {
+            color: #333;
+            margin: 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #28a745;
+            box-shadow: 0 0 5px rgba(40, 167, 69, 0.3);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .btn-submit, .btn-cancel {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-submit {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-submit:hover {
+            background-color: #218838;
+        }
+
+        .btn-cancel {
+            background-color: #6c757d;
+            color: white;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-cancel:hover {
+            background-color: #5a6268;
+        }
+
+        .form-hint {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div class="form-header">
+            <h1 th:text="${addressId != null} ? 'Editar Endereço' : 'Novo Endereço'">
+                Novo Endereço
+            </h1>
+        </div>
+
+        <div th:if="${errorMessage}" class="alert alert-error" th:text="${errorMessage}"></div>
+
+        <form th:if="${addressId == null}" th:action="@{/addresses}" method="POST" th:object="${addressDto}">
+            <div class="form-group">
+                <label for="street">Rua/Avenida *</label>
+                <input type="text" id="street" name="street" th:field="*{street}" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="number">Número *</label>
+                    <input type="text" id="number" name="number" th:field="*{number}" required>
+                </div>
+                <div class="form-group">
+                    <label for="complement">Complemento</label>
+                    <input type="text" id="complement" name="complement" th:field="*{complement}" placeholder="Apt, Casa, Sala...">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="neighborhood">Bairro *</label>
+                <input type="text" id="neighborhood" name="neighborhood" th:field="*{neighborhood}" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="city">Cidade *</label>
+                    <input type="text" id="city" name="city" th:field="*{city}" required>
+                </div>
+                <div class="form-group">
+                    <label for="state">Estado *</label>
+                    <input type="text" id="state" name="state" th:field="*{state}" placeholder="SP" maxlength="2" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="zipCode">CEP *</label>
+                <input type="text" id="zipCode" name="zipCode" th:field="*{zipCode}" placeholder="12345-678" required>
+                <span class="form-hint">Formato: 12345-678</span>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">Salvar Endereço</button>
+                <a th:href="@{/addresses}" class="btn-cancel">Cancelar</a>
+            </div>
+        </form>
+
+        <form th:unless="${addressId == null}" th:action="@{/addresses/{id}/edit(id=${addressId})}" method="POST" th:object="${addressDto}">
+            <div class="form-group">
+                <label for="street">Rua/Avenida *</label>
+                <input type="text" id="street" name="street" th:field="*{street}" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="number">Número *</label>
+                    <input type="text" id="number" name="number" th:field="*{number}" required>
+                </div>
+                <div class="form-group">
+                    <label for="complement">Complemento</label>
+                    <input type="text" id="complement" name="complement" th:field="*{complement}" placeholder="Apt, Casa, Sala...">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="neighborhood">Bairro *</label>
+                <input type="text" id="neighborhood" name="neighborhood" th:field="*{neighborhood}" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="city">Cidade *</label>
+                    <input type="text" id="city" name="city" th:field="*{city}" required>
+                </div>
+                <div class="form-group">
+                    <label for="state">Estado *</label>
+                    <input type="text" id="state" name="state" th:field="*{state}" placeholder="SP" maxlength="2" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="zipCode">CEP *</label>
+                <input type="text" id="zipCode" name="zipCode" th:field="*{zipCode}" placeholder="12345-678" required>
+                <span class="form-hint">Formato: 12345-678</span>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">Atualizar Endereço</button>
+                <a th:href="@{/addresses}" class="btn-cancel">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
