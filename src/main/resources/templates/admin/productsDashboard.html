@@ -6,8 +6,8 @@
     <link rel="stylesheet" th:href="@{/css/sidebar.css}" href="/css/sidebar.css" />
     <link rel="stylesheet" th:href="@{/css/modal.css}" href="/css/modal.css" />
     <link rel="stylesheet" th:href="@{/css/products.css}" href="/css/products.css" />
-    <script th:src="@{/js/products.js}"></script>
-    <script th:src="@{/js/fileUpload.js}"></script>
+    <script th:src="@{/js/products/products.js}"></script>
+    <script th:src="@{/js/products/fileUpload.js}"></script>
     <link rel="shortcut icon" th:href="@{/images/logo.png}" href="/images/logo.png" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Produtos | Koch Charcutaria</title>
@@ -60,15 +60,28 @@
 
     <main class="dashboard-content">
         <header class="content-header">
-            <h1>Produtos</h1>
-            <button type="button" class="btn-new-product" th:onclick="|openCreateModal()|">
-                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                Novo Produto
-            </button>
+            <div class="productsCategory">
+                <a th:href="@{/admin/products(type='products')}" class="filter-link" th:classappend="${param.type == null || param.type[0] == 'products'} ? 'active' : ''">
+                Produtos
+                </a>
+                <a th:href="@{/admin/products(type='categories')}" class="filter-link" th:classappend="${param.type != null && param.type[0] == 'categories'} ? 'active' : ''">
+                Categorias
+                </a>
+            </div>
+            <div class="buttonsCreate">
+                <button type="button" class="btn-new-product" th:onclick="|openCreateProductModal()|">
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                    Novo Produto
+                </button>
+                <button type="button" class="btn-new-category" th:onclick="|openCreateCategoryModal()|">
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                    Nova Categoria
+                </button>
+            </div>
         </header>
 
         <div class="table-container">
-            <table class="products-table">
+            <table class="products-table" th:if="${type == 'products'}">
                 <thead>
                     <tr>
                         <th class="col-name">Nome</th>
@@ -81,17 +94,40 @@
                 <tbody>
                     <tr th:each="product : ${products}">
                         <td class="cell-name" th:text="${product.name}"></td>
-                        <td class="cell-category">
-                            <span th:text="${product.category}"></span>
-                        </td>
-                        <td class="cell-price" th:text="${'R' + #numbers.formatCurrency(product.price)}"></td>
+                        <td class="cell-category" th:text="${product.category}"></td>
+                        <td class="cell-price" th:text="${'R$ ' + product.price}"></td>
                         <td class="cell-id" th:text="${product.stockQuantity}"></td>
                         <td class="cell-actions">
-                            <button type="button" class="action-btn edit" th:onclick="|loadAndOpenEditModal(${product.id})|">
+                            <button type="button" class="action-btn edit" th:onclick="|loadAndOpenEditProductModal(${product.id})|">
                                 <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4L18.5 2.5z"></path></svg>
                             </button>
 
-                            <button type="button" class="action-btn delete" th:onclick="|openDeleteModal('${product.id}')|">
+                            <button type="button" class="action-btn delete" th:onclick="|openDeleteProductModal('${product.id}')|">
+                                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="products-table" th:if="${type == 'categories'}">
+                <thead>
+                    <tr>
+                        <th class="col-name">Nome da Categoria</th>
+                        <th class="col-category">Descrição da Categoria</th>
+                        <th class="col-actions">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="category : ${categories}">
+                        <td class="cell-name" th:text="${category.name}"></td>
+                        <td class="cell-category" th:text="${category.description}"></td>
+                        <td class="cell-actions">
+                            <button type="button" class="action-btn edit" th:onclick="|loadAndOpenEditCategoryModal(${category.id})|">
+                                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4L18.5 2.5z"></path></svg>
+                            </button>
+
+                            <button type="button" class="action-btn delete" th:onclick="|openDeleteCategoryModal('${category.id}')|">
                                 <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                             </button>
                         </td>
@@ -101,7 +137,7 @@
         </div>
     </main>
 
-    <div id="createModal" class="modal-overlay">
+    <div id="createProductModal" class="modal-overlay">
         <div class="modal-card">
             <h2>Novo Produto</h2>
 
@@ -149,14 +185,14 @@
                 </div>
 
                 <div class="modal-buttons">
-                    <button type="button" class="btn-cancel" onclick="closeCreateModal()">Cancelar</button>
+                    <button type="button" class="btn-cancel" onclick="closeCreateProductModal()">Cancelar</button>
                     <button type="submit" class="btn-confirm">Salvar</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <div id="editModal" class="modal-overlay">
+    <div id="editProductModal" class="modal-overlay">
         <div class="modal-card">
             <h2>Editar Produto</h2>
 
@@ -207,14 +243,14 @@
                 </div>
 
                 <div class="modal-buttons">
-                    <button type="button" class="btn-cancel" onclick="closeEditModal()">Cancelar</button>
+                    <button type="button" class="btn-cancel" onclick="closeEditProductModal()">Cancelar</button>
                     <button type="submit" class="btn-confirm">Salvar Alterações</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <div id="deleteModal" class="modal-overlay">
+    <div id="deleteProductModal" class="modal-overlay">
         <div class="modal-card">
             <h2>Deseja Excluir</h2>
             <p>Deseja realmente excluir esse produto?<br>
