@@ -1,15 +1,14 @@
 package com.example.charcuteria.service.category;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.example.charcuteria.model.Category;
-import com.example.charcuteria.repository.category.CategoryRepository;
 import com.example.charcuteria.dto.category.CategoryRequest;
 import com.example.charcuteria.dto.category.CategoryResponse;
+import com.example.charcuteria.model.Category;
+import com.example.charcuteria.repository.category.CategoryRepository;
 
 @Service
 public class CategoryService {
@@ -52,7 +51,7 @@ public class CategoryService {
                 .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
 
         category.setName(request.getName());
-        category.setDesc(request.getDesc());
+        category.setDescription(request.getDescription());
 
         Category updated = repository.save(category);
         return toDTO(updated);
@@ -69,15 +68,14 @@ public class CategoryService {
     private Category toEntity(CategoryRequest dto) {
         Category category = new Category();
         category.setName(dto.getName());
-        category.setDesc(dto.getDesc());
+        category.setDescription(dto.getDescription());
         return category;
     }
 
     private CategoryResponse toDTO(Category category) {
         CategoryResponse dto = new CategoryResponse();
-        dto.setId(category.getId());
         dto.setName(category.getName());
-        dto.setDesc(category.getDesc());
+        dto.setDesc(category.getDescription());
         return dto;
     }
 }

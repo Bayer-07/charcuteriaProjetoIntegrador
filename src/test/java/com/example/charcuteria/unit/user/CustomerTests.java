@@ -53,7 +53,7 @@ public class CustomerTests {
     void testRegisterUserView() throws Exception {
         mockMvc.perform(get("/register"))
             .andExpect(status().isOk())
-            .andExpect(view().name("user/registration-view"))
+            .andExpect(view().name("public/registration-view"))
             .andExpect(model().attributeExists("userDto"))
             .andExpect(model().attribute("userDto", instanceOf(UserRegistrationDto.class)));
     }
@@ -62,7 +62,7 @@ public class CustomerTests {
     void testLoginUserView() throws Exception {
         mockMvc.perform(get("/login"))
             .andExpect(status().isOk())
-            .andExpect(view().name("login"))
+            .andExpect(view().name("public/login"))
             .andExpect(model().attributeExists("userDto"))
             .andExpect(model().attribute("userDto", instanceOf(UserLoginDto.class)));
     }
@@ -90,7 +90,7 @@ public class CustomerTests {
                 .param("passwordControl", "987654321")
             )
             .andExpect(status().isOk())
-            .andExpect(view().name("user/registration-view"))
+            .andExpect(view().name("public/registration-view"))
             .andExpect(model().attributeExists("registrationError"))
             .andExpect(model().attribute("registrationError", "Different passwords"));
     }
@@ -104,7 +104,7 @@ public class CustomerTests {
                 .param("passwordControl", "12")
             )
             .andExpect(status().isOk())
-            .andExpect(view().name("user/registration-view"))
+            .andExpect(view().name("public/registration-view"))
             .andExpect(model().hasErrors());
     }
 
@@ -120,7 +120,7 @@ public class CustomerTests {
             .param("passwordControl", "123456789")
         )
         .andExpect(status().isOk())
-        .andExpect(view().name("user/registration-view"))
+        .andExpect(view().name("public/registration-view"))
         .andExpect(model().attribute("registrationError", "Internal server error, try again later please"));
     }
 
