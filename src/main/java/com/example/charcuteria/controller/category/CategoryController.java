@@ -2,7 +2,11 @@ package com.example.charcuteria.controller.category;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.charcuteria.dto.category.CategoryRequest;
 import com.example.charcuteria.dto.category.CategoryResponse;
@@ -24,12 +28,12 @@ public class CategoryController {
         return "category/list";
     }
 
-    @GetMapping("/{id}") 
+    @GetMapping("/{id}")
     public String getById(@PathVariable Integer id, Model model) {
         model.addAttribute("category", service.returnById(id));
         return "category/detail";
     }
-    
+
     @PostMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("category", new CategoryRequest());
@@ -42,7 +46,7 @@ public class CategoryController {
         CategoryRequest request = new CategoryRequest();
 
         request.setName(response.getName());
-        request.setDesc(response.getDesc());
+        request.setDescription(response.getDesc());
 
         model.addAttribute("category", request);
         model.addAttribute("id", id);
@@ -56,7 +60,7 @@ public class CategoryController {
         return "redirect:/categories";
     }
 
-    @PostMapping("/delete/{id}") 
+    @PostMapping("/delete/{id}")
     public String delete(@PathVariable Integer id) {
         service.deleteById(id);
         return "redirect:/categories";

@@ -1,4 +1,4 @@
-package com.example.charcuteria.service;
+package com.example.charcuteria.service.address;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.charcuteria.dto.address.AddressDtoRequest;
 import com.example.charcuteria.model.Address;
-import com.example.charcuteria.repository.AddressRepository;
+import com.example.charcuteria.repository.address.AddressRepository;
 
 @Service
 public class AddressService {
@@ -48,7 +48,7 @@ public class AddressService {
 
     public void updateAddress(Integer id, AddressDtoRequest addressDto) {
         Optional<Address> existingAddress = addressRepository.findById(id);
-        
+
         if (existingAddress.isPresent()) {
             Address address = existingAddress.get();
             address.setUSerId(addressDto.getUserId());
@@ -59,7 +59,7 @@ public class AddressService {
             address.setCity(addressDto.getCity());
             address.setState(addressDto.getState());
             address.setZipCode(addressDto.getZipCode());
-            
+
             addressRepository.updateAddress(id, address);
         } else {
             throw new RuntimeException("Endereço não encontrado com ID: " + id);

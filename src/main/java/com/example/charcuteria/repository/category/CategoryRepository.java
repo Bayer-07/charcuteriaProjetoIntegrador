@@ -25,7 +25,7 @@ public class CategoryRepository {
             (rs, rowNum) -> {
                 Category c = new Category();
                 c.setName(rs.getString("name"));
-                c.setDesc(rs.getString("description"));
+                c.setDescription(rs.getString("description"));
                 return c;
             }
         );
@@ -39,7 +39,7 @@ public class CategoryRepository {
             (rs, rowNum) -> {
                 Category c = new Category();
                 c.setName(rs.getString("name"));
-                c.setDesc(rs.getString("description"));
+                c.setDescription(rs.getString("description"));
                 return c;
             },
             id
@@ -55,7 +55,7 @@ public class CategoryRepository {
             jdbcTemplate.update(
                 sql,
                 category.getName(),
-                category.getDesc()
+                category.getDescription()
             );
 
         } else {
@@ -64,7 +64,7 @@ public class CategoryRepository {
             jdbcTemplate.update(
                 sql,
                 category.getName(),
-                category.getDesc(),
+                category.getDescription(),
                 category.getId()
             );
         }
@@ -94,7 +94,7 @@ public class CategoryRepository {
             (rs, rowNum) -> {
                 Category c = new Category();
                 c.setName(rs.getString("name"));
-                c.setDesc(rs.getString("description"));
+                c.setDescription(rs.getString("description"));
                 return c;
             },
             name

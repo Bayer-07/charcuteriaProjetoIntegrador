@@ -1,4 +1,4 @@
-package com.example.charcuteria.repository;
+package com.example.charcuteria.repository.address;
 
 import java.util.List;
 import java.util.Optional;
@@ -55,6 +55,7 @@ public class AddressRepository {
         } catch (Exception e) {
             return Optional.empty();
         }
+
     }
 
     public List<Address> findByUserId(Integer userId) {

@@ -35,10 +35,10 @@ public class AdminController {
 
             AdminDashboardResponseDto response = new AdminDashboardResponseDto(qntPedidos, valorDoMes, subsAtivo, productsWithLowStorage);
             model.addAttribute("data", response);
-            return "user/dashboardAdmin";
+            return "admin/dashboardAdmin";
         } catch (Exception e) {
             model.addAttribute("registrationError", "Internal server error, try again later please");
-            return "user/dashboardAdmin";
+            return "admin/dashboardAdmin";
         }
     }
 
