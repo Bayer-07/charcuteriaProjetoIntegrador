@@ -1,30 +1,19 @@
 // Create button
-function openCreateModal() {
-    const modal = document.getElementById('createModal');
+function openCreateProductModal() {
+    const modal = document.getElementById('createProductModal');
     const createForm = document.getElementById('deleteForm');
     createForm.action = '/admin/product/create';
 
     modal.style.display = 'flex';
 }
 
-function closeCreateModal() {
-    document.getElementById('createModal').style.display = 'none';
-}
-
-window.onclick = function(event) {
-    const modalDelete = document.getElementById('deleteModal')
-    const modalCreate = document.getElementById('createModal');
-    if (event.target == modalDelete) {
-        closeDeleteModal();
-    }
-    if (event.target == modalCreate) {
-        closeCreateModal();
-    }
+function closeCreateProductModal() {
+    document.getElementById('createProductModal').style.display = 'none';
 }
 
 // Edit button
-async function loadAndOpenEditModal(productId) {
-    const modal = document.getElementById('editModal');
+async function loadAndOpenEditProductModal(productId) {
+    const modal = document.getElementById('editProductModal');
 
     if (!modal) return;
 
@@ -70,19 +59,34 @@ function handleImagePreview(input) {
     }
 }
 
-function closeEditModal() {
-    document.getElementById('editModal').style.display = 'none';
+function closeEditProductModal() {
+    document.getElementById('editProductModal').style.display = 'none';
 }
 
 // Delete button
-function openDeleteModal(productId) {
-    const modal = document.getElementById('deleteModal');
+function openDeleteProductModal(productId) {
+    const modal = document.getElementById('deleteProductModal');
     const deleteForm = document.getElementById('deleteForm');
     deleteForm.action = '/admin/product/delete/' + productId;
 
     modal.style.display = 'flex';
 }
 
-function closeDeleteModal() {
-    document.getElementById('deleteModal').style.display = 'none';
+function closeDeleteProductModal() {
+    document.getElementById('deleteProductModal').style.display = 'none';
+}
+
+window.onclick = function(event) {
+    const modalCreateProduct = document.getElementById('createProductModal');
+    const modalDeleteProduct = document.getElementById('deleteProductModal');
+    const modalEditProduct = document.getElementById('editProductModal');
+    if (event.target == modalCreateProduct) {
+        closeCreateProductModal();
+    }
+    if (event.target == modalDeleteProduct) {
+        closeDeleteProductModal();
+    }
+    if (event.target == modalEditProduct) {
+        closeEditProductModal();
+    }
 }

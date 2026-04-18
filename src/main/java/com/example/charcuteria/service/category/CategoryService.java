@@ -1,7 +1,6 @@
 package com.example.charcuteria.service.category;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -20,10 +19,7 @@ public class CategoryService {
     }
 
     public List<CategoryResponse> returnAll() {
-        return repository.findAll()
-                .stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
+        return repository.findAll();
     }
 
     public CategoryResponse returnById(Integer id) {
@@ -75,7 +71,7 @@ public class CategoryService {
     private CategoryResponse toDTO(Category category) {
         CategoryResponse dto = new CategoryResponse();
         dto.setName(category.getName());
-        dto.setDesc(category.getDescription());
+        dto.setDescription(category.getDescription());
         return dto;
     }
 }

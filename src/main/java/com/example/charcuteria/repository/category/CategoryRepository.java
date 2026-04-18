@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.example.charcuteria.dto.category.CategoryResponse;
 import com.example.charcuteria.model.Category;
 
 @Repository
@@ -17,13 +18,13 @@ public class CategoryRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<Category> findAll() {
-        String sql = "SELECT id, name, description FROM categories";
+    public List<CategoryResponse> findAll() {
+        String sql = "SELECT name, description FROM categories";
 
         return jdbcTemplate.query(
             sql,
             (rs, rowNum) -> {
-                Category c = new Category();
+                var c = new CategoryResponse();
                 c.setName(rs.getString("name"));
                 c.setDescription(rs.getString("description"));
                 return c;

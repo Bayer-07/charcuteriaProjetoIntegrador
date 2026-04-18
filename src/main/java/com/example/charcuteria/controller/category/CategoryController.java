@@ -13,7 +13,7 @@ import com.example.charcuteria.dto.category.CategoryResponse;
 import com.example.charcuteria.service.category.CategoryService;
 
 @Controller
-@RequestMapping("/categories")
+@RequestMapping("/admin/categories")
 public class CategoryController {
 
     private final CategoryService service;
@@ -34,7 +34,7 @@ public class CategoryController {
         return "category/detail";
     }
 
-    @PostMapping("/new")
+    @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("category", new CategoryRequest());
         return "category/form";
@@ -46,7 +46,7 @@ public class CategoryController {
         CategoryRequest request = new CategoryRequest();
 
         request.setName(response.getName());
-        request.setDescription(response.getDesc());
+        request.setDescription(response.getDescription());
 
         model.addAttribute("category", request);
         model.addAttribute("id", id);
