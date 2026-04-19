@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.example.charcuteria.dto.category.CategoryResponseDto;
+import com.example.charcuteria.dto.category.CategoryRequestDto;
 import com.example.charcuteria.model.Category;
 
 @Repository
@@ -18,65 +18,34 @@ public class CategoryRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<CategoryResponseDto> findAll() {
-        String sql = "SELECT name, description FROM categories";
-
-        return jdbcTemplate.query(
-            sql,
-            (rs, rowNum) -> {
-                var c = new CategoryResponseDto();
-                c.setName(rs.getString("name"));
-                c.setDescription(rs.getString("description"));
-                return c;
-            }
-        );
-    }
-
-    public Optional<Category> findById(Integer id) {
+    public Category findById(Integer id) {
         String sql = "SELECT id, name, description FROM categories WHERE id = ?";
 
-        List<Category> results = jdbcTemplate.query(
-            sql,
-            (rs, rowNum) -> {
-                Category c = new Category();
-                c.setName(rs.getString("name"));
-                c.setDescription(rs.getString("description"));
-                return c;
-            },
+        return jdbcTemplate.queryForObject(sql,
+            (rs, rowNum) -> new Category(
+                rs.getString("name"),
+                rs.getString("description")
+            ),
             id
         );
-
-        return results.stream().findFirst();
     }
 
-    public Category save(Category category) {
-        if (category.getId() == null) {
-            String sql = "INSERT INTO categories (name, description) VALUES (?, ?)";
+    public boolean hasProductWithCategoryId(Integer id) {
+        String sql = "SELECT p.id FROM products p WHERE p.category_id = ? AND is_active = TRUE LIMIT 1";
 
-            jdbcTemplate.update(
-                sql,
-                category.getName(),
-                category.getDescription()
-            );
-
-        } else {
-            String sql = "UPDATE categories SET name = ?, description = ? WHERE id = ?";
-
-            jdbcTemplate.update(
-                sql,
-                category.getName(),
-                category.getDescription(),
-                category.getId()
-            );
-        }
-
-        return category;
+        return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sql, Boolean.class, id));
     }
 
-    public void delete(Category category) {
+    public int createCategory(CategoryRequestDto category) {
+        String sql = "INSERT INTO categories (name, description) VALUES (?, ?)";
+
+        return jdbcTemplate.update(sql, category.getName(), category.getDescription());
+    }
+
+    public int delete(Integer id) {
         String sql = "DELETE FROM categories WHERE id = ?";
 
-        jdbcTemplate.update(sql, category.getId());
+        return jdbcTemplate.update(sql, id);
     }
 
     public boolean existsByName(String name) {

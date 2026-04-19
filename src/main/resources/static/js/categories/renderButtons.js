@@ -14,8 +14,8 @@ function closeCreateCategoryModal() {
 // Delete button
 function openDeleteCategoryModal(categoryId) {
     const modal = document.getElementById("deleteCategoryModal");
-    const createForm = document.getElementById("deleteForm");
-    createForm.action = "/admin/categories/delete/" + categoryId;
+    const deleteForm = document.getElementById("deleteCategoryForm");
+    deleteForm.action = "/admin/categories/delete/" + categoryId;
 
     modal.style.display = "flex";
 }
