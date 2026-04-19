@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.charcuteria.dto.category.CategoryRequestDto;
 import com.example.charcuteria.dto.product.ProductsRequestDto;
 import com.example.charcuteria.dto.user.AdminDashboardResponseDto;
 import com.example.charcuteria.model.User;
@@ -52,6 +53,7 @@ public class AdminController {
             model.addAttribute("type", type);
             model.addAttribute("categories", categoryService.returnAll());
             model.addAttribute("productDto", new ProductsRequestDto());
+            model.addAttribute("categoryDto", new CategoryRequestDto());
 
             if ("products".equals(type)) {
                 model.addAttribute("products", adminService.listProducts());

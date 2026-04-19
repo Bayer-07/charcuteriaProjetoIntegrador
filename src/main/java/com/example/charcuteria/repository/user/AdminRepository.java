@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.example.charcuteria.dto.category.CategoryResponse;
+import com.example.charcuteria.dto.category.CategoryResponseDto;
 import com.example.charcuteria.dto.product.ProductsResponseDto;
 
 @Repository
@@ -57,11 +57,11 @@ public class AdminRepository {
     }
 
 
-    public List<CategoryResponse> getAllCategories() {
+    public List<CategoryResponseDto> getAllCategories() {
         String sql = "SELECT name FROM categories";
 
         return jdbcTemplate.query(sql, (rs, row) -> {
-            return new CategoryResponse(rs.getString("name"));
+            return new CategoryResponseDto(rs.getString("name"));
         });
     }
 }

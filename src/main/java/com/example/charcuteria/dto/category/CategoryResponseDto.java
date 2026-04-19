@@ -1,22 +1,22 @@
 package com.example.charcuteria.dto.category;
 
-public class CategoryResponse {
+public class CategoryResponseDto {
     private Integer id;
     private String name;
     private String description;
 
-    public CategoryResponse(){}
+    public CategoryResponseDto(){}
 
-    public CategoryResponse(String name, String description) {
+    public CategoryResponseDto(String name, String description) {
         this.name = name;
         this.description = description;
     }
 
-    public CategoryResponse(String name) {
+    public CategoryResponseDto(String name) {
         this.name = name;
     }
 
-    public CategoryResponse(Integer id, String name, String description) {
+    public CategoryResponseDto(Integer id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;

@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.example.charcuteria.dto.category.CategoryRequest;
-import com.example.charcuteria.dto.category.CategoryResponse;
+import com.example.charcuteria.dto.category.CategoryRequestDto;
+import com.example.charcuteria.dto.category.CategoryResponseDto;
 import com.example.charcuteria.model.Category;
 import com.example.charcuteria.repository.category.CategoryRepository;
 
@@ -18,31 +18,31 @@ public class CategoryService {
         this.repository = repository;
     }
 
-    public List<CategoryResponse> returnAll() {
+    public List<CategoryResponseDto> returnAll() {
         return repository.findAll();
     }
 
-    public CategoryResponse returnById(Integer id) {
+    public CategoryResponseDto returnById(Integer id) {
         Category category = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
 
         return toDTO(category);
     }
 
-    public CategoryResponse returnByName(String name) {
+    public CategoryResponseDto returnByName(String name) {
         Category category = repository.findByName(name)
         .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
 
         return toDTO(category);
     }
 
-    public CategoryResponse create(CategoryRequest request) {
+    public CategoryResponseDto create(CategoryRequestDto request) {
         Category category = toEntity(request);
         Category saved = repository.save(category);
         return toDTO(saved);
     }
 
-    public CategoryResponse update(Integer id, CategoryRequest request) {
+    public CategoryResponseDto update(Integer id, CategoryRequestDto request) {
         Category category = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
 
@@ -61,15 +61,15 @@ public class CategoryService {
     }
 
     // Mappers de Dto e Entity
-    private Category toEntity(CategoryRequest dto) {
+    private Category toEntity(CategoryRequestDto dto) {
         Category category = new Category();
         category.setName(dto.getName());
         category.setDescription(dto.getDescription());
         return category;
     }
 
-    private CategoryResponse toDTO(Category category) {
-        CategoryResponse dto = new CategoryResponse();
+    private CategoryResponseDto toDTO(Category category) {
+        CategoryResponseDto dto = new CategoryResponseDto();
         dto.setName(category.getName());
         dto.setDescription(category.getDescription());
         return dto;
