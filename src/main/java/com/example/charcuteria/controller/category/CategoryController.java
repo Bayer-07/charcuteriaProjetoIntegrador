@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.example.charcuteria.dto.category.CategoryRequest;
-import com.example.charcuteria.dto.category.CategoryResponse;
+import com.example.charcuteria.dto.category.CategoryRequestDto;
+import com.example.charcuteria.dto.category.CategoryResponseDto;
 import com.example.charcuteria.service.category.CategoryService;
 
 @Controller
@@ -36,17 +36,17 @@ public class CategoryController {
 
     @GetMapping("/new")
     public String showCreateForm(Model model) {
-        model.addAttribute("category", new CategoryRequest());
+        model.addAttribute("category", new CategoryRequestDto());
         return "category/form";
     }
 
     @GetMapping("edit/{id}")
     public String showEditForm(@PathVariable Integer id, Model model) {
-        CategoryResponse response = service.returnById(id);
-        CategoryRequest request = new CategoryRequest();
-
-        request.setName(response.getName());
-        request.setDescription(response.getDescription());
+        CategoryResponseDto response = service.returnById(id);
+        CategoryRequestDto request = new CategoryRequestDto(
+                                        response.getName(),
+                                        response.getDescription()
+                                    );
 
         model.addAttribute("category", request);
         model.addAttribute("id", id);
@@ -54,8 +54,13 @@ public class CategoryController {
         return "category/form";
     }
 
+    @PostMapping("/create")
+    public String createCategory(Model model) {
+        return "admin/products";
+    }
+
     @PostMapping("/update/{id}")
-    public String update(@PathVariable Integer id, @ModelAttribute("category") CategoryRequest request) {
+    public String update(@PathVariable Integer id, @ModelAttribute("category") CategoryRequestDto request) {
         service.update(id, request);
         return "redirect:/categories";
     }

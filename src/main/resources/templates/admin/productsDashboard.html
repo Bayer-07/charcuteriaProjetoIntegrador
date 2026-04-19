@@ -6,7 +6,8 @@
     <link rel="stylesheet" th:href="@{/css/sidebar.css}" href="/css/sidebar.css" />
     <link rel="stylesheet" th:href="@{/css/modal.css}" href="/css/modal.css" />
     <link rel="stylesheet" th:href="@{/css/products.css}" href="/css/products.css" />
-    <script th:src="@{/js/products/products.js}"></script>
+    <script th:src="@{/js/products/renderButtons.js}"></script>
+    <script th:src="@{/js/categories/renderButtons.js}"></script>
     <script th:src="@{/js/products/fileUpload.js}"></script>
     <link rel="shortcut icon" th:href="@{/images/logo.png}" href="/images/logo.png" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -258,12 +259,110 @@
             </p>
 
             <div class="modal-buttons">
-                <button type="button" class="btn-cancel" onclick="closeModal()">Cancelar</button>
+                <button type="button" class="btn-cancel" onclick="closeDeleteProductModal()">Cancelar</button>
                 <form id="deleteForm" method="post">
                     <button type="submit" class="btn-confirm">Confirmar</button>
                 </form>
             </div>
         </div>
     </div>
+
+    <div id="createCategoryModal" class="modal-overlay">
+        <div class="modal-card">
+            <h2>Nova categoria</h2>
+
+            <form id="createForm" th:action="@{/admin/categories/create}" th:object="${categoryDto}" method="post">
+                <div class="input-group">
+                    <label>Nome</label>
+                    <input type="text" th:field="*{name}" placeholder="Ex: Embutidos" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Descrição</label>
+                    <input type="text" th:field="*{description}" placeholder="Descrição da Categoria" required>
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="button" class="btn-cancel" onclick="closeCreateCategoryModal()">Cancelar</button>
+                    <button type="submit" class="btn-confirm">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="editModal" class="modal-overlay">
+        <div class="modal-card">
+            <h2>Editar Produto</h2>
+
+            <form id="editForm" method="post" th:object="${productDto}" enctype="multipart/form-data">
+                <input type="hidden" id="edit-id" name="id" required>
+                <div class="input-group">
+                    <label>Nome</label>
+                    <input type="text" id="edit-name" name="name" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Descrição</label>
+                    <input type="text" id="edit-description" name="description" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Categoria</label>
+                    <select id="edit-category" name="category" required class="custom-select">
+                        <option th:each="cat : ${categories}"
+                                th:value="${cat.name}"
+                                th:text="${cat.name}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Preço</label>
+                    <input type="text" id="edit-price" name="price" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Novo Estoque</label>
+                    <input type="text" id="edit-stock" name="stock" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Imagem Atual</label>
+                    <div class="image-preview-container">
+                        <img id="edit-image-preview" src="" alt="Prévia">
+
+                        <div class="image-overlay">
+                            <button type="button" class="btn-change-image" onclick="document.getElementById('edit-image-input').click()">
+                                Trocar Imagem
+                            </button>
+                            <input type="file" id="edit-image-input" name="file" style="display: none;" onchange="handleImagePreview(this)">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="button" class="btn-cancel" onclick="closeEditModal()">Cancelar</button>
+                    <button type="submit" class="btn-confirm">Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="deleteCategoryModal" class="modal-overlay">
+        <div class="modal-card">
+            <h2>Deseja Excluir</h2>
+            <p>Deseja realmente excluir essa categoria?<br>
+            <span>Essa ação é irreversível</span>
+            </p>
+
+            <div class="modal-buttons">
+                <button type="button" class="btn-cancel" onclick="closeDeleteCategoryModal()">Cancelar</button>
+                <form id="deleteForm" method="post">
+                    <button type="submit" class="btn-confirm">Confirmar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
