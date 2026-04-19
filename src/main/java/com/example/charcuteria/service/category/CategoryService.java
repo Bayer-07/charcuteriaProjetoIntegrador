@@ -1,13 +1,16 @@
 package com.example.charcuteria.service.category;
 
-import java.util.List;
-
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.example.charcuteria.dto.category.CategoryRequestDto;
 import com.example.charcuteria.dto.category.CategoryResponseDto;
+import com.example.charcuteria.exceptions.BusinessException;
+import com.example.charcuteria.exceptions.ProductErrorCode;
 import com.example.charcuteria.model.Category;
 import com.example.charcuteria.repository.category.CategoryRepository;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class CategoryService {
@@ -18,13 +21,8 @@ public class CategoryService {
         this.repository = repository;
     }
 
-    public List<CategoryResponseDto> returnAll() {
-        return repository.findAll();
-    }
-
     public CategoryResponseDto returnById(Integer id) {
-        Category category = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
+        Category category = repository.findById(id);
 
         return toDTO(category);
     }
@@ -36,38 +34,36 @@ public class CategoryService {
         return toDTO(category);
     }
 
-    public CategoryResponseDto create(CategoryRequestDto request) {
-        Category category = toEntity(request);
-        Category saved = repository.save(category);
-        return toDTO(saved);
+    public void createCategory(CategoryRequestDto category) {
+        if (repository.createCategory(category) == 0 ) throw new BusinessException(ProductErrorCode.PRODUCT_NOT_FOUND);
     }
 
     public CategoryResponseDto update(Integer id, CategoryRequestDto request) {
-        Category category = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
+        Category category = repository.findById(id);
 
         category.setName(request.getName());
         category.setDescription(request.getDescription());
 
-        Category updated = repository.save(category);
+        Category updated = new Category();
         return toDTO(updated);
     }
 
     public void deleteById(Integer id) {
-        Category category = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
-
-        repository.delete(category);
+        try {
+            int rows = repository.delete(id);
+            if (rows == 0) {
+                throw new EntityNotFoundException("Category with ID " + id + " not found");
+            }
+        } catch (DataAccessException e) {
+            String dbMessage = e.getMostSpecificCause().getMessage();
+            if (dbMessage != null && dbMessage.contains("active products exist")) {
+                throw new RuntimeException("Cannot delete: active products linked.");
+            }
+            throw e;
+        }
     }
 
     // Mappers de Dto e Entity
-    private Category toEntity(CategoryRequestDto dto) {
-        Category category = new Category();
-        category.setName(dto.getName());
-        category.setDescription(dto.getDescription());
-        return category;
-    }
-
     private CategoryResponseDto toDTO(Category category) {
         CategoryResponseDto dto = new CategoryResponseDto();
         dto.setName(category.getName());

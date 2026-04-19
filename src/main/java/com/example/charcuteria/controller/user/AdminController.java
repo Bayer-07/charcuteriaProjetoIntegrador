@@ -11,7 +11,6 @@ import com.example.charcuteria.dto.category.CategoryRequestDto;
 import com.example.charcuteria.dto.product.ProductsRequestDto;
 import com.example.charcuteria.dto.user.AdminDashboardResponseDto;
 import com.example.charcuteria.model.User;
-import com.example.charcuteria.service.category.CategoryService;
 import com.example.charcuteria.service.user.AdminService;
 
 
@@ -20,11 +19,9 @@ import com.example.charcuteria.service.user.AdminService;
 public class AdminController {
 
     private final AdminService adminService;
-    private final CategoryService categoryService;
 
-    public AdminController(AdminService adminService, CategoryService categoryService) {
+    public AdminController(AdminService adminService) {
         this.adminService = adminService;
-        this.categoryService = categoryService;
     }
 
     @GetMapping("/dashboard")
@@ -51,7 +48,7 @@ public class AdminController {
     public String showProductsDashboard(@RequestParam(value = "type", required = false, defaultValue = "products") String type,@AuthenticationPrincipal User loggedUser, Model model) {
         try {
             model.addAttribute("type", type);
-            model.addAttribute("categories", categoryService.returnAll());
+            model.addAttribute("categories", adminService.getAllCategories());
             model.addAttribute("productDto", new ProductsRequestDto());
             model.addAttribute("categoryDto", new CategoryRequestDto());
 

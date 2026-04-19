@@ -58,10 +58,14 @@ public class AdminRepository {
 
 
     public List<CategoryResponseDto> getAllCategories() {
-        String sql = "SELECT name FROM categories";
+        String sql = "SELECT c.id, c.name, c.description FROM categories c";
 
-        return jdbcTemplate.query(sql, (rs, row) -> {
-            return new CategoryResponseDto(rs.getString("name"));
-        });
+        return jdbcTemplate.query(sql, (rs, row) ->
+            new CategoryResponseDto(
+                rs.getInt("id"),
+                rs.getString("name"),
+                rs.getString("description")
+            )
+        );
     }
 }
