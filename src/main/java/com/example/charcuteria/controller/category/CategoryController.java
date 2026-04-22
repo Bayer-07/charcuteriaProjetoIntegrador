@@ -7,7 +7,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.charcuteria.dto.category.CategoryEditRequestDto;
+import com.example.charcuteria.dto.category.CategoryEditResponseDto;
 import com.example.charcuteria.dto.category.CategoryRequestDto;
 import com.example.charcuteria.service.category.CategoryService;
 
@@ -24,9 +27,17 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public String getById(@PathVariable Integer id, Model model) {
-        model.addAttribute("category", service.returnById(id));
-        return "category/detail";
+    @ResponseBody
+    public CategoryEditResponseDto getById(@PathVariable Integer id) {
+        var response = service.getById(id);
+        if (response != null) return response;
+        throw new RuntimeException();
+    }
+
+    @PostMapping("/update")
+    public String update(@Valid @ModelAttribute("categoryDto") CategoryEditRequestDto category, Model model) {
+        service.updateCategoryById(category);
+        return "redirect:/admin/products?type=categories";
     }
 
     @PostMapping("/create")
@@ -38,12 +49,6 @@ public class CategoryController {
             System.out.println(e);
             return "redirect:/admin/products?type=products";
         }
-    }
-
-    @PostMapping("/update/{id}")
-    public String update(@PathVariable Integer id, @ModelAttribute("category") CategoryRequestDto request) {
-        service.update(id, request);
-        return "redirect:/categories";
     }
 
     @PostMapping("/delete/{id}")

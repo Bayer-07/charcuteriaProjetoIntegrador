@@ -3,6 +3,8 @@ package com.example.charcuteria.service.category;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.example.charcuteria.dto.category.CategoryEditRequestDto;
+import com.example.charcuteria.dto.category.CategoryEditResponseDto;
 import com.example.charcuteria.dto.category.CategoryRequestDto;
 import com.example.charcuteria.dto.category.CategoryResponseDto;
 import com.example.charcuteria.exceptions.BusinessException;
@@ -21,10 +23,8 @@ public class CategoryService {
         this.repository = repository;
     }
 
-    public CategoryResponseDto returnById(Integer id) {
-        Category category = repository.findById(id);
-
-        return toDTO(category);
+    public CategoryEditResponseDto getById(Integer id) {
+        return repository.getById(id);
     }
 
     public CategoryResponseDto returnByName(String name) {
@@ -38,14 +38,8 @@ public class CategoryService {
         if (repository.createCategory(category) == 0 ) throw new BusinessException(ProductErrorCode.PRODUCT_NOT_FOUND);
     }
 
-    public CategoryResponseDto update(Integer id, CategoryRequestDto request) {
-        Category category = repository.findById(id);
-
-        category.setName(request.getName());
-        category.setDescription(request.getDescription());
-
-        Category updated = new Category();
-        return toDTO(updated);
+    public void updateCategoryById(CategoryEditRequestDto category) {
+        if (repository.updateCategoryById(category) == 0) throw new BusinessException(ProductErrorCode.PRODUCT_NOT_FOUND);
     }
 
     public void deleteById(Integer id) {
