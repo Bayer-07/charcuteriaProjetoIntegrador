@@ -11,6 +11,39 @@ function closeCreateCategoryModal() {
     document.getElementById("createCategoryModal").style.display = "none";
 }
 
+// Edit button
+async function loadAndOpenEditCategoryModal(categoryId) {
+    const modal = document.getElementById("editCategoryModal");
+
+    if (!modal) {
+        console.log("travou aq")
+        return;
+}
+    const form = modal.querySelector("#editCategoryForm");
+
+    try {
+        const response = await fetch("/admin/categories/" + categoryId);
+        if (!response.ok) throw new Error("Erro ao buscar categoria");
+
+        const category = await response.json();
+
+        form.action = "/admin/categories/update";
+
+        modal.querySelector("#edit-category-id").value = categoryId;
+        modal.querySelector("#edit-category-name").value = category.name || "";
+        modal.querySelector("#edit-category-description").value = category.description || "";
+    } catch (error) {
+        console.error("Erro na carga dos dados:", error);
+        alert("Não foi possivel carregar os dados deste produto.");
+    }
+
+    modal.style.display = "flex";
+}
+
+function closeEditCategoryModal() {
+    document.getElementById("editCategoryModal").style.display = "none";
+}
+
 // Delete button
 function openDeleteCategoryModal(categoryId) {
     const modal = document.getElementById("deleteCategoryModal");

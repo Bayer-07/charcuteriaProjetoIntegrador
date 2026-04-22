@@ -18,7 +18,7 @@ async function loadAndOpenEditProductModal(productId) {
     if (!modal) return;
 
     const previewImg = modal.querySelector("img[id*='preview']");
-    const form = modal.querySelector("#editForm");
+    const form = modal.querySelector("#editProductForm");
 
     try {
         const response = await fetch("/admin/product/" + productId);

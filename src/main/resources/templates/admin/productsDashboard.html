@@ -124,7 +124,7 @@
                         <td class="cell-name" th:text="${category.name}"></td>
                         <td class="cell-category" th:text="${category.description}"></td>
                         <td class="cell-actions">
-                            <button type="button" class="action-btn edit" th:onclick="|loadAndOpenEditCategoryModal(${category.id})|">
+                            <button type="button" class="action-btn edit" th:onclick="|loadAndOpenEditCategoryModal('${category.id}')|">
                                 <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4L18.5 2.5z"></path></svg>
                             </button>
 
@@ -197,7 +197,7 @@
         <div class="modal-card">
             <h2>Editar Produto</h2>
 
-            <form id="editForm" method="post" th:object="${productDto}" enctype="multipart/form-data">
+            <form id="editProductForm" method="post" th:object="${productDto}" enctype="multipart/form-data">
                 <input type="hidden" id="edit-id" name="id" required>
                 <div class="input-group">
                     <label>Nome</label>
@@ -290,58 +290,24 @@
         </div>
     </div>
 
-    <div id="editModal" class="modal-overlay">
+    <div id="editCategoryModal" class="modal-overlay">
         <div class="modal-card">
             <h2>Editar Produto</h2>
 
-            <form id="editForm" method="post" th:object="${productDto}" enctype="multipart/form-data">
-                <input type="hidden" id="edit-id" name="id" required>
+            <form id="editCategoryForm" method="post" th:object="${categoryDto}">
+                <input type="hidden" id="edit-category-id" name="id" required>
                 <div class="input-group">
                     <label>Nome</label>
-                    <input type="text" id="edit-name" name="name" required>
+                    <input type="text" id="edit-category-name" name="name" required>
                 </div>
 
                 <div class="input-group">
                     <label>Descrição</label>
-                    <input type="text" id="edit-description" name="description" required>
-                </div>
-
-                <div class="input-group">
-                    <label>Categoria</label>
-                    <select id="edit-category" name="category" required class="custom-select">
-                        <option th:each="cat : ${categories}"
-                                th:value="${cat.name}"
-                                th:text="${cat.name}">
-                        </option>
-                    </select>
-                </div>
-
-                <div class="input-group">
-                    <label>Preço</label>
-                    <input type="text" id="edit-price" name="price" required>
-                </div>
-
-                <div class="input-group">
-                    <label>Novo Estoque</label>
-                    <input type="text" id="edit-stock" name="stock" required>
-                </div>
-
-                <div class="input-group">
-                    <label>Imagem Atual</label>
-                    <div class="image-preview-container">
-                        <img id="edit-image-preview" src="" alt="Prévia">
-
-                        <div class="image-overlay">
-                            <button type="button" class="btn-change-image" onclick="document.getElementById('edit-image-input').click()">
-                                Trocar Imagem
-                            </button>
-                            <input type="file" id="edit-image-input" name="file" style="display: none;" onchange="handleImagePreview(this)">
-                        </div>
-                    </div>
+                    <input type="text" id="edit-category-description" name="description" required>
                 </div>
 
                 <div class="modal-buttons">
-                    <button type="button" class="btn-cancel" onclick="closeEditModal()">Cancelar</button>
+                    <button type="button" class="btn-cancel" onclick="closeEditCategoryModal()">Cancelar</button>
                     <button type="submit" class="btn-confirm">Salvar Alterações</button>
                 </div>
             </form>
