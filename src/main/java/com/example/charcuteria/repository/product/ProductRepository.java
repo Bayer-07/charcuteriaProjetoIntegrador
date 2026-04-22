@@ -1,11 +1,14 @@
 package com.example.charcuteria.repository.product;
 
+import java.util.List;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.example.charcuteria.dto.product.ProductsEditRequestDto;
 import com.example.charcuteria.dto.product.ProductsEditResponseDto;
 import com.example.charcuteria.dto.product.ProductsRequestDto;
+import com.example.charcuteria.dto.product.ProductsResponseDto;
 
 @Repository
 public class ProductRepository {
@@ -83,6 +86,18 @@ public class ProductRepository {
         String sql = "SELECT c.id FROM categories c WHERE c.name = ?";
 
         return jdbcTemplate.queryForObject(sql, Integer.class, categoryName);
+    }
+
+    public List<ProductsResponseDto> getAllProducts() {
+        String sql = "SELECT p.id, p.stock_quantity, c.name AS category, p.name, p.price FROM products p JOIN categories c ON c.id = p.category_id WHERE p.is_active = TRUE";
+
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new ProductsResponseDto(
+            rs.getInt("id"),
+            rs.getInt("stock_quantity"),
+            rs.getString("category"),
+            rs.getString("name"),
+            rs.getBigDecimal("price")
+        ));
     }
 
 }
