@@ -20,30 +20,30 @@ import jakarta.validation.Valid;
 @RequestMapping("/admin/categories")
 public class CategoryController {
 
-    private final CategoryService service;
+    private final CategoryService categoryService;
 
-    public CategoryController(CategoryService service) {
-        this.service = service;
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
     }
 
     @GetMapping("/{id}")
     @ResponseBody
     public CategoryEditResponseDto getById(@PathVariable Integer id) {
-        var response = service.getById(id);
+        var response = categoryService.getById(id);
         if (response != null) return response;
         throw new RuntimeException();
     }
 
     @PostMapping("/update")
     public String update(@Valid @ModelAttribute("categoryDto") CategoryEditRequestDto category, Model model) {
-        service.updateCategoryById(category);
+        categoryService.updateCategoryById(category);
         return "redirect:/admin/products?type=categories";
     }
 
     @PostMapping("/create")
     public String createCategory(@Valid @ModelAttribute("categoryDto") CategoryRequestDto category, Model model) {
         try {
-            service.createCategory(category);
+            categoryService.createCategory(category);
             return "redirect:/admin/products?type=categories";
         } catch (Exception e) {
             System.out.println(e);
@@ -52,9 +52,9 @@ public class CategoryController {
     }
 
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id) {
+    public String deleteById(@PathVariable Integer id) {
         try {
-            service.deleteById(id);
+            categoryService.deleteById(id);
             return "redirect:/admin/products?type=categories";
         } catch (Exception e) {
             System.out.println(e);
