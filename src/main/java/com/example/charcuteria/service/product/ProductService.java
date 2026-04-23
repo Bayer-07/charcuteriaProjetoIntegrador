@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.charcuteria.dto.product.ProductCatalogDto;
 import com.example.charcuteria.dto.product.ProductsEditRequestDto;
 import com.example.charcuteria.dto.product.ProductsEditResponseDto;
 import com.example.charcuteria.dto.product.ProductsRequestDto;
@@ -46,8 +47,8 @@ public class ProductService {
         if (productRepository.updateProductById(product, categoryId, imageName) == 0) throw new BusinessException(ProductErrorCode.PRODUCT_NOT_FOUND);
     }
 
-    public List<ProductsResponseDto> getProducts() {
-        return productRepository.getAllProducts();
+    public List<ProductCatalogDto> getProductsForCatalog() {
+        return productRepository.getAllProductsForCatalog();
     }
 
 }

@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <header class="main-header">
+    <header class="main-header">    
         <div class="header-container">
             <div class="logo">
                 <span class="brand-name">Koch</span>
@@ -22,10 +22,10 @@
             </div>
             <nav class="nav-menu">
                 <ul>
-                    <li><a href="index.html">Início</a></li>
-                    <li><a href="catalogo.html">Catálogo</a></li>
-                    <li><a href="assinaturas.html">Assinaturas</a></li>
-                    <li><a href="parcerias.html">Parcerias</a></li>
+                    <li><a href="/">Início</a></li>
+                    <li><a href="produtos">Catálogo</a></li>
+                    <li><a href="assinaturas">Assinaturas</a></li>
+                    <li><a href="parcerias">Parcerias</a></li>
                 </ul>
             </nav>
             <div class="header-icons">
@@ -48,22 +48,35 @@
 
     <main class="wrapper">
         <div class="products-container">
-            <h1>Nossos Produtos</h1>
+            <h1>Catálogo de Produtos</h1>
+            
+            <!-- Barra de Busca -->
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Buscar produtos..." class="search-input">
+            </div>
 
+            <!-- Filtros de Categorias -->
+            <div class="filters-section">
+                <button class="filter-btn active" data-filter="todos">Todos</button>
+                <button class="filter-btn" data-filter="embutidos">Embutidos</button>
+                <button class="filter-btn" data-filter="defumados">Defumados</button>
+                <button class="filter-btn" data-filter="queijos">Queijos</button>
+                <button class="filter-btn" data-filter="kits">Kits</button>
+            </div>
+
+            <!-- Grid de Produtos -->
             <div class="products-grid" th:if="${products != null and products.size() > 0}">
-                <div class="product-card" th:each="product : ${products}">
+                <div class="product-card" th:each="product : ${products}" th:data-category="${product.categoryName.toLowerCase()}">
                     <div class="product-image">
-                        <img th:src="@{${product.image}}" src="/images/placeholder.png" th:alt="${product.name}"
-                            alt="Produto">
+                        <img th:src="@{'/uploads/products/' + ${product.imagePath}}" src="/images/placeholder.png" th:alt="${product.name}" alt="Produto">
                     </div>
                     <div class="product-info">
                         <h3 class="product-name" th:text="${product.name}">Nome do Produto</h3>
-                        <p class="product-category" th:text="${product.category.name}">Categoria</p>
                         <p class="product-description" th:text="${product.description}">Descrição do produto</p>
                         <div class="product-footer">
                             <span class="product-price"
                                 th:text="'R$ ' + ${#numbers.formatDecimal(product.price, 1, 2)}">R$ 0,00</span>
-                            <button class="btn-add-cart">Adicionar ao Carrinho</button>
+                            <button class="btn-add-cart">Adicionar</button>
                         </div>
                     </div>
                 </div>
@@ -116,6 +129,45 @@
             <p>&copy; 2026 Koch Charcutaria. Todos os direitos reservados.</p>
         </div>
     </footer>
+
+    <script>
+        // Função de busca
+        const searchInput = document.getElementById('searchInput');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const productCards = document.querySelectorAll('.product-card');
+
+        function filterProducts() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+
+            productCards.forEach(card => {
+                const productName = card.querySelector('.product-name').textContent.toLowerCase();
+                const productDescription = card.querySelector('.product-description').textContent.toLowerCase();
+                const productCategory = card.dataset.category;
+
+                const matchesSearch = productName.includes(searchTerm) || productDescription.includes(searchTerm);
+                const matchesFilter = activeFilter === 'todos' || productCategory === activeFilter;
+
+                if (matchesSearch && matchesFilter) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Event listeners para busca
+        searchInput.addEventListener('input', filterProducts);
+
+        // Event listeners para filtros
+        filterButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+                filterProducts();
+            });
+        });
+    </script>
 </body>
 
 </html>
