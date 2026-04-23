@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.example.charcuteria.dto.product.ProductsResponseDto;
+import com.example.charcuteria.dto.product.ProductCatalogDto;
 import com.example.charcuteria.service.product.ProductService;
 
 @Controller
@@ -23,7 +23,7 @@ public class CustomerProductController {
 
     @GetMapping
     public String getAllProducts(Model model) {
-        List<ProductsResponseDto> products = productService.getProducts();
+        List<ProductCatalogDto> products = productService.getProductsForCatalog();
         model.addAttribute("products", products);
         return "public/produtos";
     }

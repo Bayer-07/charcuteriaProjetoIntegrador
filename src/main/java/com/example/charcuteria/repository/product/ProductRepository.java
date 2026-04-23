@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.example.charcuteria.dto.product.ProductCatalogDto;
 import com.example.charcuteria.dto.product.ProductsEditRequestDto;
 import com.example.charcuteria.dto.product.ProductsEditResponseDto;
 import com.example.charcuteria.dto.product.ProductsRequestDto;
@@ -88,15 +89,17 @@ public class ProductRepository {
         return jdbcTemplate.queryForObject(sql, Integer.class, categoryName);
     }
 
-    public List<ProductsResponseDto> getAllProducts() {
-        String sql = "SELECT p.id, p.stock_quantity, c.name AS category, p.name, p.price FROM products p JOIN categories c ON c.id = p.category_id WHERE p.is_active = TRUE";
+    public List<ProductCatalogDto> getAllProductsForCatalog() {
+        String sql = "SELECT p.id, p.name, p.description, c.name AS category_name, p.price, p.stock_quantity, p.image_path FROM products p JOIN categories c ON c.id = p.category_id WHERE p.is_active = TRUE ORDER BY p.name ASC";
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> new ProductsResponseDto(
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new ProductCatalogDto(
             rs.getInt("id"),
-            rs.getInt("stock_quantity"),
-            rs.getString("category"),
             rs.getString("name"),
-            rs.getBigDecimal("price")
+            rs.getString("description"),
+            rs.getString("category_name"),
+            rs.getBigDecimal("price"),
+            rs.getInt("stock_quantity"),
+            rs.getString("image_path")
         ));
     }
 
