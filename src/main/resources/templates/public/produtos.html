@@ -7,6 +7,7 @@
     <title>Produtos | Koch Charcutaria</title>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@700&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styleProdutos.css}" href="/css/styleProdutos.css" />
     <link rel="stylesheet" th:href="@{/css/header.css}" href="/css/header.css" />
     <link rel="stylesheet" th:href="@{/css/footer.css}" href="/css/footer.css" />
     <link rel="shortcut icon" th:href="@{/images/logo.png}" href="/images/logo.png" type="image/x-icon">
@@ -44,6 +45,48 @@
             </div>
         </div>
     </header>
+
+    <main class="wrapper">
+        <div class="products-container">
+            <h1>Catálogo de Produtos</h1>
+            
+            <!-- Barra de Busca -->
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Buscar produtos..." class="search-input">
+            </div>
+
+            <!-- Filtros de Categorias -->
+            <div class="filters-section">
+                <button class="filter-btn active" data-filter="todos">Todos</button>
+                <button class="filter-btn" data-filter="embutidos">Embutidos</button>
+                <button class="filter-btn" data-filter="defumados">Defumados</button>
+                <button class="filter-btn" data-filter="queijos">Queijos</button>
+                <button class="filter-btn" data-filter="kits">Kits</button>
+            </div>
+
+            <!-- Grid de Produtos -->
+            <div class="products-grid" th:if="${products != null and products.size() > 0}">
+                <div class="product-card" th:each="product : ${products}" th:data-category="${product.categoryName.toLowerCase()}">
+                    <div class="product-image">
+                        <img th:src="@{'/uploads/products/' + ${product.imagePath}}" src="/images/placeholder.png" th:alt="${product.name}" alt="Produto">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name" th:text="${product.name}">Nome do Produto</h3>
+                        <p class="product-description" th:text="${product.description}">Descrição do produto</p>
+                        <div class="product-footer">
+                            <span class="product-price"
+                                th:text="'R$ ' + ${#numbers.formatDecimal(product.price, 1, 2)}">R$ 0,00</span>
+                            <button class="btn-add-cart">Adicionar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="empty-state" th:if="${products == null or products.size() == 0}">
+                <p>Nenhum produto disponível no momento.</p>
+            </div>
+        </div>
+    </main>
 
     <footer class="main-footer">
         <div class="footer-container">
