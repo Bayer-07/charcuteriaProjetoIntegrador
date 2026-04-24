@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | Koch Charcutaria</title>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <title>Home | Koch Charcutaria</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/styleIndex.css}" href="/css/styleIndex.css" />
     <link rel="stylesheet" th:href="@{/css/header.css}" href="/css/header.css" />
     <link rel="stylesheet" th:href="@{/css/footer.css}" href="/css/footer.css" />
     <link rel="shortcut icon" th:href="@{/images/logo.png}" href="/images/logo.png" type="image/x-icon">
+
+    <style>
+
+    </style>
 </head>
 
 <body>
@@ -20,24 +26,120 @@
             </div>
             <nav class="nav-menu">
                 <ul>
-                    <li><a href="index.html">Início</a></li>
-                    <li><a href="catalogo.html">Catálogo</a></li>
+                    <li><a href="/">Início</a></li>
+                    <li><a href="/produtos">Catálogo</a></li>
                     <li><a href="assinaturas.html">Assinaturas</a></li>
                     <li><a href="parcerias.html">Parcerias</a></li>
                 </ul>
             </nav>
             <div class="header-icons">
                 <a href="#" class="icon-link">
-                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><circle cx="9" cy="21" r="1"></circle><circle cx="21" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="21" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
                 </a>
                 <a href="/handleProfile" class="icon-link">
-                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
                 </a>
             </div>
         </div>
     </header>
 
-    <main class="login-wrapper">
+    <main class="wrapper">
+        <section class="hero-carousel" aria-label="Carrossel de destaques da Koch Charcutaria">
+            <div class="carousel-track">
+                <article class="carousel-slide active" aria-hidden="false">
+                    <img th:src="@{/images/hero1.jpg}" src="/images/hero1.jpg"
+                        alt="Tábuas artesanais com frios selecionados">
+                </article>
+                <article class="carousel-slide" aria-hidden="true">
+                    <img th:src="@{/images/hero2.jpg}" src="/images/hero2.jpg"
+                        alt="Seleção premium de charcutaria gourmet">
+                </article>
+                <article class="carousel-slide" aria-hidden="true">
+                    <img th:src="@{/images/hero3.jpg}" src="/images/hero3.jpg"
+                        alt="Experiência gastronômica com embutidos especiais">
+                </article>
+            </div>
+
+            <div class="hero-overlay">
+                <h1>Sabor em Cada Fatia</h1>
+                <p>Feito com ingredientes selecionados e receitas ancestrais</p>
+                <a href="/produtos" class="hero-cta">Ver Catálogo</a>
+            </div>
+
+            <button class="carousel-control prev" type="button" aria-label="Imagem anterior">&#10094;</button>
+            <button class="carousel-control next" type="button" aria-label="Próxima imagem">&#10095;</button>
+
+            <div class="carousel-indicators" role="tablist" aria-label="Seleção de imagem do carrossel">
+                <button class="indicator active" type="button" role="tab" aria-label="Ir para imagem 1"
+                    aria-selected="true" data-slide="0"></button>
+                <button class="indicator" type="button" role="tab" aria-label="Ir para imagem 2" aria-selected="false"
+                    data-slide="1"></button>
+                <button class="indicator" type="button" role="tab" aria-label="Ir para imagem 3" aria-selected="false"
+                    data-slide="2"></button>
+            </div>
+        </section>
+        <section class="brand-story" aria-label="Tradição e sabor">
+            <div class="brand-story-content">
+                <div class="brand-story-text">
+                    <h2>Tradição e Sabor</h2>
+                    <span class="story-divider" aria-hidden="true"></span>
+                    <p>
+                        A Koch Charcutaria nasceu da paixão por embutidos artesanais seguindo receitas transmitidas por
+                        gerações de famílias do sul do Brasil. Cada produto é cuidadosamente preparado com ingredientes
+                        selecionados, sem conservantes artificiais, respeitando o tempo de cura e maturação que garante
+                        o sabor único que você merece.
+                    </p>
+                </div>
+                <div class="brand-story-image">
+                    <img th:src="@{/images/index1.jpg}" src="/images/index1.jpg"
+                        alt="Prato de charcutaria com cortes especiais e acompanhamentos">
+                </div>
+            </div>
+        </section>
+
+        <section class="featured-products" aria-label="Nossos produtos mais comprados">
+            <div class="featured-products-container">
+                <h2>Nossos Produtos</h2>
+                <span class="story-divider" aria-hidden="true"></span>
+
+                <div id="featured-products-list" class="featured-products-list"></div>
+
+                <a href="/produtos" class="view-all-products">Ver Todos os Produtos</a>
+            </div>
+        </section>
+
+        <section class="subscription-wrapper" aria-label="Promoção de assinatura mensal">
+            <div class="subscription-promo">
+                <h2>Assinatura Koch</h2>
+                <p>
+                    Receba todo mês em casa uma seleção curada dos nossos
+                </p>
+                <p>
+                    melhores produtos. Planos a partir de R$ 89,90/mês.
+                </p>
+                <a href="/assinaturas">Assinar Agora</a>
+            </div>
+        </section>
+
+        <section class="partner-wrapper">
+            <div class="partner">
+                <h2>Parcerias B2B</h2>
+                <p>
+                    Restaurantes, empórios e delicatessens: conheça nossas condições
+                </p>
+                <p>
+                    especiais para parceiros comerciais.
+                </p>
+                <a href="/partners">Entre em contato</a>
+            </div>
+        </section>
     </main>
 
     <footer class="main-footer">
@@ -49,7 +151,7 @@
             <div class="footer-column">
                 <h3>Catálogo</h3>
                 <ul>
-                    <li><a href="/catalogo">Catálogo</a></li>
+                    <li><a href="/produtos">Catálogo</a></li>
                     <li><a href="/assinaturas">Assinaturas</a></li>
                     <li><a href="/parcerias">Parcerias</a></li>
                     <li><a href="/privacidade">Política de privacidade</a></li>
@@ -65,7 +167,12 @@
                 </address>
                 <div class="social-icons">
                     <a href="https://instagram.com" target="_blank" aria-label="Instagram">
-                        <svg viewBox="0 0 24 24" width="32" height="32" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                        <svg viewBox="0 0 24 24" width="32" height="32" stroke="currentColor" stroke-width="2"
+                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
                     </a>
                 </div>
             </div>
@@ -76,6 +183,9 @@
             <p>&copy; 2026 Koch Charcutaria. Todos os direitos reservados.</p>
         </div>
     </footer>
+
+    <script th:src="@{/js/carrossel.js}"></script>
+    <script th:src="@{/js/indexTopProducts.js}" src="/js/indexTopProducts.js"></script>
 </body>
 
 </html>
