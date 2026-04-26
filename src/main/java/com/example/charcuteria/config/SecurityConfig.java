@@ -49,7 +49,7 @@ public class SecurityConfig {
                 .requestMatchers("/admin/**", "/registerAdmin").hasRole("ADMIN")
 
                 // rotas com permissao geral
-                .requestMatchers("/user/dashboard/**").hasAnyRole("CUSTOMER", "ADMIN")
+                .requestMatchers("/user/dashboard/**", "/cart/**").hasAnyRole("CUSTOMER", "ADMIN")
 
                 // qualquer rota precisa tar logado (segurança)
                 .anyRequest().authenticated()
