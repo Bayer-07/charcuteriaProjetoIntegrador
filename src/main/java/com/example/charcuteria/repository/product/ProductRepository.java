@@ -9,7 +9,6 @@ import com.example.charcuteria.dto.product.ProductCatalogDto;
 import com.example.charcuteria.dto.product.ProductsEditRequestDto;
 import com.example.charcuteria.dto.product.ProductsEditResponseDto;
 import com.example.charcuteria.dto.product.ProductsRequestDto;
-import com.example.charcuteria.dto.product.ProductsResponseDto;
 
 @Repository
 public class ProductRepository {
