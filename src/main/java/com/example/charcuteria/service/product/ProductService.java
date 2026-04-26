@@ -8,7 +8,6 @@ import com.example.charcuteria.dto.product.ProductCatalogDto;
 import com.example.charcuteria.dto.product.ProductsEditRequestDto;
 import com.example.charcuteria.dto.product.ProductsEditResponseDto;
 import com.example.charcuteria.dto.product.ProductsRequestDto;
-import com.example.charcuteria.dto.product.ProductsResponseDto;
 import com.example.charcuteria.exceptions.BusinessException;
 import com.example.charcuteria.exceptions.ProductErrorCode;
 import com.example.charcuteria.repository.product.ProductRepository;
