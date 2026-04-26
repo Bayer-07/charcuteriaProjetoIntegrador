@@ -1,14 +1,20 @@
 package com.example.charcuteria.controller.cart;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.charcuteria.dto.cart.CartResponseDto;
 import com.example.charcuteria.model.User;
 import com.example.charcuteria.service.cart.CartService;
 
@@ -32,5 +38,18 @@ public class CartController {
             System.out.println(e);
             return "redirect:" + referer;
         }
+    }
+
+    @GetMapping("")
+    public String showCart(@AuthenticationPrincipal User loggedUser, Model model) {
+        List<CartResponseDto> cartItems = cartService.getAllCartItems(loggedUser.getId());
+        model.addAttribute("cartItems", cartItems);
+
+        BigDecimal totalFinal = cartItems.stream()
+            .map(CartResponseDto::subtotal)
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        model.addAttribute("totalCart", totalFinal);
+        return "user/cart-view";
     }
 }
