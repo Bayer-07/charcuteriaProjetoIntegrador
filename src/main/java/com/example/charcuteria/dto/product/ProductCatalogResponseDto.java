@@ -2,7 +2,7 @@ package com.example.charcuteria.dto.product;
 
 import java.math.BigDecimal;
 
-public class ProductCatalogDto {
+public class ProductCatalogResponseDto {
     private final Integer id;
     private final String name;
     private final String description;
@@ -11,7 +11,7 @@ public class ProductCatalogDto {
     private final Integer stockQuantity;
     private final String imagePath;
 
-    public ProductCatalogDto(Integer id, String name, String description, String categoryName, BigDecimal price, Integer stockQuantity, String imagePath) {
+    public ProductCatalogResponseDto(Integer id, String name, String description, String categoryName, BigDecimal price, Integer stockQuantity, String imagePath) {
         this.id = id;
         this.name = name;
         this.description = description;

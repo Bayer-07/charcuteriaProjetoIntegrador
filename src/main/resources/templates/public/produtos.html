@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <header class="main-header">    
+    <header class="main-header">
         <div class="header-container">
             <div class="logo">
                 <span class="brand-name">Koch</span>
@@ -49,7 +49,7 @@
     <main class="wrapper">
         <div class="products-container">
             <h1>Catálogo de Produtos</h1>
-            
+
             <!-- Barra de Busca -->
             <div class="search-bar">
                 <input type="text" id="searchInput" placeholder="Buscar produtos..." class="search-input">
@@ -76,7 +76,12 @@
                         <div class="product-footer">
                             <span class="product-price"
                                 th:text="'R$ ' + ${#numbers.formatDecimal(product.price, 1, 2)}">R$ 0,00</span>
-                            <button class="btn-add-cart">Adicionar</button>
+                            <form th:action="@{/cart/add}" method="post">
+                                <input type="hidden" name="productId" th:value="${product.id}" />
+                                <button type="submit" class="btn-add-cart">
+                                    Adicionar
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
