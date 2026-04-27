@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Parcerias | Koch</title>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/footer.css}" />
+    <link rel="stylesheet" th:href="@{/css/styleIndex.css}" />
+    <link rel="stylesheet" th:href="@{/css/partners/partners.css}" />
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div th:replace="fragments/header :: header"></div>
+
+    <main>
+
+        <section class="partner-hero">
+            <img th:src="@{/images/hero2.jpg}" alt="Parcerias Koch">
+
+            <div class="partner-hero-text">
+                <h1>Seja um parceiro Koch!</h1>
+            </div>
+        </section>
+
+        <section class="partner-content">
+
+            <div class="partner-form">
+                <h2>Seja nosso parceiro</h2>
+
+                <form th:action="@{/partners}" method="post" th:object="${partner}">
+
+                    <label>Nome da empresa</label>
+                    <input type="text" th:field="*{name}" required />
+
+                    <label>CNPJ</label>
+                    <input type="text" th:field="*{cnpj}" required />
+
+                    <label>Responsável</label>
+                    <input type="text" th:field="*{responsible}" />
+
+                    <label>Email</label>
+                    <input type="email" th:field="*{email}" required />
+
+                    <label>Telefone</label>
+                    <input type="text" th:field="*{phone}" required />
+
+                    <label>Mensagem</label>
+                    <textarea th:field="*{message}"></textarea>
+
+                    <button type="submit">Enviar</button>
+                </form>
+            </div>
+
+            <div class="partner-info">
+                <h2>Por que ser parceiro?</h2>
+                <p>
+                    A Koch Charcutaria oferece condições especiais para restaurantes, empórios,
+                    delicatessens e lojas especializadas. Nossos produtos artesanais trazem
+                    diferenciação ao seu negócio, com qualidade certificada e entrega programada.
+                </p>
+
+                <img th:src="@{/images/index1.jpg}" alt="Produtos Koch">
+            </div>
+
+        </section>
+
+    </main>
+
+    <div th:replace="fragments/footer :: footer"></div>
+
+</body>
+
+</html>

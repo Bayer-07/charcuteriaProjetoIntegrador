@@ -28,12 +28,12 @@ public class PartnerController {
     @GetMapping
     public String form(Model model) {
         model.addAttribute("partner", new PartnerRequest());
-        return "partners";
+        return "partners/partners";
     }
 
     @PostMapping
     public String enviar(@ModelAttribute PartnerRequest request) {
         service.sendForm(request);
-        return "redirect:/partners?sucess";
+        return "redirect:/partners?success";
     }
 }
