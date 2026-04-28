@@ -39,7 +39,7 @@ public class AddressController {
         model.addAttribute("addresses", addresses);
         model.addAttribute("userEmail", loggedUser.getEmail());
 
-        return "address/addresses-list";
+        return "user/dashboard";
     }
 
     @GetMapping("/new")
@@ -51,7 +51,7 @@ public class AddressController {
         model.addAttribute("addressDto", new AddressDtoRequest());
         model.addAttribute("userId", loggedUser.getId());
 
-        return "address/address-form";
+        return "address/address-form"; 
     }
 
     @PostMapping
@@ -68,11 +68,11 @@ public class AddressController {
             addressDto.setUserId(loggedUser.getId());
             addressService.createAddress(addressDto);
             redirectAttributes.addFlashAttribute("successMessage", "Endereço criado com sucesso!");
-            return "redirect:/addresses";
+            return "redirect:/user/dashboard";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Erro ao criar endereço: " + e.getMessage());
-            return "redirect:/addresses/new";
-        }
+            return "redirect:/user/dashboard";
+        }   
     }
 
     @GetMapping("/{id}/edit")
@@ -160,15 +160,15 @@ public class AddressController {
 
             if (address.isEmpty() || !address.get().getUserId().equals(loggedUser.getId())) {
                 redirectAttributes.addFlashAttribute("errorMessage", "Endereço não encontrado ou você não tem permissão");
-                return "redirect:/addresses";
+                return "redirect:/user/dashboard";
             }
 
             addressService.deleteAddress(id);
             redirectAttributes.addFlashAttribute("successMessage", "Endereço deletado com sucesso!");
-            return "redirect:/addresses";
+            return "redirect:/user/dashboard";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Erro ao deletar endereço: " + e.getMessage());
-            return "redirect:/addresses";
+            return "redirect:/user/dashboard";
         }
     }
 }
