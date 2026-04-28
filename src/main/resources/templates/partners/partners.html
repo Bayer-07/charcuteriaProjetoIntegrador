@@ -31,7 +31,16 @@
         <section class="partner-content">
 
             <div class="partner-form">
-                <h2>Seja nosso parceiro</h2>
+
+                <div th:if="${success}" class="alert success">
+                    <p th:text="${success}"></p>
+                </div>
+
+                <div th:if="${error}" class="alert error">
+                    <p th:text="${error}"></p>
+                </div>
+
+                <h2 class="be-our-partner">Seja nosso parceiro</h2>
 
                 <form th:action="@{/partners}" method="post" th:object="${partner}">
 
@@ -58,7 +67,7 @@
             </div>
 
             <div class="partner-info">
-                <h2>Por que ser parceiro?</h2>
+                <h2 class="why-be-a-partner">Por que ser parceiro?</h2>
                 <p>
                     A Koch Charcutaria oferece condições especiais para restaurantes, empórios,
                     delicatessens e lojas especializadas. Nossos produtos artesanais trazem

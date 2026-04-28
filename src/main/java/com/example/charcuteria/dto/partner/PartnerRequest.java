@@ -1,13 +1,18 @@
 package com.example.charcuteria.dto.partner;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class PartnerRequest {
+    @NotBlank(message = "Nome é obrigatório")
     private String name;
     private String cnpj;
     private String responsible;
+        @NotBlank(message = "Email é obrigatório")
     private String email;
     private String phone;
     private String message;
 
+    
     public String getName() {
         return name;
     }
