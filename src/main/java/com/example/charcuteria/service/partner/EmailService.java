@@ -19,7 +19,8 @@ public class EmailService {
         SimpleMailMessage message = new SimpleMailMessage();
 
         message.setTo("charcuteriakoch@gmail.com");
-        message.setSubject("Nova solicitação de parceria");
+        message.setFrom("charcuteriakoch@gmail.com");
+        message.setSubject("Nova parceria -> " + dto.getName());
 
         message.setText(
             "--> Nova Parceria <--\n\n" +
