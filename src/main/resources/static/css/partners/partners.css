@@ -27,7 +27,7 @@ h1, h2, h3 {
     color: white;
     text-align: center;
     z-index: 2;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+    text-shadow: 0 2px 20px rgba(0,0,0,0.7);
 }
 
 .be-our-partner {
