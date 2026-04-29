@@ -43,13 +43,13 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 // rotas publicas
-                .requestMatchers("/", "/index", "/login", "/loginAdmin", "/register", "/css/**", "/js/**", "/images/**", "/uploads/**", "/address/**").permitAll()
+                .requestMatchers("/", "/index", "/index/top-products", "/login", "/loginAdmin", "/register", "/css/**", "/js/**", "/images/**", "/uploads/**", "/address/**", "/produtos").permitAll()
 
                 // rotas admin where getAuthorities.rote = "ROLE_ADMIN"
                 .requestMatchers("/admin/**", "/registerAdmin").hasRole("ADMIN")
 
                 // rotas com permissao geral
-                .requestMatchers("/user/dashboard/**").hasAnyRole("CUSTOMER", "ADMIN")
+                .requestMatchers("/user/dashboard/**", "/cart/**").hasAnyRole("CUSTOMER", "ADMIN")
 
                 // qualquer rota precisa tar logado (segurança)
                 .anyRequest().authenticated()

@@ -5,7 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.charcuteria.dto.category.CategoryRequestDto;
 import com.example.charcuteria.dto.product.ProductsRequestDto;
 import com.example.charcuteria.dto.user.AdminDashboardResponseDto;
 import com.example.charcuteria.model.User;
@@ -35,19 +37,25 @@ public class AdminController {
 
             AdminDashboardResponseDto response = new AdminDashboardResponseDto(qntPedidos, valorDoMes, subsAtivo, productsWithLowStorage);
             model.addAttribute("data", response);
-            return "user/dashboardAdmin";
+            return "admin/dashboardAdmin";
         } catch (Exception e) {
             model.addAttribute("registrationError", "Internal server error, try again later please");
-            return "user/dashboardAdmin";
+            return "admin/dashboardAdmin";
         }
     }
 
     @GetMapping("/products")
-    public String showProductsDashboard(@AuthenticationPrincipal User loggedUser, Model model) {
+    public String showProductsDashboard(@RequestParam(value = "type", required = false, defaultValue = "products") String type,@AuthenticationPrincipal User loggedUser, Model model) {
         try {
-            model.addAttribute("products", adminService.listProducts());
+            model.addAttribute("type", type);
             model.addAttribute("categories", adminService.getAllCategories());
             model.addAttribute("productDto", new ProductsRequestDto());
+            model.addAttribute("categoryDto", new CategoryRequestDto());
+
+            if ("products".equals(type)) {
+                model.addAttribute("products", adminService.listProducts());
+            }
+
             return "admin/productsDashboard";
         } catch (Exception e) {
             return "admin/productsDashboard";

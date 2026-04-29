@@ -1,12 +1,11 @@
 package com.example.charcuteria.repository.category;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.example.charcuteria.model.Category;
+import com.example.charcuteria.dto.category.CategoryEditRequestDto;
+import com.example.charcuteria.dto.category.CategoryEditResponseDto;
+import com.example.charcuteria.dto.category.CategoryRequestDto;
 
 @Repository
 public class CategoryRepository {
@@ -17,89 +16,40 @@ public class CategoryRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<Category> findAll() {
-        String sql = "SELECT id, name, description FROM categories";
+    public CategoryEditResponseDto getById(Integer id) {
+        String sql = "SELECT name, description FROM categories WHERE id = ?";
 
-        return jdbcTemplate.query(
+        return jdbcTemplate.queryForObject(
             sql,
-            (rs, rowNum) -> {
-                Category c = new Category();
-                c.setName(rs.getString("name"));
-                c.setDesc(rs.getString("description"));
-                return c;
-            }
-        );
-    }
-
-    public Optional<Category> findById(Integer id) {
-        String sql = "SELECT id, name, description FROM categories WHERE id = ?";
-
-        List<Category> results = jdbcTemplate.query(
-            sql,
-            (rs, rowNum) -> {
-                Category c = new Category();
-                c.setName(rs.getString("name"));
-                c.setDesc(rs.getString("description"));
-                return c;
-            },
+            (rs, rowNum) -> new CategoryEditResponseDto(
+                rs.getString("name"),
+                rs.getString("description")
+            ),
             id
         );
-
-        return results.stream().findFirst();
     }
 
-    public Category save(Category category) {
-        if (category.getId() == null) {
-            String sql = "INSERT INTO categories (name, description) VALUES (?, ?)";
+    public Integer updateCategoryById(CategoryEditRequestDto category) {
+        String sql = "UPDATE categories SET name = ?, description = ? WHERE id = ?";
 
-            jdbcTemplate.update(
-                sql,
-                category.getName(),
-                category.getDesc()
-            );
-
-        } else {
-            String sql = "UPDATE categories SET name = ?, description = ? WHERE id = ?";
-
-            jdbcTemplate.update(
-                sql,
-                category.getName(),
-                category.getDesc(),
-                category.getId()
-            );
-        }
-
-        return category;
+        return jdbcTemplate.update(
+            sql,
+            category.getName(),
+            category.getDescription(),
+            category.getId()
+        );
     }
 
-    public void delete(Category category) {
+    public int createCategory(CategoryRequestDto category) {
+        String sql = "INSERT INTO categories (name, description) VALUES (?, ?)";
+
+        return jdbcTemplate.update(sql, category.getName(), category.getDescription());
+    }
+
+    public int deleteById(Integer id) {
         String sql = "DELETE FROM categories WHERE id = ?";
 
-        jdbcTemplate.update(sql, category.getId());
+        return jdbcTemplate.update(sql, id);
     }
 
-    public boolean existsByName(String name) {
-        String sql = "SELECT COUNT(*) FROM categories WHERE name = ?";
-
-        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, name);
-
-        return count != null && count > 0;
-    }
-
-    public Optional<Category> findByName(String name) {
-        String sql = "SELECT id, name, description FROM categories WHERE name = ?";
-
-        List<Category> results = jdbcTemplate.query(
-            sql,
-            (rs, rowNum) -> {
-                Category c = new Category();
-                c.setName(rs.getString("name"));
-                c.setDesc(rs.getString("description"));
-                return c;
-            },
-            name
-        );
-
-        return results.stream().findFirst();
-    }
 }
