@@ -1,5 +1,7 @@
 package com.example.charcuteria.service.subscription;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -107,13 +109,32 @@ public class SubscriptionService {
         SubscriptionPlan plan = planRepository.findById(subscription.getPlanId())
                 .orElseThrow(() -> new RuntimeException("Plano não encontrado"));
 
+        // Format date as DD/MM/YYYY
+        String formattedDate = formatDate(subscription.getStartedAt());
+
         return new UserSubscriptionResponseDto(
             subscription.getId(),
             plan.getName(),
             plan.getDescription(),
             plan.getPrice(),
             subscription.getStatus(),
-            subscription.getStartedAt()
+            formattedDate
         );
+    }
+
+    private String formatDate(String dateString) {
+        if (dateString == null || dateString.isEmpty()) {
+            return "";
+        }
+        try {
+            // Parse the date from database format (YYYY-MM-DD)
+            LocalDate date = LocalDate.parse(dateString);
+            // Format as DD/MM/YYYY
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            return date.format(formatter);
+        } catch (Exception e) {
+            // If parsing fails, return the original string
+            return dateString;
+        }
     }
 }
