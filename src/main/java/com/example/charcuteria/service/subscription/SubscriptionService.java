@@ -1,12 +1,14 @@
 package com.example.charcuteria.service.subscription;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.example.charcuteria.dto.subscription.SubscriptionRequest;
 import com.example.charcuteria.dto.subscription.SubscriptionResponse;
+import com.example.charcuteria.dto.subscription.UserSubscriptionResponseDto;
 import com.example.charcuteria.model.Subscription;
 import com.example.charcuteria.model.SubscriptionPlan;
 import com.example.charcuteria.repository.subscription.SubscriptionRepository;
@@ -42,6 +44,14 @@ public class SubscriptionService {
                 .stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    public Optional<UserSubscriptionResponseDto> getActiveSubscriptionByUserId(Integer userId) {
+        return repository.findByUserId(userId)
+                .stream()
+                .filter(sub -> "ACTIVE".equalsIgnoreCase(sub.getStatus()))
+                .findFirst()
+                .map(this::toUserDTO);
     }
 
     public SubscriptionResponse create(SubscriptionRequest request) {
@@ -91,5 +101,19 @@ public class SubscriptionService {
         dto.setStartedAt(subscription.getStartedAt());
         dto.setPrice(plan.getPrice());
         return dto;
+    }
+
+    private UserSubscriptionResponseDto toUserDTO(Subscription subscription) {
+        SubscriptionPlan plan = planRepository.findById(subscription.getPlanId())
+                .orElseThrow(() -> new RuntimeException("Plano não encontrado"));
+
+        return new UserSubscriptionResponseDto(
+            subscription.getId(),
+            plan.getName(),
+            plan.getDescription(),
+            plan.getPrice(),
+            subscription.getStatus(),
+            subscription.getStartedAt()
+        );
     }
 }
