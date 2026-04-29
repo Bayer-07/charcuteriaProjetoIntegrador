@@ -8,6 +8,7 @@ import com.example.charcuteria.dto.product.ProductCatalogResponseDto;
 import com.example.charcuteria.dto.product.ProductsEditRequestDto;
 import com.example.charcuteria.dto.product.ProductsEditResponseDto;
 import com.example.charcuteria.dto.product.ProductsRequestDto;
+import com.example.charcuteria.dto.product.TopProductResponseDto;
 import com.example.charcuteria.dto.product.ProductsResponseDto;
 import com.example.charcuteria.exceptions.BusinessException;
 import com.example.charcuteria.exceptions.ProductErrorCode;
@@ -47,6 +48,8 @@ public class ProductService {
         if (productRepository.updateProductById(product, categoryId, imageName) == 0) throw new BusinessException(ProductErrorCode.PRODUCT_NOT_FOUND);
     }
 
+    public List<TopProductResponseDto> getTopPurchasedProducts(int limit) {
+        return productRepository.getTopPurchasedProducts(limit);
     public List<ProductCatalogResponseDto> getProductsForCatalog() {
         return productRepository.getAllProductsForCatalog();
     }

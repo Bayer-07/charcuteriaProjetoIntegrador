@@ -21,10 +21,14 @@
             </div>
             <nav class="nav-menu">
                 <ul>
-                    <li><a href="/">Início</a></li>
-                    <li><a href="produtos">Catálogo</a></li>
-                    <li><a href="assinaturas">Assinaturas</a></li>
-                    <li><a href="parcerias">Parcerias</a></li>
+                    <nav class="nav-menu">
+                        <ul>
+                            <li><a th:href="@{/}">Início</a></li>
+                            <li><a th:href="@{/produtos}">Catálogo</a></li>
+                            <li><a th:href="@{/assinaturas}">Assinaturas</a></li>
+                            <li><a th:href="@{/partners}">Parcerias</a></li>
+                        </ul>
+                    </nav>
                 </ul>
             </nav>
             <div class="header-icons">
@@ -45,6 +49,98 @@
         </div>
     </header>
 
+    <main class="wrapper">
+        <section class="hero-carousel" aria-label="Carrossel de destaques da Koch Charcutaria">
+            <div class="carousel-track">
+                <article class="carousel-slide active" aria-hidden="false">
+                    <img th:src="@{/images/hero1.jpg}" src="/images/hero1.jpg"
+                        alt="Tábuas artesanais com frios selecionados">
+                </article>
+                <article class="carousel-slide" aria-hidden="true">
+                    <img th:src="@{/images/hero2.jpg}" src="/images/hero2.jpg"
+                        alt="Seleção premium de charcutaria gourmet">
+                </article>
+                <article class="carousel-slide" aria-hidden="true">
+                    <img th:src="@{/images/hero3.jpg}" src="/images/hero3.jpg"
+                        alt="Experiência gastronômica com embutidos especiais">
+                </article>
+            </div>
+
+            <div class="hero-overlay">
+                <h1>Sabor em Cada Fatia</h1>
+                <p>Feito com ingredientes selecionados e receitas ancestrais</p>
+                <a href="/produtos" class="hero-cta">Ver Catálogo</a>
+            </div>
+
+            <button class="carousel-control prev" type="button" aria-label="Imagem anterior">&#10094;</button>
+            <button class="carousel-control next" type="button" aria-label="Próxima imagem">&#10095;</button>
+
+            <div class="carousel-indicators" role="tablist" aria-label="Seleção de imagem do carrossel">
+                <button class="indicator active" type="button" role="tab" aria-label="Ir para imagem 1"
+                    aria-selected="true" data-slide="0"></button>
+                <button class="indicator" type="button" role="tab" aria-label="Ir para imagem 2" aria-selected="false"
+                    data-slide="1"></button>
+                <button class="indicator" type="button" role="tab" aria-label="Ir para imagem 3" aria-selected="false"
+                    data-slide="2"></button>
+            </div>
+        </section>
+        <section class="brand-story" aria-label="Tradição e sabor">
+            <div class="brand-story-content">
+                <div class="brand-story-text">
+                    <h2>Tradição e Sabor</h2>
+                    <span class="story-divider" aria-hidden="true"></span>
+                    <p>
+                        A Koch Charcutaria nasceu da paixão por embutidos artesanais seguindo receitas transmitidas por
+                        gerações de famílias do sul do Brasil. Cada produto é cuidadosamente preparado com ingredientes
+                        selecionados, sem conservantes artificiais, respeitando o tempo de cura e maturação que garante
+                        o sabor único que você merece.
+                    </p>
+                </div>
+                <div class="brand-story-image">
+                    <img th:src="@{/images/index1.jpg}" src="/images/index1.jpg"
+                        alt="Prato de charcutaria com cortes especiais e acompanhamentos">
+                </div>
+            </div>
+        </section>
+
+        <section class="featured-products" aria-label="Nossos produtos mais comprados">
+            <div class="featured-products-container">
+                <h2>Nossos Produtos</h2>
+                <span class="story-divider" aria-hidden="true"></span>
+
+                <div id="featured-products-list" class="featured-products-list"></div>
+
+                <a href="/produtos" class="view-all-products">Ver Todos os Produtos</a>
+            </div>
+        </section>
+
+        <section class="subscription-wrapper" aria-label="Promoção de assinatura mensal">
+            <div class="subscription-promo">
+                <h2>Assinatura Koch</h2>
+                <p>
+                    Receba todo mês em casa uma seleção curada dos nossos
+                </p>
+                <p>
+                    melhores produtos. Planos a partir de R$ 89,90/mês.
+                </p>
+                <a href="/assinaturas">Assinar Agora</a>
+            </div>
+        </section>
+
+        <section class="partner-wrapper">
+            <div class="partner">
+                <h2>Parcerias B2B</h2>
+                <p>
+                    Restaurantes, empórios e delicatessens: conheça nossas condições
+                </p>
+                <p>
+                    especiais para parceiros comerciais.
+                </p>
+                <a href="/partners">Entre em contato</a>
+            </div>
+        </section>
+    </main>
+
     <footer class="main-footer">
         <div class="footer-container">
             <div class="footer-column footer-logo">
@@ -54,7 +150,7 @@
             <div class="footer-column">
                 <h3>Catálogo</h3>
                 <ul>
-                    <li><a href="/catalogo">Catálogo</a></li>
+                    <li><a href="/produtos">Catálogo</a></li>
                     <li><a href="/assinaturas">Assinaturas</a></li>
                     <li><a href="/parcerias">Parcerias</a></li>
                     <li><a href="/privacidade">Política de privacidade</a></li>
@@ -87,44 +183,8 @@
         </div>
     </footer>
 
-    <script>
-        // Função de busca
-        const searchInput = document.getElementById('searchInput');
-        const filterButtons = document.querySelectorAll('.filter-btn');
-        const productCards = document.querySelectorAll('.product-card');
-
-        function filterProducts() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
-
-            productCards.forEach(card => {
-                const productName = card.querySelector('.product-name').textContent.toLowerCase();
-                const productDescription = card.querySelector('.product-description').textContent.toLowerCase();
-                const productCategory = card.dataset.category;
-
-                const matchesSearch = productName.includes(searchTerm) || productDescription.includes(searchTerm);
-                const matchesFilter = activeFilter === 'todos' || productCategory === activeFilter;
-
-                if (matchesSearch && matchesFilter) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
-
-        // Event listeners para busca
-        searchInput.addEventListener('input', filterProducts);
-
-        // Event listeners para filtros
-        filterButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-                e.target.classList.add('active');
-                filterProducts();
-            });
-        });
-    </script>
+    <script th:src="@{/js/carrossel.js}"></script>
+    <script th:src="@{/js/indexTopProducts.js}" src="/js/indexTopProducts.js"></script>
 </body>
 
 </html>
