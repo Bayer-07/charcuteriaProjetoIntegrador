@@ -48,4 +48,14 @@ public class CartRepository {
         ), userId);
     }
 
+    public Integer getCurrentlyQuantity(Integer itemId) {
+        String sql = "SELECT quantity FROM cart_items WHERE id = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, itemId);
+    }
+
+    public void updateCartQuantity(Integer itemId, Integer quantity) {
+        String sql = "UPDATE cart_items SET quantity = ? WHERE id = ?";
+        jdbcTemplate.update(sql, quantity, itemId);
+    }
+
 }
