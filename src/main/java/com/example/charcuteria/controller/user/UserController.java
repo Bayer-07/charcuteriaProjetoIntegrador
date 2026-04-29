@@ -15,7 +15,9 @@ import com.example.charcuteria.enums.UserRoleEnum;
 import com.example.charcuteria.exceptions.BusinessException;
 import com.example.charcuteria.exceptions.UserErrorCode;
 import com.example.charcuteria.model.User;
+import com.example.charcuteria.service.address.AddressService;
 import com.example.charcuteria.service.user.UserService;
+import com.example.charcuteria.dto.address.AddressDtoRequest;
 
 import jakarta.validation.Valid;
 
@@ -24,35 +26,37 @@ import jakarta.validation.Valid;
 public class UserController {
 
     private final UserService userService;
+    private final AddressService addressService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, AddressService addressService) {
         this.userService = userService;
+        this.addressService = addressService;
     }
 
     // Get
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         model.addAttribute("userDto", new UserRegistrationDto());
-        return "user/registration-view";
+        return "public/registration-view";
     }
 
     // vai pra rota privada pra admin quando acabarem os testes
     @GetMapping("/registerAdmin")
     public String showAdminRegistrationAdmin(Model model) {
         model.addAttribute("userDto", new UserRegistrationDto());
-        return "user/adminRegistration-view";
+        return "public/adminRegistration-view";
     }
 
     @GetMapping("/login")
     public String showUserLoginForm(Model model) {
         model.addAttribute("userDto", new UserLoginDto());
-        return "login";
+        return "public/login";
     }
 
     @GetMapping("/loginAdmin")
     public String showAdminLoginForm(Model model) {
         model.addAttribute("userDto", new UserLoginDto());
-        return "loginAdmin";
+        return "public/loginAdmin";
     }
 
     @GetMapping("/handleProfile")
@@ -73,15 +77,22 @@ public class UserController {
 
     @GetMapping("/user/dashboard")
     public String showDashboard(@AuthenticationPrincipal User loggedUser, Model model) {
+        if (loggedUser == null) {
+            return "redirect:/login";
+        }
+
+        var addresses = addressService.getAddressesByUserId(loggedUser.getId());
         model.addAttribute("user", loggedUser);
-        return "user/dashboard";
+        model.addAttribute("addresses", addresses);
+        model.addAttribute("addressDto", new AddressDtoRequest());
+        return "public/dashboard";
     }
 
     // Post
     @PostMapping("/register")
     public String createUser(@Valid @ModelAttribute("userDto") UserRegistrationDto userDto, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "user/registration-view";
+            return "public/registration-view";
         }
 
         try {
@@ -90,11 +101,11 @@ public class UserController {
             return "redirect:/login";
         } catch (BusinessException ex) {
             model.addAttribute("registrationError", ex.getUserErrorCode().getMessage());
-            return "user/registration-view";
+            return "public/registration-view";
 
         } catch (Exception e) {
             model.addAttribute("registrationError", "Internal server error, try again later please");
-            return "user/registration-view";
+            return "public/registration-view";
         }
     }
 

@@ -1,6 +1,6 @@
 package com.example.charcuteria.model;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 

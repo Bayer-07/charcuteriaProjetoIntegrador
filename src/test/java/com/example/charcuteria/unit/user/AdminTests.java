@@ -44,7 +44,7 @@ public class AdminTests {
     void testAdminRegistrationView_Authorized() throws Exception {
         mockMvc.perform(get("/registerAdmin"))
             .andExpect(status().isOk())
-            .andExpect(view().name("user/adminRegistration-view"));
+            .andExpect(view().name("public/adminRegistration-view"));
     }
 
     @Test
@@ -68,7 +68,7 @@ public class AdminTests {
 
         mockMvc.perform(get("/admin/dashboard"))
             .andExpect(status().isOk())
-            .andExpect(view().name("user/dashboardAdmin"))
+            .andExpect(view().name("admin/dashboardAdmin"))
             .andExpect(model().attributeExists("data"));
     }
 

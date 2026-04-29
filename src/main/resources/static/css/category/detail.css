@@ -1,0 +1,11 @@
+.detail-item {
+    margin-bottom: 15px;
+}
+
+.detail-label {
+    font-weight: bold;
+}
+
+.detail-value {
+    color: #333;
+}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/category/base.css}">
+    <link rel="stylesheet" th:href="@{/css/category/detail.css}">
+    <title>Detalhes</title>
+</head>
+
+<body>
+
+
+    <!--Detalhes de um elemento da lista-->
+
+    <h1> Detalhes da Categoria </h1>
+
+    <p><strong>ID:</strong> <span th:text="${category.id}"> </span> </p>
+    <p><strong>Nome:</strong> <span th:text="${category.name}"> </span> </p>
+    <p><strong>Descrição:</strong> <span th:text="${category.desc}"> </span> </p>
+
+    <a href="/categories">Voltar</a>
+</body>
+
+</html>

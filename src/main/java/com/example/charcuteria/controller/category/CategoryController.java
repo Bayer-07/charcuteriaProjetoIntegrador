@@ -2,63 +2,63 @@ package com.example.charcuteria.controller.category;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.example.charcuteria.dto.category.CategoryRequest;
-import com.example.charcuteria.dto.category.CategoryResponse;
+import com.example.charcuteria.dto.category.CategoryEditRequestDto;
+import com.example.charcuteria.dto.category.CategoryEditResponseDto;
+import com.example.charcuteria.dto.category.CategoryRequestDto;
 import com.example.charcuteria.service.category.CategoryService;
 
+import jakarta.validation.Valid;
+
 @Controller
-@RequestMapping("/categories")
+@RequestMapping("/admin/categories")
 public class CategoryController {
 
-    private final CategoryService service;
+    private final CategoryService categoryService;
 
-    public CategoryController(CategoryService service) {
-        this.service = service;
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
     }
 
-    @GetMapping
-    public String listCategories(Model model) {
-        model.addAttribute("categories", service.returnAll());
-        return "category/list";
+    @GetMapping("/{id}")
+    @ResponseBody
+    public CategoryEditResponseDto getById(@PathVariable Integer id) {
+        var response = categoryService.getById(id);
+        if (response != null) return response;
+        throw new RuntimeException();
     }
 
-    @GetMapping("/{id}") 
-    public String getById(@PathVariable Integer id, Model model) {
-        model.addAttribute("category", service.returnById(id));
-        return "category/detail";
-    }
-    
-    @PostMapping("/new")
-    public String showCreateForm(Model model) {
-        model.addAttribute("category", new CategoryRequest());
-        return "category/form";
+    @PostMapping("/update")
+    public String update(@Valid @ModelAttribute("categoryDto") CategoryEditRequestDto category, Model model) {
+        categoryService.updateCategoryById(category);
+        return "redirect:/admin/products?type=categories";
     }
 
-    @GetMapping("edit/{id}")
-    public String showEditForm(@PathVariable Integer id, Model model) {
-        CategoryResponse response = service.returnById(id);
-        CategoryRequest request = new CategoryRequest();
-
-        request.setName(response.getName());
-        request.setDesc(response.getDesc());
-
-        model.addAttribute("category", request);
-        model.addAttribute("id", id);
-
-        return "category/form";
+    @PostMapping("/create")
+    public String createCategory(@Valid @ModelAttribute("categoryDto") CategoryRequestDto category, Model model) {
+        try {
+            categoryService.createCategory(category);
+            return "redirect:/admin/products?type=categories";
+        } catch (Exception e) {
+            System.out.println(e);
+            return "redirect:/admin/products?type=products";
+        }
     }
 
-    @PostMapping("/update/{id}")
-    public String update(@PathVariable Integer id, @ModelAttribute("category") CategoryRequest request) {
-        service.update(id, request);
-        return "redirect:/categories";
-    }
-
-    @PostMapping("/delete/{id}") 
-    public String delete(@PathVariable Integer id) {
-        service.deleteById(id);
-        return "redirect:/categories";
+    @PostMapping("/delete/{id}")
+    public String deleteById(@PathVariable Integer id) {
+        try {
+            categoryService.deleteById(id);
+            return "redirect:/admin/products?type=categories";
+        } catch (Exception e) {
+            System.out.println(e);
+            return "redirect:/admin/products?type=products";
+        }
     }
 }

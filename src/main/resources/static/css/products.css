@@ -14,8 +14,48 @@
     margin-bottom: 30px;
 }
 
-.btn-new-product {
-    background-color: #6eff8b; /* Bright green from image */
+.productsCategory {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+}
+
+.filter-link {
+    font-size: 24px;
+    font-weight: 700;
+    color: #999;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    cursor: pointer;
+}
+
+.filter-link:hover {
+    color: #666;
+}
+
+.filter-link.active {
+    color: #2c1614;
+}
+
+.filter-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #8b0000;
+    border-radius: 2px;
+}
+
+.buttonsCreate {
+    display: flex;
+    gap: 4rem;
+}
+
+.btn-new-category {
+    background-color: #EEE967;
     color: #1a5a2a;
     text-decoration: none;
     padding: 10px 20px;
@@ -27,7 +67,21 @@
     transition: filter 0.2s;
 }
 
-.btn-new-product:hover {
+.btn-new-product {
+    background-color: #6eff8b;
+    color: #1a5a2a;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: filter 0.2s;
+}
+
+.btn-new-product:hover,
+.btn-new-category:hover {
     filter: brightness(0.95);
 }
 
@@ -45,7 +99,7 @@
     text-align: left;
     color: #888;
     font-weight: 500;
-    padding: 0 20px;
+    padding: 0 5px;
     font-size: 14px;
 }
 
