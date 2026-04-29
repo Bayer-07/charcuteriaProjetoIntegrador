@@ -43,7 +43,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 // rotas publicas
-                .requestMatchers("/", "/login", "/loginAdmin", "/register", "/css/**", "/js/**", "/images/**", "/uploads/**", "/address/**", "/produtos").permitAll()
+                .requestMatchers("/", "/index", "/index/top-products", "/login", "/loginAdmin", "/register", "/css/**", "/js/**", "/images/**", "/uploads/**", "/address/**", "/produtos").permitAll()
 
                 // rotas admin where getAuthorities.rote = "ROLE_ADMIN"
                 .requestMatchers("/admin/**", "/registerAdmin").hasRole("ADMIN")
