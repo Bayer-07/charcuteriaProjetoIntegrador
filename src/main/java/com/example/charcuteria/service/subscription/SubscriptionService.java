@@ -51,7 +51,7 @@ public class SubscriptionService {
     public Optional<UserSubscriptionResponseDto> getActiveSubscriptionByUserId(Integer userId) {
         return repository.findByUserId(userId)
                 .stream()
-                .filter(sub -> "ACTIVE".equalsIgnoreCase(sub.getStatus()))
+                .filter(sub -> "ACTIVE".equalsIgnoreCase(sub.getStatus()) || "PAUSED".equalsIgnoreCase(sub.getStatus()))
                 .findFirst()
                 .map(this::toUserDTO);
     }
