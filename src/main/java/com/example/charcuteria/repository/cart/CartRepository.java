@@ -16,10 +16,11 @@ public class CartRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Integer getProductQuantity(Integer productId, Integer userId) {
-        String sql = "SELECT quantity FROM cart_items WHERE user_id = ? AND product_id = ?";
+    public Boolean getProductQuantity(Integer productId, Integer userId) {
+        String sql = "SELECT COUNT(*) FROM cart_items WHERE user_id = ? AND product_id = ?";
 
-        return jdbcTemplate.queryForObject(sql, Integer.class, userId, productId);
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, userId, productId);
+        return count != null && count > 0;
     }
 
     public Integer addOneQuantity(Integer productId, Integer userId) {
@@ -35,7 +36,7 @@ public class CartRepository {
     }
 
     public List<CartResponseDto> findAllByUserId(Integer userId) {
-        String sql = "SELECT ci.id, ci.quantity, ci.product_id, p.name, p.price, p.image_path FROM cart_items ci INNER JOIN products p ON ci.product_id = p.id WHERE ci.user_id = ?";
+        String sql = "SELECT ci.id, ci.quantity, ci.product_id, p.name, p.price, p.image_path FROM cart_items ci INNER JOIN products p ON ci.product_id = p.id WHERE ci.user_id = ? ORDER BY id";
 
         return jdbcTemplate.query(sql,
         (rs, rowNum) -> new CartResponseDto(
@@ -58,4 +59,9 @@ public class CartRepository {
         jdbcTemplate.update(sql, quantity, itemId);
     }
 
+    public Boolean deleteProductFromCart(Integer cartItemId) {
+        String sql = "DELETE FROM cart_items WHERE id = ?";
+        int rowsAffected = jdbcTemplate.update(sql, cartItemId);
+        return rowsAffected > 0;
+    }
 }
