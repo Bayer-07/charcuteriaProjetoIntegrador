@@ -99,7 +99,8 @@
             <div th:if="${hasSubscription}" class="subscription-actions-section">
                 <p style="font-weight: 600; color: #555; font-size: 0.9rem; letter-spacing: 0.3px; margin-bottom: 12px; margin-top: 24px;">Ações:</p>
                 <div class="subscription-actions">
-                    <button type="button" class="btn-pause">Pausar Assinatura</button>
+                    <button type="button" class="btn-pause" th:if="${subscription.status == 'ACTIVE'}">Pausar Assinatura</button>
+                    <button type="button" class="btn-renew" th:if="${subscription.status == 'PAUSED'}">Renovar Assinatura</button>
                     <button type="button" class="btn-cancel">Cancelar Assinatura</button>
                 </div>
             </div>
@@ -229,6 +230,25 @@
             flex-wrap: wrap;
         }
 
+        .btn-renew {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            background: linear-gradient(135deg, #183b2e 0%, #235743 100%);
+            color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+            letter-spacing: 0.3px;
+        }
+
+        .btn-renew:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+        }
+
         .btn-pause {
             padding: 10px 18px;
             border: none;
@@ -247,6 +267,14 @@
             background-color: #ffb700;
             transform: translateY(-1px);
             box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+        }
+
+        .btn-pause:focus {
+            outline: none;
+        }
+
+        .btn-renew:focus {
+            outline: none;
         }
 
         .btn-cancel {
