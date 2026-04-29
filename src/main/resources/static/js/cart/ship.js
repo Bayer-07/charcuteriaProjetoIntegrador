@@ -25,7 +25,7 @@ function calculateShipping() {
         resultDiv.style.display = "block";
         resultDiv.style.color = "#27ae60";
 
-        const valorComAumento = totalOriginal * 1.15;
+        const valorComAumento = totalOriginal / 100 * 1.15;
 
         totalElement.innerText = valorComAumento.toLocaleString('pt-BR', {
             style: 'currency',

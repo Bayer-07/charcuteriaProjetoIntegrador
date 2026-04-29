@@ -27,4 +27,15 @@ public class CartService {
     public List<CartResponseDto> getAllCartItems(Integer userId) {
         return cartRepository.findAllByUserId(userId);
     }
+
+    public void updateItemQuantity(Integer itemId, Integer delta) {
+        int currentlyQnt = cartRepository.getCurrentlyQuantity(itemId);
+        int newQnt = currentlyQnt + delta;
+
+        if (newQnt < 0) {
+            newQnt = 0;
+        }
+
+        cartRepository.updateCartQuantity(itemId, newQnt);
+    }
 }
