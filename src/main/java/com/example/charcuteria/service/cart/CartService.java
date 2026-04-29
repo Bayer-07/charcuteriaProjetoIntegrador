@@ -17,7 +17,7 @@ public class CartService {
     private CartRepository cartRepository;
 
     public void addCartItem(Integer productId, Integer userId) {
-        if (cartRepository.getProductQuantity(productId, userId) >= 1) {
+        if (cartRepository.getProductQuantity(productId, userId) == true) {
             cartRepository.addOneQuantity(productId, userId);
             return;
         }
@@ -37,5 +37,9 @@ public class CartService {
         }
 
         cartRepository.updateCartQuantity(itemId, newQnt);
+    }
+
+    public void deleteProductFromCart(Integer cartItemId) {
+        if (cartRepository.deleteProductFromCart(cartItemId) == false) throw new RuntimeException("produto nao encontrado no carrinho");
     }
 }

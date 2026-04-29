@@ -10,6 +10,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -64,6 +65,18 @@ public class CartController {
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deleteProductFromCart(@PathVariable Integer id) {
+        try {
+            System.out.println(id);
+            cartService.deleteProductFromCart(id);
+            return "redirect:/cart";
+        } catch (Exception e) {
+            System.out.println(e);
+            return "redirect:/cart";
         }
     }
 }
