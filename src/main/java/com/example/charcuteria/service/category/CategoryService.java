@@ -1,81 +1,51 @@
 package com.example.charcuteria.service.category;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
-import com.example.charcuteria.dto.category.CategoryRequest;
-import com.example.charcuteria.dto.category.CategoryResponse;
-import com.example.charcuteria.model.Category;
+import com.example.charcuteria.dto.category.CategoryEditRequestDto;
+import com.example.charcuteria.dto.category.CategoryEditResponseDto;
+import com.example.charcuteria.dto.category.CategoryRequestDto;
+import com.example.charcuteria.exceptions.BusinessException;
+import com.example.charcuteria.exceptions.ProductErrorCode;
 import com.example.charcuteria.repository.category.CategoryRepository;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class CategoryService {
 
-    private final CategoryRepository repository;
+    private final CategoryRepository categoryRepository;
 
-    public CategoryService(CategoryRepository repository) {
-        this.repository = repository;
+    public CategoryService(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
     }
 
-    public List<CategoryResponse> returnAll() {
-        return repository.findAll()
-                .stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
+    public CategoryEditResponseDto getById(Integer id) {
+        return categoryRepository.getById(id);
     }
 
-    public CategoryResponse returnById(Integer id) {
-        Category category = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
-
-        return toDTO(category);
+    public void createCategory(CategoryRequestDto category) {
+        if (categoryRepository.createCategory(category) == 0 ) throw new BusinessException(ProductErrorCode.PRODUCT_NOT_FOUND);
     }
 
-    public CategoryResponse returnByName(String name) {
-        Category category = repository.findByName(name)
-        .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
-
-        return toDTO(category);
-    }
-
-    public CategoryResponse create(CategoryRequest request) {
-        Category category = toEntity(request);
-        Category saved = repository.save(category);
-        return toDTO(saved);
-    }
-
-    public CategoryResponse update(Integer id, CategoryRequest request) {
-        Category category = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
-
-        category.setName(request.getName());
-        category.setDescription(request.getDescription());
-
-        Category updated = repository.save(category);
-        return toDTO(updated);
+    public void updateCategoryById(CategoryEditRequestDto category) {
+        if (categoryRepository.updateCategoryById(category) == 0) throw new BusinessException(ProductErrorCode.PRODUCT_NOT_FOUND);
     }
 
     public void deleteById(Integer id) {
-        Category category = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
-
-        repository.delete(category);
+        try {
+            int rows = categoryRepository.deleteById(id);
+            if (rows == 0) {
+                throw new EntityNotFoundException("Category with ID " + id + " not found");
+            }
+        } catch (DataAccessException e) {
+            String dbMessage = e.getMostSpecificCause().getMessage();
+            if (dbMessage != null && dbMessage.contains("active products exist")) {
+                throw new RuntimeException("Cannot delete: active products linked.");
+            }
+            throw e;
+        }
     }
 
-    // Mappers de Dto e Entity
-    private Category toEntity(CategoryRequest dto) {
-        Category category = new Category();
-        category.setName(dto.getName());
-        category.setDescription(dto.getDescription());
-        return category;
-    }
-
-    private CategoryResponse toDTO(Category category) {
-        CategoryResponse dto = new CategoryResponse();
-        dto.setName(category.getName());
-        dto.setDesc(category.getDescription());
-        return dto;
-    }
 }

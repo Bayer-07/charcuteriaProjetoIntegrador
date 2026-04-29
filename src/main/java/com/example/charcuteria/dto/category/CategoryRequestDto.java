@@ -1,9 +1,14 @@
 package com.example.charcuteria.dto.category;
 
-public class CategoryRequest {
+public class CategoryRequestDto {
     private String name;
     private String description;
 
+    public CategoryRequestDto(){}
+    public CategoryRequestDto(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
     public String getName() {
         return name;
     }
