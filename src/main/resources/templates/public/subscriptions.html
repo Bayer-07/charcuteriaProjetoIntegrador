@@ -56,49 +56,56 @@
         <div class="user-info">
             <h1>Minhas Assinaturas</h1>
             <div class="infos">
-                <div th:if="${hasSubscription}">
-                    <div class="subscription-card">
-                        <div class="subscription-header">
-                            <h2 th:text="${subscription.planName}">Plano</h2>
-                            <span class="subscription-status" th:class="'status-' + ${subscription.status.toLowerCase()}" th:text="${subscription.status}">ATIVO</span>
+                <div>
+                    <div th:if="${hasSubscription}">
+                        <p>Plano:</p>
+                        <div><span th:text="${subscription.planName}">Plano</span></div>
+                        <p style="margin-top: 16px;">Status:</p>
+                        <div>
+                            <span th:class="'status-badge-' + ${subscription.status.toLowerCase()}"
+                                th:text="${subscription.status == 'ACTIVE' ? 'Ativo' : subscription.status == 'PAUSED' ? 'Pausado' : 'Cancelado'}">
+                                Ativo
+                            </span>
                         </div>
+                    </div>
+                    <div th:if="${!hasSubscription}">
+                        <p>Nenhuma Assinatura</p>
+                        <div><span>Você não possui assinatura ativa</span></div>
+                    </div>
+                </div>
 
-                        <div class="subscription-body">
-                            <p class="subscription-description" th:text="${subscription.planDescription}">
-                                Descrição do plano
-                            </p>
-
-                            <div class="subscription-details">
-                                <div class="detail-item">
-                                    <span class="detail-label">Preço Mensal:</span>
-                                    <span class="detail-value" th:text="'R$ ' + ${#numbers.formatDecimal(subscription.planPrice, 1, 'POINT', 2, 'COMMA')}">R$ 0,00</span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Data de Início:</span>
-                                    <span class="detail-value" th:text="${subscription.startedAt}">00/00/0000</span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Status:</span>
-                                    <span class="detail-value" th:text="${subscription.status}">ATIVO</span>
-                                </div>
-                            </div>
-
-                            <div class="subscription-actions">
-                                <button type="button" class="btn-action btn-pause">Pausar Assinatura</button>
-                                <button type="button" class="btn-action btn-cancel">Cancelar Assinatura</button>
-                            </div>
+                <div th:if="${hasSubscription}">
+                    <p>Detalhes da Assinatura:</p>
+                    <div class="subscription-details-grid">
+                        <div class="subscription-detail-item">
+                            <span class="detail-label">Preço Mensal:</span>
+                            <span class="detail-value" th:text="'R$ ' + ${#numbers.formatDecimal(subscription.planPrice, 1, 'POINT', 2, 'COMMA')}">R$ 0,00</span>
+                        </div>
+                        <div class="subscription-detail-item">
+                            <span class="detail-label">Data de Início:</span>
+                            <span class="detail-value" th:text="${subscription.startedAt}">00/00/0000</span>
                         </div>
                     </div>
                 </div>
 
-                <div th:if="${!hasSubscription}" class="subscription-empty">
-                    <p>Você não possui nenhuma assinatura ativa no momento.</p>
-                    <a href="/assinaturas" class="btn-subscribe">Contratar uma Assinatura</a>
+                <div th:if="${!hasSubscription}">
+                    <div style="text-align: center; padding: 24px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(250, 248, 246, 0.98)); border: 1px dashed rgba(32, 26, 23, 0.12); border-radius: 12px; margin-top: 16px;">
+                        <p style="color: #6a5f59; margin: 0 0 16px; font-size: 0.95rem;">Contratar uma assinatura e aproveitar os benefícios</p>
+                        <a href="/assinaturas" style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; height: 40px; border-radius: 8px; background: linear-gradient(135deg, #183b2e 0%, #235743 100%); color: #fff; font-weight: 600; font-size: 0.95rem; box-shadow: 0 8px 18px rgba(24, 59, 46, 0.14); text-decoration: none; transition: all 0.2s ease; letter-spacing: 0.3px;">Ver Planos</a>
+                    </div>
                 </div>
+            </div>
 
-                <div th:if="${error}" class="error-message">
-                    <p th:text="${error}"></p>
+            <div th:if="${hasSubscription}" class="subscription-actions-section">
+                <p style="font-weight: 600; color: #555; font-size: 0.9rem; letter-spacing: 0.3px; margin-bottom: 12px; margin-top: 24px;">Ações:</p>
+                <div class="subscription-actions">
+                    <button type="button" class="btn-pause">Pausar Assinatura</button>
+                    <button type="button" class="btn-cancel">Cancelar Assinatura</button>
                 </div>
+            </div>
+
+            <div th:if="${error}" class="error-message" style="margin-top: 24px;">
+                <p th:text="${error}"></p>
             </div>
         </div>
     </main>
@@ -146,161 +153,119 @@
     </footer>
 
     <style>
-        .subscription-card {
-            background: #f9f9f9;
-            border-left: 5px solid #8B4513;
-            border-radius: 8px;
-            padding: 24px;
-            margin: 20px 0;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .subscription-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-            border-bottom: 2px solid #e0e0e0;
-            padding-bottom: 12px;
-        }
-
-        .subscription-header h2 {
-            margin: 0;
-            color: #333;
-            font-size: 1.5em;
-        }
-
-        .subscription-status {
+        .status-badge-active {
+            display: inline-block;
             padding: 6px 12px;
-            border-radius: 20px;
-            font-weight: bold;
+            border-radius: 6px;
+            font-weight: 600;
             font-size: 0.85em;
-        }
-
-        .status-active {
             background-color: #d4edda;
             color: #155724;
+            width: fit-content;
         }
 
-        .status-paused {
+        .status-badge-paused {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85em;
             background-color: #fff3cd;
             color: #856404;
+            width: fit-content;
         }
 
-        .status-cancelled {
+        .status-badge-cancelled {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85em;
             background-color: #f8d7da;
             color: #721c24;
+            width: fit-content;
         }
 
-        .subscription-body {
-            padding: 12px 0;
-        }
-
-        .subscription-description {
-            color: #666;
-            margin-bottom: 16px;
-            line-height: 1.5;
-        }
-
-        .subscription-details {
+        .subscription-details-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 16px;
-            margin-bottom: 24px;
-            padding: 16px;
-            background: #fff;
-            border-radius: 6px;
+            margin-bottom: 0;
         }
 
         @media (max-width: 768px) {
-            .subscription-details {
+            .subscription-details-grid {
                 grid-template-columns: 1fr;
             }
         }
 
-        .detail-item {
+        .subscription-detail-item {
             display: flex;
             flex-direction: column;
         }
 
         .detail-label {
-            font-weight: bold;
+            font-weight: 600;
             color: #555;
             margin-bottom: 4px;
             font-size: 0.9em;
+            letter-spacing: 0.3px;
         }
 
         .detail-value {
-            color: #333;
-            font-size: 1.1em;
+            color: #17110f;
+            font-size: 1rem;
+        }
+
+        .subscription-actions-section {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(32, 26, 23, 0.06);
         }
 
         .subscription-actions {
             display: flex;
             gap: 12px;
-            justify-content: flex-start;
-        }
-
-        @media (max-width: 600px) {
-            .subscription-actions {
-                flex-direction: column;
-            }
-        }
-
-        .btn-action {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
+            flex-wrap: wrap;
         }
 
         .btn-pause {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
             background-color: #ffc107;
             color: #333;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+            letter-spacing: 0.3px;
         }
 
         .btn-pause:hover {
             background-color: #ffb700;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
         }
 
         .btn-cancel {
-            background-color: #dc3545;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            background: linear-gradient(135deg, #c43a45 0%, #8f202c 100%);
             color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+            letter-spacing: 0.3px;
         }
 
         .btn-cancel:hover {
-            background-color: #c82333;
-        }
-
-        .subscription-empty {
-            text-align: center;
-            padding: 40px;
-            background: #f9f9f9;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
-
-        .subscription-empty p {
-            color: #666;
-            font-size: 1.1em;
-            margin-bottom: 20px;
-        }
-
-        .btn-subscribe {
-            display: inline-block;
-            padding: 12px 30px;
-            background-color: #8B4513;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-subscribe:hover {
-            background-color: #6b3410;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
         }
 
         .error-message {
@@ -308,8 +273,24 @@
             background-color: #f8d7da;
             border-left: 4px solid #dc3545;
             color: #721c24;
-            border-radius: 4px;
-            margin: 20px 0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        .error-message p {
+            margin: 0;
+        }
+
+        @media (max-width: 600px) {
+            .subscription-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .btn-pause,
+            .btn-cancel {
+                width: 100%;
+            }
         }
     </style>
 </body>
