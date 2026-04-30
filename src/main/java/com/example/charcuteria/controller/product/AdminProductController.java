@@ -1,6 +1,5 @@
 package com.example.charcuteria.controller.product;
 
-import java.beans.PropertyEditor;
 import java.beans.PropertyEditorSupport;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -23,7 +22,6 @@ import com.example.charcuteria.service.product.FileStorageService;
 import com.example.charcuteria.service.product.ProductService;
 
 import ch.qos.logback.core.model.Model;
-import io.micrometer.observation.annotation.Observed;
 import jakarta.validation.Valid;
 
 @Controller

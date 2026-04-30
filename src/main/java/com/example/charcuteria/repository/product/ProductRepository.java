@@ -110,6 +110,8 @@ public class ProductRepository {
             ),
             limit
         );
+    }
+
     public List<ProductCatalogResponseDto> getAllProductsForCatalog() {
         String sql = "SELECT p.id, p.name, p.description, c.name AS category_name, p.price, p.stock_quantity, p.image_path FROM products p JOIN categories c ON c.id = p.category_id WHERE p.is_active = TRUE ORDER BY p.name ASC";
 
