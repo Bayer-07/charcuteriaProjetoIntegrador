@@ -98,3 +98,7 @@
 .btn-logout:active {
   transform: translateY(0);
 }
+
+.nav-menu .active {
+  color: #800000;
+}
