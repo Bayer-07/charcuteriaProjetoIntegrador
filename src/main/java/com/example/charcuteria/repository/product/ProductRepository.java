@@ -5,11 +5,11 @@ import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.example.charcuteria.dto.product.ProductCatalogDto;
+import com.example.charcuteria.dto.product.ProductCatalogResponseDto;
 import com.example.charcuteria.dto.product.ProductsEditRequestDto;
 import com.example.charcuteria.dto.product.ProductsEditResponseDto;
 import com.example.charcuteria.dto.product.ProductsRequestDto;
-import com.example.charcuteria.dto.product.ProductsResponseDto;
+import com.example.charcuteria.dto.product.TopProductResponseDto;
 
 @Repository
 public class ProductRepository {
@@ -89,10 +89,33 @@ public class ProductRepository {
         return jdbcTemplate.queryForObject(sql, Integer.class, categoryName);
     }
 
-    public List<ProductCatalogDto> getAllProductsForCatalog() {
+    public List<TopProductResponseDto> getTopPurchasedProducts(int limit) {
+        String sql = "SELECT p.id, p.name, p.description, p.price, p.image_path, COALESCE(SUM(op.quantity), 0) AS total_purchased " +
+                     "FROM products p " +
+                     "LEFT JOIN order_products op ON op.product_id = p.id " +
+                     "WHERE p.is_active = TRUE " +
+                     "GROUP BY p.id, p.name, p.description, p.price, p.image_path " +
+                     "ORDER BY total_purchased DESC, p.id ASC " +
+                     "LIMIT ?";
+
+        return jdbcTemplate.query(
+            sql,
+            (rs, rowNum) -> new TopProductResponseDto(
+                rs.getInt("id"),
+                rs.getString("name"),
+                rs.getString("description"),
+                rs.getBigDecimal("price"),
+                rs.getString("image_path"),
+                rs.getInt("total_purchased")
+            ),
+            limit
+        );
+    }
+
+    public List<ProductCatalogResponseDto> getAllProductsForCatalog() {
         String sql = "SELECT p.id, p.name, p.description, c.name AS category_name, p.price, p.stock_quantity, p.image_path FROM products p JOIN categories c ON c.id = p.category_id WHERE p.is_active = TRUE ORDER BY p.name ASC";
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> new ProductCatalogDto(
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new ProductCatalogResponseDto(
             rs.getInt("id"),
             rs.getString("name"),
             rs.getString("description"),

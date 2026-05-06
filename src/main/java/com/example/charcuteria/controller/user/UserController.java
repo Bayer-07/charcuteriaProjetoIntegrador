@@ -15,7 +15,9 @@ import com.example.charcuteria.enums.UserRoleEnum;
 import com.example.charcuteria.exceptions.BusinessException;
 import com.example.charcuteria.exceptions.UserErrorCode;
 import com.example.charcuteria.model.User;
+import com.example.charcuteria.service.address.AddressService;
 import com.example.charcuteria.service.user.UserService;
+import com.example.charcuteria.dto.address.AddressDtoRequest;
 
 import jakarta.validation.Valid;
 
@@ -24,9 +26,11 @@ import jakarta.validation.Valid;
 public class UserController {
 
     private final UserService userService;
+    private final AddressService addressService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, AddressService addressService) {
         this.userService = userService;
+        this.addressService = addressService;
     }
 
     // Get
@@ -73,7 +77,14 @@ public class UserController {
 
     @GetMapping("/user/dashboard")
     public String showDashboard(@AuthenticationPrincipal User loggedUser, Model model) {
+        if (loggedUser == null) {
+            return "redirect:/login";
+        }
+
+        var addresses = addressService.getAddressesByUserId(loggedUser.getId());
         model.addAttribute("user", loggedUser);
+        model.addAttribute("addresses", addresses);
+        model.addAttribute("addressDto", new AddressDtoRequest());
         return "public/dashboard";
     }
 
