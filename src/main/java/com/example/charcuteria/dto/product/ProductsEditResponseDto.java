@@ -2,11 +2,16 @@ package com.example.charcuteria.dto.product;
 
 import java.math.BigDecimal;
 
+import org.springframework.format.annotation.NumberFormat;
+
 public class ProductsEditResponseDto {
     private final String name;
     private final String description;
     private final String category;
+
+    @NumberFormat(pattern = "#,##0.00")
     private final BigDecimal price;
+
     private final Integer stock;
     private final String file;
 

@@ -1,10 +1,14 @@
 package com.example.charcuteria.controller.product;
 
+import java.beans.PropertyEditorSupport;
 import java.io.IOException;
+import java.math.BigDecimal;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +24,6 @@ import com.example.charcuteria.service.product.ProductService;
 import ch.qos.logback.core.model.Model;
 import jakarta.validation.Valid;
 
-
 @Controller
 @RequestMapping("/admin/product")
 public class AdminProductController {
@@ -33,9 +36,25 @@ public class AdminProductController {
         this.fileStorageService = fileStorageService;
     }
 
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(BigDecimal.class, new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) {
+                if (text == null || text.isBlank()) {
+                    setValue(null);
+                    return;
+                }
+                setValue(new BigDecimal(text.replace(",", ".")));
+            }
+        });
+    }
+
     @PostMapping("/create")
-    public String createProduct(@Valid @ModelAttribute("productDto") ProductsRequestDto product, BindingResult result, Model model) {
-        if (result.hasErrors()) return "redirect:/admin/products";
+    public String createProduct(@Valid @ModelAttribute("productDto") ProductsRequestDto product, BindingResult result,
+            Model model) {
+        if (result.hasErrors())
+            return "redirect:/admin/products";
 
         try {
             String imageName = fileStorageService.saveFile(product.getImage());
@@ -54,11 +73,12 @@ public class AdminProductController {
     @ResponseBody
     public ProductsEditResponseDto getProductById(@PathVariable Integer id) {
         var response = productService.getById(id);
-        if (response != null) return response;
+        if (response != null)
+            return response;
         throw new RuntimeException();
     }
 
-    @PostMapping("update")
+    @PostMapping("/update")
     public String updateProductById(@Valid @ModelAttribute("productDto") ProductsEditRequestDto product, Model model) {
         try {
             String fileName = productService.findFileNameById(product.getId());
@@ -72,7 +92,7 @@ public class AdminProductController {
             productService.updateProductById(product, newImageName);
 
             return "redirect:/admin/products";
-        } catch(IOException e) {
+        } catch (IOException e) {
             System.out.println(e);
             return "redirect:/admin/products";
         }
