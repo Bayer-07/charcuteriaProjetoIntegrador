@@ -1,0 +1,109 @@
+body {
+    font-family: "Georgia", serif;
+}
+
+h1, h2, h3 {
+    font-family: "Playfair Display", serif;
+}
+
+.partner-hero {
+    position: relative;
+    width: 100%;
+    height: 250px; 
+    overflow: hidden;
+}
+
+.partner-hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.partner-hero-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
+    z-index: 2;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.7);
+}
+
+.be-our-partner {
+    margin-bottom: 10px;
+}
+
+.partner-content {
+    display: flex;
+    gap: 40px;
+    padding: 40px;
+}
+
+.partner-form,
+.partner-info {
+    flex: 1;
+}
+
+.be-our-partner {
+    margin-bottom: 20px;
+}
+
+.partner-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.partner-form input,
+.partner-form textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.partner-form button {
+    margin-top: 10px;
+    padding: 12px;
+    background: #8B0000;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.partner-info img {
+    width: 100%;
+    margin-top: 20px;
+    border-radius: 8px;
+}
+
+.alert {
+    position: absolute;
+    top: 10px;
+    right: 1px;
+    min-width: 220px;
+    max-width: 300px;
+    padding: 12px;
+    border-radius: 6px;
+    z-index: 10;
+    text-align: center;
+}
+
+.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.partner-form {
+    position: relative;
+}
+
+.why-be-a-partner {
+    margin-bottom: 10px;
+}

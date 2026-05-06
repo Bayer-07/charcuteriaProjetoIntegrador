@@ -2,6 +2,7 @@ package com.example.charcuteria.dto.product;
 
 import java.math.BigDecimal;
 
+import org.springframework.format.annotation.NumberFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 public class ProductsEditRequestDto {
@@ -9,7 +10,10 @@ public class ProductsEditRequestDto {
     private String name;
     private String description;
     private String category;
+
+    @NumberFormat(pattern = "#,##0.00")
     private BigDecimal price;
+    
     private Integer stock;
     private MultipartFile file;
 
