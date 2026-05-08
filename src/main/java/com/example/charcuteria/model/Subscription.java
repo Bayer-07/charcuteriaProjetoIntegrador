@@ -22,6 +22,7 @@ public class Subscription {
     public String getStatus() { return status; }
     public String getStartedAt() { return startedAt; }
 
+    public void setId(Integer id)  {this.id = id; }
     public void setUserId(Integer userId) { this.userId = userId; }
     public void setPlanId(Integer planId) { this.planId = planId; }
     public void setStatus(String status) { this.status = status; }
