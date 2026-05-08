@@ -24,7 +24,7 @@ public class SubscriptionRepository {
             sql,
             (rs, rowNum) -> {
                 Subscription s = new Subscription();
-                s.setUserId(rs.getInt("id"));
+                s.setId(rs.getInt("id"));
                 s.setUserId(rs.getInt("user_id"));
                 s.setPlanId(rs.getInt("plan_id"));
                 s.setStatus(rs.getString("status"));
@@ -41,7 +41,7 @@ public class SubscriptionRepository {
             sql,
             (rs, rowNum) -> {
                 Subscription s = new Subscription();
-                s.setUserId(rs.getInt("id"));
+                s.setId(rs.getInt("id"));
                 s.setUserId(rs.getInt("user_id"));
                 s.setPlanId(rs.getInt("plan_id"));
                 s.setStatus(rs.getString("status"));
@@ -59,7 +59,7 @@ public class SubscriptionRepository {
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             Subscription s = new Subscription();
-            s.setUserId(rs.getInt("id"));
+            s.setId(rs.getInt("id"));
             s.setUserId(rs.getInt("user_id"));
             s.setPlanId(rs.getInt("plan_id"));
             s.setStatus(rs.getString("status"));
