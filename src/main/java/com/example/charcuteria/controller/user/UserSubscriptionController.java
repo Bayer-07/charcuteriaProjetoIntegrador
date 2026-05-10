@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -33,13 +34,14 @@ public class UserSubscriptionController {
     @GetMapping("/subscriptions")
     public String showSubscriptions(@AuthenticationPrincipal User loggedUser, Model model) {
         try {
-            Optional<UserSubscriptionResponseDto> subscription = subscriptionService.getActiveSubscriptionByUserId(loggedUser.getId());
+            List<UserSubscriptionResponseDto> subscriptions = subscriptionService.getAllActiveSubscriptionsByUserId(loggedUser.getId());
             
-            if (subscription.isPresent()) {
-                model.addAttribute("subscription", subscription.get());
-                model.addAttribute("hasSubscription", true);
+            if (!subscriptions.isEmpty()) {
+                model.addAttribute("subscriptions", subscriptions);
+                model.addAttribute("currentSubscriptionIndex", 0);
+                model.addAttribute("hasSubscriptions", true);
             } else {
-                model.addAttribute("hasSubscription", false);
+                model.addAttribute("hasSubscriptions", false);
             }
             
             return "public/subscriptions";
@@ -87,6 +89,36 @@ public class UserSubscriptionController {
             List<SubscriptionPlanResponse> plans = subscriptionPlanService.returnAll();
             model.addAttribute("plans", plans);
             return "public/subscribe";
+        }
+    }
+
+    @PostMapping("/subscriptions/{id}/pause")
+    public String pauseSubscription(@AuthenticationPrincipal User loggedUser, @PathVariable Integer id) {
+        try {
+            subscriptionService.updateSubscriptionStatus(id, loggedUser.getId(), "PAUSED");
+            return "redirect:/user/subscriptions";
+        } catch (Exception e) {
+            return "redirect:/user/subscriptions";
+        }
+    }
+
+    @PostMapping("/subscriptions/{id}/renew")
+    public String renewSubscription(@AuthenticationPrincipal User loggedUser, @PathVariable Integer id) {
+        try {
+            subscriptionService.updateSubscriptionStatus(id, loggedUser.getId(), "ACTIVE");
+            return "redirect:/user/subscriptions";
+        } catch (Exception e) {
+            return "redirect:/user/subscriptions";
+        }
+    }
+
+    @PostMapping("/subscriptions/{id}/cancel")
+    public String cancelSubscription(@AuthenticationPrincipal User loggedUser, @PathVariable Integer id) {
+        try {
+            subscriptionService.updateSubscriptionStatus(id, loggedUser.getId(), "CANCELLED");
+            return "redirect:/user/subscriptions";
+        } catch (Exception e) {
+            return "redirect:/user/subscriptions";
         }
     }
 }

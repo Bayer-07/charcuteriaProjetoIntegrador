@@ -56,6 +56,26 @@ public class SubscriptionService {
                 .map(this::toUserDTO);
     }
 
+    public List<UserSubscriptionResponseDto> getAllActiveSubscriptionsByUserId(Integer userId) {
+        return repository.findByUserId(userId)
+                .stream()
+                .filter(sub -> "ACTIVE".equalsIgnoreCase(sub.getStatus()) || "PAUSED".equalsIgnoreCase(sub.getStatus()))
+                .map(this::toUserDTO)
+                .collect(Collectors.toList());
+    }
+
+    public void updateSubscriptionStatus(Integer subscriptionId, Integer userId, String newStatus) {
+        Subscription subscription = repository.findById(subscriptionId)
+                .orElseThrow(() -> new RuntimeException("Assinatura não encontrada"));
+
+        if (!subscription.getUserId().equals(userId)) {
+            throw new RuntimeException("Acesso negado");
+        }
+
+        subscription.setStatus(newStatus);
+        repository.save(subscription);
+    }
+
     public SubscriptionResponse create(SubscriptionRequest request) {
         Subscription subscription = toEntity(request);
         Subscription saved = repository.save(subscription);

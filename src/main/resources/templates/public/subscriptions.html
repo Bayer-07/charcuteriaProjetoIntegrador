@@ -55,53 +55,48 @@
         </div>
         <div class="user-info">
             <h1>Minhas Assinaturas</h1>
-            <div class="infos">
-                <div>
-                    <div th:if="${hasSubscription}">
-                        <p>Plano:</p>
-                        <div><span th:text="${subscription.planName}">Plano</span></div>
-                        <p style="margin-top: 16px;">Status:</p>
+
+            <div th:if="${!hasSubscriptions}">
+                <div style="text-align: center; padding: 24px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(250, 248, 246, 0.98)); border: 1px dashed rgba(32, 26, 23, 0.12); border-radius: 12px; margin-top: 16px;">
+                    <p style="color: #6a5f59; margin: 0 0 16px; font-size: 0.95rem;">Contratar uma assinatura e aproveitar os benefícios</p>
+                    <a href="/assinaturas" style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; height: 40px; border-radius: 8px; background: linear-gradient(135deg, #183b2e 0%, #235743 100%); color: #fff; font-weight: 600; font-size: 0.95rem; box-shadow: 0 8px 18px rgba(24, 59, 46, 0.14); text-decoration: none; transition: all 0.2s ease; letter-spacing: 0.3px;">Ver Planos</a>
+                </div>
+            </div>
+
+            <div th:if="${hasSubscriptions}" class="subscriptions-scroll-container">
+                <div th:each="subscription : ${subscriptions}" class="subscription-card-item">
+                    <div class="subscription-card-header">
                         <div>
+                            <h3 th:text="${subscription.planName}">Plano</h3>
                             <span th:class="'status-badge-' + ${subscription.status.toLowerCase()}"
                                 th:text="${subscription.status == 'ACTIVE' ? 'Ativo' : subscription.status == 'PAUSED' ? 'Pausado' : 'Cancelado'}">
                                 Ativo
                             </span>
                         </div>
                     </div>
-                    <div th:if="${!hasSubscription}">
-                        <p>Nenhuma Assinatura</p>
-                        <div><span>Você não possui assinatura ativa</span></div>
-                    </div>
-                </div>
 
-                <div th:if="${hasSubscription}">
-                    <p>Detalhes da Assinatura:</p>
-                    <div class="subscription-details-grid">
-                        <div class="subscription-detail-item">
+                    <div class="subscription-card-details">
+                        <div class="detail-item">
                             <span class="detail-label">Preço Mensal:</span>
                             <span class="detail-value" th:text="'R$ ' + ${#numbers.formatDecimal(subscription.planPrice, 1, 'POINT', 2, 'COMMA')}">R$ 0,00</span>
                         </div>
-                        <div class="subscription-detail-item">
+                        <div class="detail-item">
                             <span class="detail-label">Data de Início:</span>
                             <span class="detail-value" th:text="${subscription.startedAt}">00/00/0000</span>
                         </div>
                     </div>
-                </div>
 
-                <div th:if="${!hasSubscription}">
-                    <div style="text-align: center; padding: 24px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(250, 248, 246, 0.98)); border: 1px dashed rgba(32, 26, 23, 0.12); border-radius: 12px; margin-top: 16px;">
-                        <p style="color: #6a5f59; margin: 0 0 16px; font-size: 0.95rem;">Contratar uma assinatura e aproveitar os benefícios</p>
-                        <a href="/assinaturas" style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; height: 40px; border-radius: 8px; background: linear-gradient(135deg, #183b2e 0%, #235743 100%); color: #fff; font-weight: 600; font-size: 0.95rem; box-shadow: 0 8px 18px rgba(24, 59, 46, 0.14); text-decoration: none; transition: all 0.2s ease; letter-spacing: 0.3px;">Ver Planos</a>
+                    <div class="subscription-card-actions">
+                        <form th:action="@{/user/subscriptions/{id}/pause(id=${subscription.subscriptionId})}" method="POST" style="display: inline;" th:if="${subscription.status == 'ACTIVE'}" onsubmit="return showConfirmation(event, 'Pausar Assinatura', 'Deseja realmente pausar sua assinatura?')">
+                            <button type="submit" class="btn-pause">Pausar</button>
+                        </form>
+                        <form th:action="@{/user/subscriptions/{id}/renew(id=${subscription.subscriptionId})}" method="POST" style="display: inline;" th:if="${subscription.status == 'PAUSED'}" onsubmit="return showConfirmation(event, 'Renovar Assinatura', 'Deseja realmente renovar sua assinatura?')">
+                            <button type="submit" class="btn-renew">Renovar</button>
+                        </form>
+                        <form th:action="@{/user/subscriptions/{id}/cancel(id=${subscription.subscriptionId})}" method="POST" style="display: inline;" onsubmit="return showConfirmation(event, 'Cancelar Assinatura', 'Deseja realmente cancelar sua assinatura? Esta ação é irreversível')">
+                            <button type="submit" class="btn-cancel">Cancelar</button>
+                        </form>
                     </div>
-                </div>
-            </div>
-
-            <div th:if="${hasSubscription}" class="subscription-actions-section">
-                <p style="font-weight: 600; color: #555; font-size: 0.9rem; letter-spacing: 0.3px; margin-bottom: 12px; margin-top: 24px;">Ações:</p>
-                <div class="subscription-actions">
-                    <button type="button" class="btn-pause" th:if="${subscription.status == 'ACTIVE'}">Pausar Assinatura</button>
-                    <button type="button" class="btn-renew" th:if="${subscription.status == 'PAUSED'}">Renovar Assinatura</button>
-                    <button type="button" class="btn-cancel">Cancelar Assinatura</button>
                 </div>
             </div>
 
@@ -153,7 +148,79 @@
         </div>
     </footer>
 
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal-confirmation" style="display:none;">
+        <div class="modal-confirmation-overlay"></div>
+        <div class="modal-confirmation-content">
+            <h2 id="confirmationTitle">Confirmar Ação</h2>
+            <p id="confirmationMessage">Deseja realmente continuar com esta ação?</p>
+            <p class="modal-confirmation-subtitle" id="confirmationSubtitle"></p>
+            <div class="modal-confirmation-actions">
+                <button type="button" class="btn-confirm-cancel" id="cancelBtn">Cancelar</button>
+                <button type="button" class="btn-confirm-delete" id="confirmBtn">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
     <style>
+        .subscriptions-scroll-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            max-height: 600px;
+            overflow-y: auto;
+            padding-right: 8px;
+            margin-top: 24px;
+        }
+
+        .subscriptions-scroll-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .subscriptions-scroll-container::-webkit-scrollbar-track {
+            background: rgba(32, 26, 23, 0.04);
+            border-radius: 3px;
+        }
+
+        .subscriptions-scroll-container::-webkit-scrollbar-thumb {
+            background: rgba(32, 26, 23, 0.2);
+            border-radius: 3px;
+        }
+
+        .subscriptions-scroll-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(32, 26, 23, 0.3);
+        }
+
+        .subscription-card-item {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(250, 248, 246, 0.96));
+            border: 1px solid rgba(32, 26, 23, 0.08);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            transition: box-shadow 0.2s ease, transform 0.2s ease;
+        }
+
+        .subscription-card-item:hover {
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+            transform: translateY(-1px);
+        }
+
+        .subscription-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(32, 26, 23, 0.08);
+        }
+
+        .subscription-card-header h3 {
+            margin: 0 0 8px 0;
+            color: #1d1714;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
         .status-badge-active {
             display: inline-block;
             padding: 6px 12px;
@@ -187,20 +254,20 @@
             width: fit-content;
         }
 
-        .subscription-details-grid {
+        .subscription-card-details {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 16px;
-            margin-bottom: 0;
+            margin-bottom: 16px;
         }
 
         @media (max-width: 768px) {
-            .subscription-details-grid {
+            .subscription-card-details {
                 grid-template-columns: 1fr;
             }
         }
 
-        .subscription-detail-item {
+        .detail-item {
             display: flex;
             flex-direction: column;
         }
@@ -218,49 +285,29 @@
             font-size: 1rem;
         }
 
-        .subscription-actions-section {
-            margin-top: 24px;
-            padding-top: 24px;
-            border-top: 1px solid rgba(32, 26, 23, 0.06);
-        }
-
-        .subscription-actions {
+        .subscription-card-actions {
             display: flex;
-            gap: 12px;
+            gap: 8px;
             flex-wrap: wrap;
         }
 
-        .btn-renew {
-            padding: 10px 18px;
+        .btn-pause,
+        .btn-renew,
+        .btn-cancel {
+            padding: 8px 16px;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             transition: all 0.2s ease;
-            background: linear-gradient(135deg, #183b2e 0%, #235743 100%);
-            color: white;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
             letter-spacing: 0.3px;
-        }
-
-        .btn-renew:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
         }
 
         .btn-pause {
-            padding: 10px 18px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: all 0.2s ease;
             background-color: #ffc107;
             color: #333;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
-            letter-spacing: 0.3px;
         }
 
         .btn-pause:hover {
@@ -273,27 +320,34 @@
             outline: none;
         }
 
+        .btn-renew {
+            background: linear-gradient(135deg, #183b2e 0%, #235743 100%);
+            color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+        }
+
+        .btn-renew:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+        }
+
         .btn-renew:focus {
             outline: none;
         }
 
         .btn-cancel {
-            padding: 10px 18px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: all 0.2s ease;
             background: linear-gradient(135deg, #c43a45 0%, #8f202c 100%);
             color: white;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
-            letter-spacing: 0.3px;
         }
 
         .btn-cancel:hover {
             transform: translateY(-1px);
             box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+        }
+
+        .btn-cancel:focus {
+            outline: none;
         }
 
         .error-message {
@@ -303,24 +357,144 @@
             color: #721c24;
             border-radius: 8px;
             font-size: 0.95rem;
+            margin-top: 24px;
         }
 
         .error-message p {
             margin: 0;
         }
 
-        @media (max-width: 600px) {
-            .subscription-actions {
-                flex-direction: column;
-                gap: 10px;
-            }
+        .modal-confirmation {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+        }
 
-            .btn-pause,
-            .btn-cancel {
-                width: 100%;
-            }
+        .modal-confirmation-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+        }
+
+        .modal-confirmation-content {
+            position: relative;
+            z-index: 3100;
+            background: #fff;
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+
+        .modal-confirmation-content h2 {
+            margin: 0 0 12px;
+            color: #17110f;
+            font-size: 1.6rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .modal-confirmation-content > p:first-of-type {
+            margin: 0 0 6px;
+            color: #555;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .modal-confirmation-subtitle {
+            margin: 0 0 28px !important;
+            color: #999;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .modal-confirmation-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .btn-confirm-cancel,
+        .btn-confirm-delete {
+            padding: 10px 24px;
+            height: 40px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-confirm-cancel {
+            background: #fff;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+
+        .btn-confirm-cancel:hover {
+            background: #f5f5f5;
+            border-color: #bbb;
+        }
+
+        .btn-confirm-delete {
+            background: linear-gradient(135deg, #c43a45 0%, #8f202c 100%);
+            color: #fff;
+            border: none;
+            box-shadow: 0 8px 18px rgba(143, 32, 44, 0.14);
+        }
+
+        .btn-confirm-delete:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(143, 32, 44, 0.18);
+        }
+
+        .btn-confirm-delete:active {
+            transform: translateY(0);
         }
     </style>
+
+    <script>
+        let pendingForm = null;
+
+        function showConfirmation(event, title, message, subtitle = '') {
+            event.preventDefault();
+            pendingForm = event.target;
+
+            document.getElementById('confirmationTitle').textContent = title;
+            document.getElementById('confirmationMessage').textContent = message;
+            document.getElementById('confirmationSubtitle').textContent = subtitle;
+            document.getElementById('confirmationModal').style.display = 'flex';
+
+            return false;
+        }
+
+        document.getElementById('confirmBtn').addEventListener('click', function() {
+            if (pendingForm) {
+                document.getElementById('confirmationModal').style.display = 'none';
+                pendingForm.submit();
+            }
+        });
+
+        document.getElementById('cancelBtn').addEventListener('click', function() {
+            document.getElementById('confirmationModal').style.display = 'none';
+            pendingForm = null;
+        });
+
+        document.getElementById('confirmationModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                this.style.display = 'none';
+                pendingForm = null;
+            }
+        });
+    </script>
 </body>
 
 </html>
