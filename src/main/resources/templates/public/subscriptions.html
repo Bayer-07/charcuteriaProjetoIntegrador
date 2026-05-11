@@ -87,13 +87,13 @@
                     </div>
 
                     <div class="subscription-card-actions">
-                        <form th:action="@{/user/subscriptions/{id}/pause(id=${subscription.subscriptionId})}" method="POST" style="display: inline;" th:if="${subscription.status == 'ACTIVE'}" onsubmit="return showConfirmation(event, 'Pausar Assinatura', 'Deseja realmente pausar sua assinatura?')">
+                        <form th:if="${subscription.status == 'ACTIVE'}" th:action="@{/user/subscriptions/{id}/pause(id=${subscription.subscriptionId})}" method="POST" class="action-form" onsubmit="return showConfirmation(event, 'Pausar Assinatura', 'Deseja realmente pausar sua assinatura?')">
                             <button type="submit" class="btn-pause">Pausar</button>
                         </form>
-                        <form th:action="@{/user/subscriptions/{id}/renew(id=${subscription.subscriptionId})}" method="POST" style="display: inline;" th:if="${subscription.status == 'PAUSED'}" onsubmit="return showConfirmation(event, 'Renovar Assinatura', 'Deseja realmente renovar sua assinatura?')">
+                        <form th:if="${subscription.status == 'PAUSED'}" th:action="@{/user/subscriptions/{id}/renew(id=${subscription.subscriptionId})}" method="POST" class="action-form" onsubmit="return showConfirmation(event, 'Renovar Assinatura', 'Deseja realmente renovar sua assinatura?')">
                             <button type="submit" class="btn-renew">Renovar</button>
                         </form>
-                        <form th:action="@{/user/subscriptions/{id}/cancel(id=${subscription.subscriptionId})}" method="POST" style="display: inline;" onsubmit="return showConfirmation(event, 'Cancelar Assinatura', 'Deseja realmente cancelar sua assinatura? Esta ação é irreversível')">
+                        <form th:action="@{/user/subscriptions/{id}/cancel(id=${subscription.subscriptionId})}" method="POST" class="action-form" onsubmit="return showConfirmation(event, 'Cancelar Assinatura', 'Deseja realmente cancelar sua assinatura? Esta ação é irreversível')">
                             <button type="submit" class="btn-cancel">Cancelar</button>
                         </form>
                     </div>
@@ -464,13 +464,12 @@
     <script>
         let pendingForm = null;
 
-        function showConfirmation(event, title, message, subtitle = '') {
+        function showConfirmation(event, title, message) {
             event.preventDefault();
-            pendingForm = event.target;
+            pendingForm = event.currentTarget;
 
             document.getElementById('confirmationTitle').textContent = title;
             document.getElementById('confirmationMessage').textContent = message;
-            document.getElementById('confirmationSubtitle').textContent = subtitle;
             document.getElementById('confirmationModal').style.display = 'flex';
 
             return false;
