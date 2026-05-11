@@ -53,7 +53,7 @@ public class AddressTests {
         mockMvc.perform(get("/addresses")
                 .with(user(testUser)))
             .andExpect(status().isOk())
-            .andExpect(view().name("address/addresses-list"))
+            .andExpect(view().name("user/dashboard"))
             .andExpect(model().attributeExists("addresses"))
             .andExpect(model().attribute("userEmail", "user@test.com"));
     }
@@ -69,7 +69,7 @@ public class AddressTests {
                 .param("zipCode", "85900-000"))
             .andExpect(status().is3xxRedirection())
             .andExpect(flash().attributeExists("successMessage"))
-            .andExpect(redirectedUrl("/addresses"));
+            .andExpect(redirectedUrl("/user/dashboard"));
 
         verify(addressService).createAddress(any());
     }
@@ -118,7 +118,7 @@ public class AddressTests {
                 .with(user(testUser)))
             .andExpect(status().is3xxRedirection())
             .andExpect(flash().attribute("successMessage", "Endereço deletado com sucesso!"))
-            .andExpect(redirectedUrl("/addresses"));
+            .andExpect(redirectedUrl("/user/dashboard"));
 
         verify(addressService).deleteAddress(10);
     }

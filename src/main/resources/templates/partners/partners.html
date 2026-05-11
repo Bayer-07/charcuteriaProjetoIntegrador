@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Parcerias | Koch</title>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/footer.css}" />
+    <link rel="stylesheet" th:href="@{/css/styleIndex.css}" />
+    <link rel="stylesheet" th:href="@{/css/partners/partners.css}" />
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <span class="brand-name">Koch</span>
+                <span class="brand-suffix">Charcutaria</span>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <nav class="nav-menu">
+                        <ul>
+                            <li><a th:href="@{/}">Início</a></li>
+                            <li><a th:href="@{/produtos}">Catálogo</a></li>
+                            <li><a th:href="@{/assinaturas}">Assinaturas</a></li>
+                            <li><a th:href="@{/partners}" class="active">Parcerias</a></li>
+                        </ul>
+                    </nav>
+                </ul>
+            </nav>
+            <div class="header-icons">
+                <a href="/cart" class="icon-link">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="21" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                </a>
+                <a href="/handleProfile" class="icon-link">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <section class="partner-hero">
+            <img th:src="@{/images/hero2.jpg}" alt="Parcerias Koch">
+
+            <div class="partner-hero-text">
+                <h1>Seja um parceiro Koch!</h1>
+            </div>
+        </section>
+
+        <section class="partner-content">
+
+            <div class="partner-form">
+
+                <div th:if="${success}" class="alert success">
+                    <p th:text="${success}"></p>
+                </div>
+
+                <div th:if="${error}" class="alert error">
+                    <p th:text="${error}"></p>
+                </div>
+
+                <h2 class="be-our-partner">Seja nosso parceiro</h2>
+
+                <form th:action="@{/partners}" method="post" th:object="${partner}">
+
+                    <label>Nome da empresa</label>
+                    <input type="text" th:field="*{name}" required />
+
+                    <label>CNPJ</label>
+                    <input type="text" th:field="*{cnpj}" required />
+
+                    <label>Responsável</label>
+                    <input type="text" th:field="*{responsible}" />
+
+                    <label>Email</label>
+                    <input type="email" th:field="*{email}" required />
+
+                    <label>Telefone</label>
+                    <input type="text" th:field="*{phone}" required />
+
+                    <label>Mensagem</label>
+                    <textarea th:field="*{message}"></textarea>
+
+                    <button type="submit">Enviar</button>
+                </form>
+            </div>
+
+            <div class="partner-info">
+                <h2 class="why-be-a-partner">Por que ser parceiro?</h2>
+                <p>
+                    A Koch Charcutaria oferece condições especiais para restaurantes, empórios,
+                    delicatessens e lojas especializadas. Nossos produtos artesanais trazem
+                    diferenciação ao seu negócio, com qualidade certificada e entrega programada.
+                </p>
+
+                <img th:src="@{/images/index1.jpg}" alt="Produtos Koch">
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-column footer-logo">
+                <img th:src="@{/images/logo.png}" src="/images/logo.png" alt="Koch Charcutaria Logo">
+            </div>
+
+            <div class="footer-column">
+                <h3>Catálogo</h3>
+                <ul>
+                    <li><a href="/produtos">Catálogo</a></li>
+                    <li><a href="/assinaturas">Assinaturas</a></li>
+                    <li><a href="/partners">Parcerias</a></li>
+                    <li><a href="/privacidade">Política de privacidade</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h3>Contato</h3>
+                <address>
+                    <p>Rua Das Carobas 1553 Biopark Toledo PR</p>
+                    <p><a href="https://wa.me/5545999853339" target="_blank">(45) 99985-3339</a></p>
+                    <p><a href="mailto:k.charcutaria@gmail.com">k.charcutaria@gmail.com</a></p>
+                </address>
+                <div class="social-icons">
+                    <a href="https://www.instagram.com/kocharcutaria/" target="_blank" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" width="32" height="32" stroke="currentColor" stroke-width="2"
+                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <hr>
+            <p>&copy; 2026 Koch Charcutaria Artesanal LTDA. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>
