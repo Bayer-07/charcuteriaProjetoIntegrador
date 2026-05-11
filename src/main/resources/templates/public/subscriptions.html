@@ -100,7 +100,7 @@
                         <form th:if="${subscription.status == 'CANCELLED'}" th:action="@{/user/subscriptions/{id}/reactivate(id=${subscription.subscriptionId})}" method="POST" class="action-form" onsubmit="return showConfirmation(event, 'Reativar Assinatura', 'Deseja realmente reativar sua assinatura?')">
                             <button type="submit" class="btn-reactivate">Reativar</button>
                         </form>
-                        <form th:if="${subscription.status != 'CANCELLED'}" th:action="@{/user/subscriptions/{id}/cancel(id=${subscription.subscriptionId})}" method="POST" class="action-form" onsubmit="return showConfirmation(event, 'Cancelar Assinatura', 'Deseja realmente cancelar sua assinatura? Esta acao eh irreversivel')">
+                        <form th:if="${subscription.status != 'CANCELLED'}" th:action="@{/user/subscriptions/{id}/cancel(id=${subscription.subscriptionId})}" method="POST" class="action-form" onsubmit="return showConfirmation(event, 'Cancelar Assinatura', 'Deseja realmente cancelar sua assinatura? Esta ação é irreversível')">
                             <button type="submit" class="btn-cancel">Cancelar</button>
                         </form>
                     </div>
@@ -298,9 +298,7 @@
             flex-wrap: wrap;
         }
 
-        .btn-pause,
-        .btn-renew,
-        .btn-cancel {
+        .btn-pause, .btn-renew, .btn-cancel, .btn-reactivate {
             padding: 8px 16px;
             border: none;
             border-radius: 6px;
@@ -354,6 +352,21 @@
         }
 
         .btn-cancel:focus {
+            outline: none;
+        }
+
+        .btn-reactivate {
+            background: linear-gradient(135deg, #183b2e 0%, #235743 100%);
+            color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+        }
+
+        .btn-reactivate:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+        }
+
+        .btn-reactivate:focus {
             outline: none;
         }
 
