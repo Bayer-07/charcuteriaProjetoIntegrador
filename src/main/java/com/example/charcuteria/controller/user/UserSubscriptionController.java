@@ -33,92 +33,66 @@ public class UserSubscriptionController {
 
     @GetMapping("/subscriptions")
     public String showSubscriptions(@AuthenticationPrincipal User loggedUser, Model model) {
-        try {
-            List<UserSubscriptionResponseDto> subscriptions = subscriptionService.getAllActiveSubscriptionsByUserId(loggedUser.getId());
-            
-            if (!subscriptions.isEmpty()) {
-                model.addAttribute("subscriptions", subscriptions);
-                model.addAttribute("currentSubscriptionIndex", 0);
-                model.addAttribute("hasSubscriptions", true);
-            } else {
-                model.addAttribute("hasSubscriptions", false);
-            }
-            
-            return "public/subscriptions";
-        } catch (Exception e) {
-            model.addAttribute("error", "Erro ao carregar assinaturas");
-            return "public/subscriptions";
+        List<UserSubscriptionResponseDto> subscriptions = subscriptionService.getAllActiveSubscriptionsByUserId(loggedUser.getId());
+        
+        if (!subscriptions.isEmpty()) {
+            model.addAttribute("subscriptions", subscriptions);
+            model.addAttribute("hasSubscriptions", true);
+        } else {
+            model.addAttribute("hasSubscriptions", false);
         }
+        
+        return "public/subscriptions";
     }
 
     @GetMapping("/subscribe")
     public String showPlans(@AuthenticationPrincipal User loggedUser, Model model) {
-        try {
-            List<SubscriptionPlanResponse> plans = subscriptionPlanService.returnAll();
-            model.addAttribute("plans", plans);
-            return "public/subscribe";
-        } catch (Exception e) {
-            model.addAttribute("error", "Erro ao carregar planos");
-            return "public/subscribe";
-        }
+        List<SubscriptionPlanResponse> plans = subscriptionPlanService.returnAll();
+        model.addAttribute("plans", plans);
+        return "public/subscribe";
     }
 
     @PostMapping("/subscribe")
     public String subscribeToPlan(@AuthenticationPrincipal User loggedUser, @RequestParam Integer planId, Model model) {
-        try {
-            // Check if user already has an active subscription
-            Optional<UserSubscriptionResponseDto> existingSubscription = subscriptionService.getActiveSubscriptionByUserId(loggedUser.getId());
-            
-            if (existingSubscription.isPresent()) {
-                model.addAttribute("error", "Você já possui uma assinatura ativa");
-                List<SubscriptionPlanResponse> plans = subscriptionPlanService.returnAll();
-                model.addAttribute("plans", plans);
-                return "public/subscribe";
-            }
-
-            // Create subscription
-            SubscriptionRequest request = new SubscriptionRequest();
-            request.setUserId(loggedUser.getId());
-            request.setPlanId(planId);
-            request.setStatus("ACTIVE");
-
-            subscriptionService.create(request);
-            return "redirect:/user/subscriptions";
-        } catch (Exception e) {
-            model.addAttribute("error", "Erro ao criar assinatura: " + e.getMessage());
+        Optional<UserSubscriptionResponseDto> existingSubscription = subscriptionService.getActiveSubscriptionByUserId(loggedUser.getId());
+        
+        if (existingSubscription.isPresent()) {
+            model.addAttribute("error", "Você já possui uma assinatura ativa");
             List<SubscriptionPlanResponse> plans = subscriptionPlanService.returnAll();
             model.addAttribute("plans", plans);
             return "public/subscribe";
         }
+
+        SubscriptionRequest request = new SubscriptionRequest();
+        request.setUserId(loggedUser.getId());
+        request.setPlanId(planId);
+        request.setStatus("ACTIVE");
+
+        subscriptionService.create(request);
+        return "redirect:/user/subscriptions";
     }
 
     @PostMapping("/subscriptions/{id}/pause")
     public String pauseSubscription(@AuthenticationPrincipal User loggedUser, @PathVariable Integer id) {
-        try {
-            subscriptionService.updateSubscriptionStatus(id, loggedUser.getId(), "PAUSED");
-            return "redirect:/user/subscriptions";
-        } catch (Exception e) {
-            return "redirect:/user/subscriptions";
-        }
+        subscriptionService.updateSubscriptionStatus(id, loggedUser.getId(), "PAUSED");
+        return "redirect:/user/subscriptions";
     }
 
     @PostMapping("/subscriptions/{id}/renew")
     public String renewSubscription(@AuthenticationPrincipal User loggedUser, @PathVariable Integer id) {
-        try {
-            subscriptionService.updateSubscriptionStatus(id, loggedUser.getId(), "ACTIVE");
-            return "redirect:/user/subscriptions";
-        } catch (Exception e) {
-            return "redirect:/user/subscriptions";
-        }
+        subscriptionService.updateSubscriptionStatus(id, loggedUser.getId(), "ACTIVE");
+        return "redirect:/user/subscriptions";
     }
 
     @PostMapping("/subscriptions/{id}/cancel")
     public String cancelSubscription(@AuthenticationPrincipal User loggedUser, @PathVariable Integer id) {
-        try {
-            subscriptionService.updateSubscriptionStatus(id, loggedUser.getId(), "CANCELLED");
-            return "redirect:/user/subscriptions";
-        } catch (Exception e) {
-            return "redirect:/user/subscriptions";
-        }
+        subscriptionService.updateSubscriptionStatus(id, loggedUser.getId(), "CANCELLED");
+        return "redirect:/user/subscriptions";
+    }
+
+    @PostMapping("/subscriptions/{id}/reactivate")
+    public String reactivateSubscription(@AuthenticationPrincipal User loggedUser, @PathVariable Integer id) {
+        subscriptionService.updateSubscriptionStatus(id, loggedUser.getId(), "ACTIVE");
+        return "redirect:/user/subscriptions";
     }
 }

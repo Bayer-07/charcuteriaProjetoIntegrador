@@ -59,7 +59,6 @@ public class SubscriptionService {
     public List<UserSubscriptionResponseDto> getAllActiveSubscriptionsByUserId(Integer userId) {
         return repository.findByUserId(userId)
                 .stream()
-                .filter(sub -> "ACTIVE".equalsIgnoreCase(sub.getStatus()) || "PAUSED".equalsIgnoreCase(sub.getStatus()))
                 .map(this::toUserDTO)
                 .collect(Collectors.toList());
     }
@@ -129,7 +128,6 @@ public class SubscriptionService {
         SubscriptionPlan plan = planRepository.findById(subscription.getPlanId())
                 .orElseThrow(() -> new RuntimeException("Plano não encontrado"));
 
-        // Format date as DD/MM/YYYY
         String formattedDate = formatDate(subscription.getStartedAt());
 
         return new UserSubscriptionResponseDto(
@@ -147,13 +145,10 @@ public class SubscriptionService {
             return "";
         }
         try {
-            // Parse the date from database format (YYYY-MM-DD)
             LocalDate date = LocalDate.parse(dateString);
-            // Format as DD/MM/YYYY
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             return date.format(formatter);
         } catch (Exception e) {
-            // If parsing fails, return the original string
             return dateString;
         }
     }
