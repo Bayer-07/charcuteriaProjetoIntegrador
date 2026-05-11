@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/category/base.css}">
+    <link rel="stylesheet" th:href="@{/css/category/list.css}">
+    <title>Lista de Categorias</title>
+</head>
+
+<!-- Tabela da lista -->
+
+<body>
+    <h1> Categorias </h1>
+
+    <a href="/categories/new>">Nova Categoria</a>
+
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th>Ações</th>
+        </tr>
+
+        <tr th:each="cat : ${categories}">
+            <td th:next="${cat.id}"></td>
+            <td th:next="${cat.name}"></td>
+            <td th:next="${cat.desc}"></td>
+            <td>
+                <a th:href="@{'/categories/' + ${cat.id}}">Ver</a>
+                <a th:href="@{'/categories/edit/' + ${cat.id}}">Editar</a>
+
+                <form th:action="@{'/categories/delete/' + ${cat.id}}" method="post" style="display:inline">
+                    <button type="submit">Excluir</button>
+                </form>
+            </td>
+        </tr>
+
+    </table>
+</body>
+
+</html>

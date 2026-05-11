@@ -20,53 +20,54 @@ public class SecurityConfig {
 
     // @Bean
     // public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    //     http
-    //         .csrf(csrf -> csrf.disable())
-    //         .authorizeHttpRequests(auth -> auth
-    //             .requestMatchers("/register", "/registerAdmin", "/login", "/loginAdmin", "/user/dashboard", "/user/dashboardAdmin", "/handleProfile", "/teste").permitAll()
+    // http
+    // .csrf(csrf -> csrf.disable())
+    // .authorizeHttpRequests(auth -> auth
+    // .requestMatchers("/register", "/registerAdmin", "/login", "/loginAdmin",
+    // "/user/dashboard", "/user/dashboardAdmin", "/handleProfile",
+    // "/teste").permitAll()
 
-    //             .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+    // .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
 
-    //             .anyRequest().authenticated()
-    //         )
-    //         .formLogin(form -> form
-    //             .loginPage("/index")
-    //             .permitAll()
-    //         );
+    // .anyRequest().authenticated()
+    // )
+    // .formLogin(form -> form
+    // .loginPage("/index")
+    // .permitAll()
+    // );
 
-    //     return http.build();
+    // return http.build();
     // }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-                // rotas publicas
-                .requestMatchers("/", "/login", "/loginAdmin", "/register", "/css/**", "/js/**", "/images/**", "/uploads/**", "/address/**", "/produtos").permitAll()
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        // rotas publicas
+                        .requestMatchers("/", "/index", "/index/top-products", "/login", "/loginAdmin", "/register",
+                                "/css/**", "/js/**", "/images/**", "/uploads/**", "/address/**", "/produtos", "/partners")
+                        .permitAll()
 
-                // rotas admin where getAuthorities.rote = "ROLE_ADMIN"
-                .requestMatchers("/admin/**", "/registerAdmin").hasRole("ADMIN")
+                        // rotas admin where getAuthorities.rote = "ROLE_ADMIN"
+                        .requestMatchers("/admin/**", "/registerAdmin").hasRole("ADMIN")
 
-                // rotas com permissao geral
-                .requestMatchers("/user/dashboard/**").hasAnyRole("CUSTOMER", "ADMIN")
+                        // rotas com permissao geral
+                        .requestMatchers("/user/dashboard/**", "/cart/**").hasAnyRole("CUSTOMER", "ADMIN")
 
-                // qualquer rota precisa tar logado (segurança)
-                .anyRequest().authenticated()
-            )
-            .formLogin(form -> form
-                .loginPage("/login") // vai retornar pra ca
-                .loginProcessingUrl("/login") // URL que o Spring vai interceptar (o POST do seu form)
-                .usernameParameter("email")    // <--- username == email
-                .passwordParameter("password") // <--- password == password
-                .defaultSuccessUrl("/handleProfile", true) // redirect pra onde vc vai depois de logar
-                .permitAll()
-            )
-            .logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/index") // limpa a sessao do mlk e volta pra ca
-                .permitAll()
-            );
+                        // qualquer rota precisa tar logado (segurança)
+                        .anyRequest().authenticated())
+                .formLogin(form -> form
+                        .loginPage("/login") // vai retornar pra ca
+                        .loginProcessingUrl("/login") // URL que o Spring vai interceptar (o POST do seu form)
+                        .usernameParameter("email") // <--- username == email
+                        .passwordParameter("password") // <--- password == password
+                        .defaultSuccessUrl("/handleProfile", true) // redirect pra onde vc vai depois de logar
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/index") // limpa a sessao do mlk e volta pra ca
+                        .permitAll());
 
         return http.build();
     }
