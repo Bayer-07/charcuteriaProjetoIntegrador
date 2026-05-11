@@ -100,7 +100,7 @@
                         <form th:if="${subscription.status == 'CANCELLED'}" th:action="@{/user/subscriptions/{id}/reactivate(id=${subscription.subscriptionId})}" method="POST" class="action-form" onsubmit="return showConfirmation(event, 'Reativar Assinatura', 'Deseja realmente reativar sua assinatura?')">
                             <button type="submit" class="btn-reactivate">Reativar</button>
                         </form>
-                        <form th:if="${subscription.status != 'CANCELLED'}" th:action="@{/user/subscriptions/{id}/cancel(id=${subscription.subscriptionId})}" method="POST" class="action-form" onsubmit="return showConfirmation(event, 'Cancelar Assinatura', 'Deseja realmente cancelar sua assinatura? Esta ação é irreversível')">
+                        <form th:if="${subscription.status != 'CANCELLED'}" th:action="@{/user/subscriptions/{id}/cancel(id=${subscription.subscriptionId})}" method="POST" class="action-form" onsubmit="return showConfirmation(event, 'Cancelar Assinatura', 'Deseja realmente cancelar sua assinatura?')">
                             <button type="submit" class="btn-cancel">Cancelar</button>
                         </form>
                     </div>
