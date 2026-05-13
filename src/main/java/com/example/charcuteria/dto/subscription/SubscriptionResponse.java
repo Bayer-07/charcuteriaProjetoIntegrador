@@ -8,6 +8,8 @@ public class SubscriptionResponse {
     private String status;
     private String startedAt;
     private Double price;
+    private String userName;
+    private String userEmail;
 
     public Integer getId() { return id; }
     public Integer getUserId() { return userId; }
@@ -16,6 +18,8 @@ public class SubscriptionResponse {
     public String getStatus() { return status; }
     public String getStartedAt() { return startedAt; }
     public Double getPrice() { return price; }
+    public String getUserName() {return userName; }
+    public String getUserEmail() {return userEmail; }
 
     public void setId(Integer id) { this.id = id; }
     public void setUserId(Integer userId) { this.userId = userId; }
@@ -24,4 +28,6 @@ public class SubscriptionResponse {
     public void setStatus(String status) { this.status = status; }
     public void setStartedAt(String startedAt) { this.startedAt = startedAt; }
     public void setPrice(Double price) { this.price = price; }
+    public void setUserName(String userName) {this.userName = userName; }
+    public void setUserEmail(String userEmail) {this.userEmail = userEmail; }
 }

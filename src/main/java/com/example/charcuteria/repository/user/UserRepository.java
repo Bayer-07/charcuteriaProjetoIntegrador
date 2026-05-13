@@ -30,17 +30,30 @@ public class UserRepository {
         String sql = "SELECT id, name, email, password_hash, role FROM users WHERE email = ?";
 
         List<User> results = jdbcTemplate.query(
-            sql,
-            (rs, rowNum) -> new User(
-                rs.getInt("id"),
-                rs.getString("name"),
-                rs.getString("email"),
-                rs.getString("password_hash"),
-                Enum.valueOf(UserRoleEnum.class, rs.getString("role"))
-            ),
-            email
-        );
+                sql,
+                (rs, rowNum) -> new User(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("password_hash"),
+                        Enum.valueOf(UserRoleEnum.class, rs.getString("role"))),
+                email);
         // acha o primeiro, nesse caso acha o certo, nao tem como ter 2 emails iguais
+        return results.stream().findFirst();
+    }
+
+    public Optional<User> findById(Integer id) {
+        String sql = "SELECT id, name, email, password_hash, role FROM users WHERE id = ?";
+
+        List<User> results = jdbcTemplate.query(
+                sql,
+                (rs, rowNum) -> new User(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("password_hash"),
+                        Enum.valueOf(UserRoleEnum.class, rs.getString("role"))),
+                id);
         return results.stream().findFirst();
     }
 
@@ -48,12 +61,11 @@ public class UserRepository {
         String sql = "INSERT INTO users (name, email, password_hash, role, created_at) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)";
 
         jdbcTemplate.update(
-            sql,
-            user.getName(),
-            user.getEmail(),
-            user.getPasswordHash(),
-            user.getRole().name()
-        );
+                sql,
+                user.getName(),
+                user.getEmail(),
+                user.getPasswordHash(),
+                user.getRole().name());
     }
 
 }
