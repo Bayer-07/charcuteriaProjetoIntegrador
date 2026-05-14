@@ -33,14 +33,17 @@ document.addEventListener('DOMContentLoaded', async function () {
             return '<article class="product-card">' +
                 '<img class="product-image" src="' + getImagePath(product.imagePath) + '" alt="' + (product.name || 'Produto') + '">' +
                 '<div class="product-content">' +
-                    '<h3>' + (product.name || 'Produto') + '</h3>' +
-                    '<p>' + truncateText(product.description, 72) + '</p>' +
-                    '<div class="product-footer">' +
-                        '<span class="product-price">' + formatPrice(product.price || 0) + '</span>' +
-                        '<button type="button" class="add-button">Adicionar</button>' +
-                    '</div>' +
+                '<h3>' + (product.name || 'Produto') + '</h3>' +
+                '<p>' + truncateText(product.description, 72) + '</p>' +
+                '<div class="product-footer">' +
+                '<span class="product-price">' + formatPrice(product.price || 0) + '</span>' +
+                '<form action="/cart/add" method="post">' +
+                '<input type="hidden" name="productId" value="' + (product.id || '') + '" />' +
+                '<button type="submit" class="add-button">Adicionar</button>' +
+                '</form>' +
                 '</div>' +
-            '</article>';
+                '</div>' +
+                '</article>';
         }).join('');
     }
 

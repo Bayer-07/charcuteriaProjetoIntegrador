@@ -118,7 +118,7 @@ A plataforma permite:
 | `/register` | Cadastro de usuários |
 | `/produtos` | Catálogo de produtos |
 | `/cart` | Carrinho de compras |
-| `/assinaturas` | Assinaturas |
+| `/subscriptions` | Assinaturas |
 | `/parcerias` | Parcerias |
 
 ---
@@ -141,7 +141,7 @@ A plataforma permite:
 | `/admin/dashboard` | Dashboard administrativo |
 | `/admin/products` | Gestão de produtos |
 | `/admin/pedidos` | Gestão de pedidos |
-| `/admin/assinaturas` | Gestão de assinaturas |
+| `/admin/subscriptions` | Gestão de assinaturas |
 
 ---
 
