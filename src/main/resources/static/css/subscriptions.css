@@ -89,11 +89,13 @@
 }
 
 .cell-name {
+    width: 250px;
     font-weight: 500;
     color: #555;
 }
 
 .cell-category {
+    width: 250px;
     color: #888;
 }
 
