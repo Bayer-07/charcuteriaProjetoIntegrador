@@ -46,7 +46,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // rotas publicas
                         .requestMatchers("/", "/index", "/index/top-products", "/login", "/loginAdmin", "/register",
-                                "/css/**", "/js/**", "/images/**", "/uploads/**", "/address/**", "/produtos", "/partners")
+                                "/css/**", "/js/**", "/images/**", "/uploads/**", "/address/**", "/produtos", "/partners", "/subscriptions")
                         .permitAll()
 
                         // rotas admin where getAuthorities.rote = "ROLE_ADMIN"
