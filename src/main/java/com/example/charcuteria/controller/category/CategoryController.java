@@ -46,7 +46,6 @@ public class CategoryController {
             categoryService.createCategory(category);
             return "redirect:/admin/products?type=categories";
         } catch (Exception e) {
-            System.out.println(e);
             return "redirect:/admin/products?type=products";
         }
     }
@@ -57,7 +56,6 @@ public class CategoryController {
             categoryService.deleteById(id);
             return "redirect:/admin/products?type=categories";
         } catch (Exception e) {
-            System.out.println(e);
             return "redirect:/admin/products?type=products";
         }
     }

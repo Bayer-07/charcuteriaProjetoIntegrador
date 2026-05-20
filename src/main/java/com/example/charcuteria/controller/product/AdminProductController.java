@@ -64,7 +64,6 @@ public class AdminProductController {
 
             return "redirect:/admin/products";
         } catch (Exception e) {
-            System.out.println(e);
             return "redirect:/admin/dashboard";
         }
     }
@@ -93,7 +92,6 @@ public class AdminProductController {
 
             return "redirect:/admin/products";
         } catch (IOException e) {
-            System.out.println(e);
             return "redirect:/admin/products";
         }
     }
@@ -106,7 +104,6 @@ public class AdminProductController {
             fileStorageService.deleteFile(fileName);
             return "redirect:/admin/products";
         } catch (IOException e) {
-            System.out.println(e);
             return "redirect:/admin/products";
         }
     }

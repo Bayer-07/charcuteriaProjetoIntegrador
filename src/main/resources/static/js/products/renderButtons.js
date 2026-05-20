@@ -75,18 +75,3 @@ function openDeleteProductModal(productId) {
 function closeDeleteProductModal() {
     document.getElementById("deleteProductModal").style.display = "none";
 }
-
-window.onclick = function(event) {
-    const modalCreateProduct = document.getElementById("createProductModal");
-    const modalDeleteProduct = document.getElementById("deleteProductModal");
-    const modalEditProduct = document.getElementById("editProductModal");
-    if (event.target == modalCreateProduct) {
-        closeCreateProductModal();
-    }
-    if (event.target == modalDeleteProduct) {
-        closeDeleteProductModal();
-    }
-    if (event.target == modalEditProduct) {
-        closeEditProductModal();
-    }
-}
