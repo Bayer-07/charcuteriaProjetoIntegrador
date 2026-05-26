@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtos | Koch Charcutaria</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/header.css}" href="/css/header.css" />
+    <link rel="stylesheet" th:href="@{/css/subscription-options.css}" href="/css/subscription-options.css" />
+    <link rel="stylesheet" th:href="@{/css/footer.css}" href="/css/footer.css" />
+    <link rel="shortcut icon" th:href="@{/images/logo.png}" href="/images/logo.png" type="image/x-icon">
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <span class="brand-name">Koch</span>
+                <span class="brand-suffix">Charcutaria</span>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <nav class="nav-menu">
+                        <ul>
+                            <li><a th:href="@{/}" class="active">Início</a></li>
+                            <li><a th:href="@{/produtos}">Catálogo</a></li>
+                            <li><a th:href="@{/subscriptions}">Assinaturas</a></li>
+                            <li><a th:href="@{/partners}">Parcerias</a></li>
+                        </ul>
+                    </nav>
+                </ul>
+            </nav>
+            <div class="header-icons">
+                <a href="/cart" class="icon-link">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="21" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                </a>
+                <a href="/handleProfile" class="icon-link">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="subscriptions-container">
+
+        <section class="hero-banner">
+            <div class="banner-overlay">
+                <h1>Receba Koch em Casa Todo Mês</h1>
+            </div>
+        </section>
+
+        <section class="plans-section">
+            <div class="plans-grid">
+
+                <div th:each="plan, iterStat : ${plans}" class="plan-card" th:classappend="${iterStat.index == 1} ? 'plan-card featured' : 'plan-card'">
+
+                    <div class="card-body">
+                        <h2 class="plan-title" th:text="${plan.name}">Plano Básico</h2>
+
+                        <div class="plan-price">
+                            <span class="currency">R$</span>
+                            <span class="amount" th:text="${#numbers.formatDecimal(plan.price, 1, 'POINT', 2, 'COMMA')}">89,90</span>
+                            <span class="period">/mês</span>
+                        </div>
+
+                        <p class="plan-description" th:text="${plan.description}">
+                            1 Salame Artesanal, 1 Queijo Selecionado, 1 Geleia Artesanal
+                        </p>
+                    </div>
+
+                    <div class="card-footer">
+                        <form th:action="@{/subscriptions/subscribe}" method="post">
+                            <input type="hidden" name="planId" th:value="${plan.id}" />
+                            <button type="submit" class="btn-subscribe">Assinar</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+    <script th:src="@{/js/carrossel.js}"></script>
+    <script th:src="@{/js/indexTopProducts.js}" src="/js/indexTopProducts.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,186 @@
+.subscriptions-container {
+    width: 100%;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f9f8f6;
+}
+
+.hero-banner {
+    width: 100%;
+    height: 580px;
+    background-image: url('/images/hero3.jpg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    border-bottom: 4px solid #8b0000;
+}
+
+.banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.banner-overlay h1 {
+    color: #ffffff;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-shadow: 2px 3px 6px rgba(0, 0, 0, 0.7);
+}
+
+.plans-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 20px;
+}
+
+.plans-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 40px;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.plan-card {
+    background: #ffffff;
+    border: 1px solid #e6e1da;
+    border-radius: 16px;
+    padding: 45px 35px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 520px;
+    box-shadow: 0 4px 6px rgba(139, 0, 0, 0.02);
+    position: relative;
+
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+                box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+                border-color 0.3s ease;
+}
+
+.plan-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(139, 0, 0, 0.08);
+    border-color: #d4af37;
+}
+
+.plan-title {
+    color: #2c2523;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+
+.plan-price {
+    text-align: center;
+    margin-bottom: 35px;
+    color: #8b0000;
+    background-color: #fdf8f7;
+    padding: 15px;
+    border-radius: 12px;
+}
+
+.plan-price .currency {
+    font-size: 1.1rem;
+    font-weight: 600;
+    vertical-align: super;
+    margin-right: 2px;
+}
+
+.plan-price .amount {
+    font-size: 2.6rem;
+    font-weight: 800;
+}
+
+.plan-price .period {
+    font-size: 0.95rem;
+    color: #6e6562;
+    font-weight: 500;
+}
+
+.plan-description {
+    color: #4a403c;
+    font-size: 1rem;
+    line-height: 1.8;
+    text-align: left;
+    margin-bottom: 30px;
+    white-space: pre-line;
+}
+
+.plan-description::before {
+    content: "";
+    display: block;
+    margin-bottom: 15px;
+    border-top: 1px dashed #e6e1da;
+}
+
+.btn-subscribe {
+    width: 100%;
+    background-color: #fdf8f7;
+    color: #8b0000;
+    border: 2px solid #8b0000;
+    padding: 14px 20px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.btn-subscribe:hover {
+    background-color: #8b0000;
+    color: #ffffff;
+    border-color: #8b0000;
+}
+
+.plan-card.featured {
+    border: 2px solid #8b0000;
+    box-shadow: 0 12px 30px rgba(139, 0, 0, 0.08);
+
+    transform: scale(1.03);
+    z-index: 3;
+}
+
+.plan-card.featured:hover {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 20px 40px rgba(139, 0, 0, 0.15);
+    border-color: #d4af37;
+}
+
+.plan-card.featured .btn-subscribe {
+    background-color: #8b0000;
+    color: #ffffff;
+}
+
+.plan-card.featured .btn-subscribe:hover {
+    background-color: #a30000;
+    border-color: #a30000;
+}
+
+.plan-card.featured::before {
+    content: "★ MAIS POPULAR";
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #8b0000;
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    white-space: nowrap;
+    z-index: 4;
+}
