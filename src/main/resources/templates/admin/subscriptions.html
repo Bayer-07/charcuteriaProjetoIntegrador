@@ -100,15 +100,14 @@
                         <td class="cell-name" th:text="${sub.userName}"></td>
                         <td class="cell-category" th:text="${sub.userEmail}"></td>
                         <td class="cell-price" th:text="${sub.planName}"></td>
-                        <td class="cell-id" th:text="${sub.status}"></td>
+                        <td class="cell-id" th:text="${sub.status}"
+                        th:classappend="${sub.status == 'ACTIVE'} ? 'text-active' : 'text-inactive'"></td>
                         <td class="cell-id" th:text="${sub.startedAt}"></td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </main>
-
-    <p th:text="${subscriptions}"></p>
 
 </body>
 

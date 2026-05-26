@@ -72,13 +72,6 @@
     transition: transform 0.1s ease;
 }
 
-.products-table td {
-    padding: 15px 20px;
-    border-top: 1px solid #d1d1d1;
-    border-bottom: 1px solid #d1d1d1;
-    color: #444;
-}
-
 .products-table td:first-child {
     border-left: 1px solid #d1d1d1;
     border-radius: 8px 0 0 8px;
@@ -92,16 +85,17 @@
 .cell-id {
     color: #999;
     width: 50px;
+    font-weight: bold;
 }
 
 .cell-name {
-    width: 250px;
+    width: 20%;
     font-weight: 500;
     color: #555;
 }
 
 .cell-category {
-    width: 250px;
+    width: 30%;
     color: #888;
 }
 
@@ -153,4 +147,12 @@ button.action-btn {
     cursor: pointer;
     font: inherit;
     color: inherit;
+}
+
+.text-active {
+    color: green;
+}
+
+.text-inactive {
+    color: red;
 }
