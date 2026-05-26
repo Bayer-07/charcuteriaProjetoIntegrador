@@ -3,13 +3,17 @@ package com.example.charcuteria.controller.subscription;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.charcuteria.dto.subscription.SubscriptionRequest;
 import com.example.charcuteria.dto.subscription.SubscriptionResponse;
 import com.example.charcuteria.model.User;
-import com.example.charcuteria.service.subscription.SubscriptionService;
 import com.example.charcuteria.service.subscription.SubscriptionPlanService;
+import com.example.charcuteria.service.subscription.SubscriptionService;
 
 @Controller
 @RequestMapping("/subscriptions")
@@ -23,13 +27,13 @@ public class SubscriptionController {
         this.planService = planService;
     }
 
-    @GetMapping
+    @GetMapping()
     public String listSubscriptions(@AuthenticationPrincipal User loggedUser, Model model) {
         if (loggedUser == null) {
             return "redirect:/login";
         }
-        model.addAttribute("subscriptions", service.returnByUserId(loggedUser.getId()));
-        return "subscription/list";
+        model.addAttribute("plans", planService.returnAll());
+        return "public/subscriptions-options";
     }
 
     @GetMapping("/{id}")
