@@ -92,16 +92,17 @@
 .cell-id {
     color: #999;
     width: 50px;
+    font-weight: bold;
 }
 
 .cell-name {
-    width: 250px;
+    width: 20%;
     font-weight: 500;
     color: #555;
 }
 
 .cell-category {
-    width: 250px;
+    width: 30%;
     color: #888;
 }
 
