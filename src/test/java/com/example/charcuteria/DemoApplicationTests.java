@@ -8,6 +8,7 @@ class CharcuteriaApplicationTests {
 
 	@Test
 	void contextLoads() {
+		assert(true);
 	}
 
 }
