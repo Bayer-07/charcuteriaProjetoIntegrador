@@ -39,6 +39,9 @@ public class AdminTests {
     @MockBean
     private UserService userService;
 
+    @MockBean
+    private com.example.charcuteria.service.address.AddressService addressService;
+
     @Test
     @WithMockUser(roles = "ADMIN")
     void testAdminRegistrationView_Authorized() throws Exception {

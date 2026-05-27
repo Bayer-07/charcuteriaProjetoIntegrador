@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | Koch Charcutaria</title>
+    <title>Produtos | Koch Charcutaria</title>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/styleLogin.css}" href="/css/styleLogin.css" />
     <link rel="stylesheet" th:href="@{/css/header.css}" href="/css/header.css" />
+    <link rel="stylesheet" th:href="@{/css/subscription-options.css}" href="/css/subscription-options.css" />
     <link rel="stylesheet" th:href="@{/css/footer.css}" href="/css/footer.css" />
     <link rel="shortcut icon" th:href="@{/images/logo.png}" href="/images/logo.png" type="image/x-icon">
 </head>
@@ -24,7 +24,7 @@
                 <ul>
                     <nav class="nav-menu">
                         <ul>
-                            <li><a th:href="@{/}">Início</a></li>
+                            <li><a th:href="@{/}" class="active">Início</a></li>
                             <li><a th:href="@{/produtos}">Catálogo</a></li>
                             <li><a th:href="@{/subscriptions}">Assinaturas</a></li>
                             <li><a th:href="@{/partners}">Parcerias</a></li>
@@ -50,35 +50,49 @@
         </div>
     </header>
 
-    <main class="login-wrapper">
-        <div class="card-login">
-            <div class="logo-wrapper">
-                <img th:src="@{/images/logo.png}" src="/images/logo.png" alt="Logo Charcuteria" class="circular-logo">
-            </div>
+    <main class="subscriptions-container">
 
-            <h1 class="login-title">Login</h1>
-            <p class="subtitle">Preencha os campos abaixo para acessar sua conta</p>
-
-            <form class="form-login" th:action="@{/login}" th:object="${userDto}" method="post">
-                <div class="input-group">
-                    <label>E-mail</label>
-                    <input type="email" th:field="*{email}" placeholder="nome@nome.com.br" required>
-                </div>
-                <div class="input-group">
-                    <label>Senha</label>
-                    <input type="password" th:field="*{password}" placeholder="********" required>
-                </div>
-                <div class="form-login" th:text="${loginError}"></div>
-                <button class="btn-login" type="submit">Entrar</button>
-            </form>
-            <div class="card-footer">
-                <p>Não tem uma conta? <a href="/register" class="bold-link">Crie Uma</a></p>
-                <a href="/loginAdmin" class="admin-link">Entrar como administrador</a>
+        <section class="hero-banner">
+            <div class="banner-overlay">
+                <h1>Receba Koch em Casa Todo Mês</h1>
             </div>
-        </div>
+        </section>
+
+        <section class="plans-section">
+            <div class="plans-grid">
+
+                <div th:each="plan, iterStat : ${plans}" class="plan-card" th:classappend="${iterStat.index == 1} ? 'plan-card featured' : 'plan-card'">
+
+                    <div class="card-body">
+                        <h2 class="plan-title" th:text="${plan.name}">Plano Básico</h2>
+
+                        <div class="plan-price">
+                            <span class="currency">R$</span>
+                            <span class="amount" th:text="${#numbers.formatDecimal(plan.price, 1, 'POINT', 2, 'COMMA')}">89,90</span>
+                            <span class="period">/mês</span>
+                        </div>
+
+                        <p class="plan-description" th:text="${plan.description}">
+                            1 Salame Artesanal, 1 Queijo Selecionado, 1 Geleia Artesanal
+                        </p>
+                    </div>
+
+                    <div class="card-footer">
+                        <form th:action="@{/subscriptions/subscribe}" method="post">
+                            <input type="hidden" name="planId" th:value="${plan.id}" />
+                            <button type="submit" class="btn-subscribe">Assinar</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </section>
     </main>
 
     <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+    <script th:src="@{/js/carrossel.js}"></script>
+    <script th:src="@{/js/indexTopProducts.js}" src="/js/indexTopProducts.js"></script>
 </body>
 
 </html>
