@@ -23,6 +23,8 @@ jobs:
           distribution: "temurin"
           cache: maven 
 
+      - name: Rodar o Docker
+        run: docker compose -f docker-compose.yml up -d
       - name: Testar com Maven
         run: ./mvnw clean test
 
