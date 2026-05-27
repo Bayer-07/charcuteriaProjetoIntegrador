@@ -1,44 +1,157 @@
-# Charcuteria Backend
+# Koch Charcuteria
 
-> Um Ecommerce para a charcuteria terceiro semestre eng de soft
+> E-commerce especializado em produtos artesanais de charcutaria e embutidos premium.
 
-## Tecnologias
+---
 
-- Jira -> https://grupo002.atlassian.net/jira/software/projects/G2/boards/1
-- Github -> https://github.com/charcuteria/backend
-- Linguagem/framework -> Aparentemente teremos que usar Java c/ springboot
+# Sobre o Projeto
 
-### Prerequisites
+Este projeto consiste em um e-commerce voltado para a venda de produtos artesanais de charcutaria, oferecendo uma experiência moderna, elegante e intuitiva para os clientes.
 
-- Ter o JDK 21 instalado
+A plataforma permite:
 
-### Para clonar
+- Navegação por catálogo
+- Compra online
+- Gestão de estoque
+- Área administrativa
+- Experiência responsiva para mobile e desktop
+
+---
+
+# Objetivos
+
+- Facilitar a venda online de produtos artesanais
+- Melhorar a presença digital da marca
+- Automatizar pedidos e estoque
+- Criar uma experiência premium para os clientes
+
+---
+
+# Tecnologias Utilizadas
+
+## Front-end
+
+- Thymeleaf
+- HTML
+- CSS3
+- Javascript
+
+## Back-end
+
+- Springboot
+- PostgreSQL
+- JDBC
+
+## Outros
+
+- Docker
+- Spring security para autenticação
+
+---
+
+# Funcionalidades
+
+## Usuários
+
+- Cadastro
+- Login
+- Perfil do usuário
+- Controle de plano
+
+## Loja
+
+- Catálogo de produtos
+- Busca de produtos
+- Filtros por categoria
+- Carrinho de compras
+- Checkout
+
+## Administração
+
+- Gestão de produtos
+- Controle de estoque
+- Gestão de pedidos
+- Gestão de planos
+- Dashboard administrativo
+
+---
+
+# Estrutura de Pastas
 
 ```bash
-git clone https://github.com/Bayer-07/charcuteriaProjetoIntegrador.git
+📦 charcuteria
+ ┣ 📂 src
+ ┃ ┣ 📂 main
+ ┃ ┃ ┣ 📂 java
+ ┃ ┃ ┃ ┣ 📂 config
+ ┃ ┃ ┃ ┣ 📂 controller
+ ┃ ┃ ┃ ┣ 📂 dto
+ ┃ ┃ ┃ ┣ 📂 enums
+ ┃ ┃ ┃ ┣ 📂 exceptions
+ ┃ ┃ ┃ ┣ 📂 model
+ ┃ ┃ ┃ ┣ 📂 repository
+ ┃ ┃ ┃ ┗ 📂 services
+ ┃ ┃ ┣ 📂 resources
+ ┃ ┃ ┃ ┣ 📂 db/migrations
+ ┃ ┃ ┃ ┣ 📂 static
+ ┃ ┃ ┃ ┗ 📂 templates
+ ┣ ┣ 📂 test
+ ┃ ┃ ┣ 📂 integration
+ ┃ ┃ ┗ 📂 unit
+ ┣ 📜 .editorconfig
+ ┣ 📜 .gitignore
+ ┣ 📜 docker-compose.yaml
+ ┣ 📜 mvnw
+ ┣ 📜 pom.xlm
+ ┗ 📜 README.md
+
 ```
 
-### Para rodar
+# Rotas Principais
 
-1- Subir o db
+## Públicas
 
-```bash
-docker compose up (ou docker compose up -d para ser detached do terminal)
-```
+| Rota | Descrição |
+|------|------------|
+| `/` | Página inicial |
+| `/login` | Login de usuários |
+| `/register` | Cadastro de usuários |
+| `/produtos` | Catálogo de produtos |
+| `/cart` | Carrinho de compras |
+| `/subscriptions` | Assinaturas |
+| `/parcerias` | Parcerias |
 
-2- Rodar a application
+---
 
-```bash
-./mvnw spring-boot:run
-```
+## Usuário
 
-2- Rodar os testes
+| Rota | Descrição |
+|------|------------|
+| `/user/dashboard` | Perfil do usuário |
+| `/user/subscriptions` | Assinaturas do usuário |
+| `/user/orders` | Pedidos do usuário |
 
-```bash
-./mvnw test
-```
+---
 
-### Jira things
+## Administração
 
-- Para linkarmos o github com o jira, todas as branchs, commits e PRs tem que, obrigatóriamente, ter um código definido pelo Jira no COMEÇO.
-- O código muda para cada issue criada no Jira.
+| Rota | Descrição |
+|------|------------|
+| `/login/admin` | Login admin |
+| `/admin/dashboard` | Dashboard administrativo |
+| `/admin/products` | Gestão de produtos |
+| `/admin/pedidos` | Gestão de pedidos |
+| `/admin/subscriptions` | Gestão de assinaturas |
+
+---
+
+# Controle de Acesso
+
+O sistema utiliza autenticação com Spring Security para controle de acesso baseado em permissões.
+
+Tipos de acesso:
+
+- Usuário comum
+- Administrador
+
+Rotas administrativas são protegidas e acessíveis apenas para usuários com perfil `ADMIN`.

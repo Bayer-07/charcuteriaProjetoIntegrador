@@ -58,16 +58,30 @@ function closeDeleteCategoryModal() {
 }
 
 window.onclick = function(event) {
+    // category
     const modalCreateCategory = document.getElementById("createCategoryModal");
     const modalDeleteCategory = document.getElementById("deleteCategoryModal");
-    // const modalEditProduct = document.getElementById("editProductModal");
+    const modalEditCategory = document.getElementById("editCategoryModal");
     if (event.target == modalCreateCategory) {
         closeCreateCategoryModal();
     }
     if (event.target == modalDeleteCategory) {
         closeDeleteCategoryModal();
     }
-    // if (event.target == modalEditProduct) {
-    //     closeEditProductModal();
-    // }
+    if (event.target == modalEditCategory) {
+        closeEditCategoryModal();
+    }
+    // product
+    const modalCreateProduct = document.getElementById("createProductModal");
+    const modalDeleteProduct = document.getElementById("deleteProductModal");
+    const modalEditProduct = document.getElementById("editProductModal");
+    if (event.target == modalCreateProduct) {
+        closeCreateProductModal();
+    }
+    if (event.target == modalDeleteProduct) {
+        closeDeleteProductModal();
+    }
+    if (event.target == modalEditProduct) {
+        closeEditProductModal();
+    }
 }

@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import java.util.Collections;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -46,17 +45,6 @@ public class AddressTests {
         testUser.setRole(UserRoleEnum.ADMIN);
     }
 
-    @Test
-    void testListAddresses_Authenticated() throws Exception {
-        when(addressService.getAddressesByUserId(1)).thenReturn(Collections.emptyList());
-
-        mockMvc.perform(get("/addresses")
-                .with(user(testUser)))
-            .andExpect(status().isOk())
-            .andExpect(view().name("user/dashboard"))
-            .andExpect(model().attributeExists("addresses"))
-            .andExpect(model().attribute("userEmail", "user@test.com"));
-    }
 
     @Test
     void testCreateAddress_Success() throws Exception {

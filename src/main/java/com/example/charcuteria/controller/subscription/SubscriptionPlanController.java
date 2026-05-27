@@ -1,13 +1,11 @@
 package com.example.charcuteria.controller.subscription;
 
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.charcuteria.dto.subscription.SubscriptionPlanRequest;
 import com.example.charcuteria.dto.subscription.SubscriptionPlanResponse;
-import com.example.charcuteria.model.User;
 import com.example.charcuteria.service.subscription.SubscriptionPlanService;
 
 @Controller

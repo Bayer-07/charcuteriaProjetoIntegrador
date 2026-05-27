@@ -39,7 +39,6 @@ public class CartController {
             redirectAttributes.addFlashAttribute("successMessage", "Produto adicionado!");
             return "redirect:" + referer;
         } catch (Exception e) {
-            System.out.println(e);
             return "redirect:" + referer;
         }
     }
@@ -71,11 +70,9 @@ public class CartController {
     @PostMapping("/delete/{id}")
     public String deleteProductFromCart(@PathVariable Integer id) {
         try {
-            System.out.println(id);
             cartService.deleteProductFromCart(id);
             return "redirect:/cart";
         } catch (Exception e) {
-            System.out.println(e);
             return "redirect:/cart";
         }
     }
