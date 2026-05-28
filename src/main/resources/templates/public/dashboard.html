@@ -57,11 +57,15 @@
         <div class="user-info">
             <h1>Meus Dados</h1>
             <div class="infos">
-                <div>
-                    <p>Nome:</p>
-                    <div><span th:text="${user.name}">Usuário</span></div>
-                    <p>E-mail:</p>
-                    <div><span th:text="${user.email}">email</span></div>
+                <div class="user-info-session">
+                    <div class="user-info-item">
+                        <p>Nome:</p>
+                        <span th:text="${user.name}">Usuário</span>
+                    </div>
+                    <div class="user-info-item">
+                        <p>E-mail:</p>
+                        <div><span th:text="${user.email}">email</span></div>
+                    </div>
                 </div>
                 <div>
                     <p>Endereços:</p>
@@ -69,28 +73,29 @@
                         <div th:if="${#lists.isEmpty(addresses)}" class="address-empty">
                             Você ainda não cadastrou nenhum endereço.
                             <div style="margin-top:12px;">
-                                <button type="button" id="openAddressModal" class="btn-add-address">Adicionar endereço</button>
+                                <button type="button" id="openAddressModal" class="btn-add-address">Adicionar
+                                    endereço</button>
                             </div>
                         </div>
 
                         <div th:if="${!#lists.isEmpty(addresses)}" style="display:flex; justify-content:center;">
-                            <button type="button" id="openAddressModal" class="btn-add-address">+ Novo Endereço</button>
+                            <button type="button" id="openAddressModal" class="btn-add-address">+ Novo
+                                Endereço</button>
                         </div>
 
                         <div th:unless="${#lists.isEmpty(addresses)}" class="address-list">
                             <div th:each="address : ${addresses}" class="address-card">
-                                <button type="button" class="btn-delete-compact btn-delete-trigger card-delete" 
+                                <button type="button" class="btn-delete-compact btn-delete-trigger card-delete"
                                     th:data-address-id="${address.id}" title="Deletar endereço">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"
                                         focusable="false">
                                         <path d="M3 6h18" stroke="#fff" stroke-width="2" stroke-linecap="round"
                                             stroke-linejoin="round" fill="none"></path>
-                                        <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="#fff"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                            fill="none"></path>
+                                        <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="#fff" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
                                         <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke="#fff"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                            fill="none"></path>
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                                        </path>
                                         <path d="M10 11v6" stroke="#fff" stroke-width="2" stroke-linecap="round"
                                             stroke-linejoin="round" fill="none"></path>
                                         <path d="M14 11v6" stroke="#fff" stroke-width="2" stroke-linecap="round"
