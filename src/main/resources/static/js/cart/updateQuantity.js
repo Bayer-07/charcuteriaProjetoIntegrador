@@ -28,3 +28,4 @@ function updateGlobalTotal() {
     document.querySelector('.total-value').innerText = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     totalOriginal = total;
 }
+

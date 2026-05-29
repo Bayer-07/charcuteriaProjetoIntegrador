@@ -1,3 +1,15 @@
+document.getElementById('cepInput').addEventListener('input', function (e) {
+    // Remove tudo o que não for número
+    let value = e.target.value.replace(/\D/g, '');
+
+    // Aplica a máscara 00000-000 dinamicamente
+    if (value.length > 5) {
+        value = value.replace(/^(\d{5})(\d)/, '$1-$2');
+    }
+
+    e.target.value = value;
+});
+
 let totalOriginal = null;
 
 async function calculateShipping() {
