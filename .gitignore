@@ -34,4 +34,8 @@ build/
 .vscode/
 
 src/main/resources/static/uploads/products/*
+<<<<<<< HEAD
 .env
+=======
+.env
+>>>>>>> b5b84b4de37449851ea23832c742fdf64da13351
