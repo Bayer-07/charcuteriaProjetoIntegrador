@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pedidos | Koch Charcutaria</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}" href="/css/sidebar.css" />
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}" href="/css/dashboard.css" />
+    <link rel="stylesheet" th:href="@{/css/adminOrders.css}" href="/css/adminOrders.css" />
+    <link rel="shortcut icon" th:href="@{/images/logo.png}" href="/images/logo.png" type="image/x-icon">
+</head>
+
+<body class="admin-layout">
+    <aside class="admin-sidebar">
+        <div class="sidebar-header">
+            <a href="/handleProfile" class="icon-link">
+                <span class="brand-name">Koch</span>
+                <span class="brand-admin">Admin</span>
+            </a>
+        </div>
+
+        <nav class="sidebar-nav">
+            <ul>
+                <li>
+                    <a href="/admin/dashboard">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2"
+                            fill="none">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/products">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2"
+                            fill="none">
+                            <path d="M21 8V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8"></path>
+                            <rect x="1" y="3" width="22" height="5"></rect>
+                            <line x1="10" y1="12" x2="14" y2="12"></line>
+                        </svg>
+                        <span>Produtos</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="/admin/orders">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2"
+                            fill="none">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        <span>Pedidos</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/admin/subscriptions">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2"
+                            fill="none">
+                            <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+                            <line x1="2" y1="10" x2="22" y2="10"></line>
+                        </svg>
+                        <span>Assinaturas</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="/logout" class="logout-link">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                <span>Sair</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="dashboard-content">
+        <div class="table-container">
+            <table class="products-table">
+                <thead>
+                    <tr>
+                        <th class="col-id">Pedido</th>
+                        <th class="col-date">Data</th>
+                        <th class="col-status">Status</th>
+                        <th class="col-total">Total</th>
+                        <th class="col-actions">Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr th:each="ord : ${orders}">
+                        <td class="cell-id" th:text="'KCH - ' + ${ord.id}"></td>
+                        <td class="cell-date" th:text="${#temporals.format(ord.orderDate, 'dd/MM/yyyy HH:mm')}"></td>
+                        <td class="cell-status" th:text="${ord.status}"
+                        th:classappend="${ord.status == 'PENDING'} ? 'text-pending' : 'text-active'"></td>
+                        <td class="cell-total" th:text="${ord.totalAmount}"></td>
+                        <td class="cell-actions">
+                            <button type="button" class="action-btn edit"
+                                th:onclick="|loadAndOpenEditProductModal(${ord.id})|">
+                                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2"
+                                    fill="none">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4L18.5 2.5z"></path>
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+</body>
+
+</html>

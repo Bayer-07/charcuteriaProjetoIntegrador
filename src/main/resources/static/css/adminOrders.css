@@ -1,0 +1,173 @@
+.dashboard-content {
+    margin-left: 260px;
+    padding: 40px;
+    min-height: 100vh;
+    background-color: #fff;
+}
+
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+}
+
+.productsCategory {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+}
+
+.filter-link {
+    font-size: 24px;
+    font-weight: 700;
+    color: #999;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    cursor: pointer;
+}
+
+.filter-link:hover {
+    color: #666;
+}
+
+.filter-link.active {
+    color: #2c1614;
+}
+
+.filter-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #8b0000;
+    border-radius: 2px;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.products-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 12px;
+}
+
+.products-table th {
+    text-align: left;
+    color: #888;
+    font-weight: 500;
+    padding: 0 5px;
+    font-size: 14px;
+}
+
+.products-table tbody tr {
+    background-color: #fff;
+    transition: transform 0.1s ease;
+}
+
+.products-table td:first-child {
+    border-left: 1px solid #d1d1d1;
+    border-radius: 8px 0 0 8px;
+}
+
+.products-table td:last-child {
+    border-right: 1px solid #d1d1d1;
+    border-radius: 0 8px 8px 0;
+}
+
+.col-id {
+    width: 20%;
+    font-weight: bold;
+}
+
+.cell-id {
+    color: #999;
+    width: 20%;
+    font-weight: bold;
+}
+
+.col-date {
+    width: 20%; 
+    font-weight: 500;
+}
+
+.cell-date {
+    width: 20%; 
+    font-weight: 500;
+    color: #555;
+}
+
+.col-status {
+    width: 30%;
+}
+
+.cell-status {
+    width: 30%;
+    color: #888;
+}
+
+.col-total {
+    font-weight: 600;
+    width: 20px;
+}
+
+.cell-total {
+    font-weight: 600;
+    color: #555;
+    width: 20px;
+}
+
+.cell-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    align-items: left;
+    border-left: none;
+}
+
+.products-table th.col-actions {
+    text-align: right;
+}
+
+
+.action-btn {
+    text-align: left;
+    text-decoration: none;
+    transition: transform 0.2s;
+}
+
+.action-btn.edit {
+    color: #3498db;
+}
+
+.action-btn.delete {
+    color: #e74c3c;
+}
+
+.action-btn:hover {
+    transform: scale(1.2);
+}
+
+button.action-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font: inherit;
+    color: inherit;
+}
+
+.text-active {
+    color: green;
+}
+
+.text-pending {
+    color: red;
+}
