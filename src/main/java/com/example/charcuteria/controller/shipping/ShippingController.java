@@ -1,5 +1,7 @@
 package com.example.charcuteria.controller.shipping;
 
+import com.example.charcuteria.dto.shipping.CepValidateRequest;
+import com.example.charcuteria.dto.shipping.CepValidateResponse;
 import com.example.charcuteria.dto.shipping.ShippingCalculateRequest;
 import com.example.charcuteria.dto.shipping.ShippingCalculateResponse;
 import com.example.charcuteria.model.User;
@@ -14,7 +16,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/shipping")
 public class ShippingController {
 
-    @Autowired private ShippingService shippingService;
+    @Autowired
+    private ShippingService shippingService;
 
     @PostMapping("/calculate")
     public ResponseEntity<?> calculateShipping(
@@ -34,5 +37,18 @@ public class ShippingController {
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
                     .body("Erro ao calcular frete");
         }
+    }
+
+    @PostMapping("/validate")
+    public ResponseEntity<CepValidateResponse> validateCep(
+            @RequestBody CepValidateRequest request) {
+        String cep = request.cep().replaceAll("\\D", "");
+
+        if (cep.length() != 8) {
+            return ResponseEntity.badRequest().body(new CepValidateResponse(false, "CEP_INVALIDO"));
+        }
+
+        CepValidateResponse response = shippingService.validateCep(cep);
+        return ResponseEntity.ok(response);
     }
 }

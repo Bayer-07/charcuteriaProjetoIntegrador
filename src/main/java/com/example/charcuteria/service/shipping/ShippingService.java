@@ -1,6 +1,8 @@
 package com.example.charcuteria.service.shipping;
 
 import com.example.charcuteria.dto.cart.CartResponseDto;
+import com.example.charcuteria.dto.shipping.CepValidateResponse;
+import com.example.charcuteria.dto.shipping.OpenCepResponse;
 import com.example.charcuteria.service.cart.CartService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,9 +33,29 @@ public class ShippingService {
     private static final String MELHOR_ENVIO_URL =
             "https://sandbox.melhorenvio.com.br/api/v2/me/shipment/calculate";
 
+    private static final String OPEN_CEP_URL = "https://opencep.com/v1/";
+
     public Integer calculateTotalQuantity(Integer userId) {
         List<CartResponseDto> cartItems = cartService.getAllCartItems(userId);
         return cartItems.stream().mapToInt(CartResponseDto::quantity).sum();
+    }
+
+    public CepValidateResponse validateCep(String cep) {
+        try {
+            String url = OPEN_CEP_URL + cep + ".json";
+            OpenCepResponse response = restTemplate.getForObject(url, OpenCepResponse.class);
+
+            if (response == null) {
+                return new CepValidateResponse(false, "CEP_INVALIDO");
+            }
+
+            boolean isValidUf = "PR".equals(response.uf());
+            String message = isValidUf ? "VALIDO" : "FORA_PR";
+            return new CepValidateResponse(isValidUf, message);
+
+        } catch (Exception e) {
+            return new CepValidateResponse(false, "CEP_INVALIDO");
+        }
     }
 
     public Double calculateShipping(String destinationCep, Integer userId) {
