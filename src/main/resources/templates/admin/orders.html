@@ -101,22 +101,54 @@
                         <td class="cell-id" th:text="'KCH - ' + ${ord.id}"></td>
                         <td class="cell-date" th:text="${#temporals.format(ord.orderDate, 'dd/MM/yyyy HH:mm')}"></td>
                         <td class="cell-status" th:text="${ord.status}"
-                        th:classappend="${ord.status == 'PENDING'} ? 'text-pending' : 'text-active'"></td>
+                            th:classappend="${ord.status == 'PENDING'} ? 'text-pending' : 'text-active'"></td>
                         <td class="cell-total" th:text="${ord.totalAmount}"></td>
                         <td class="cell-actions">
-                            <button type="button" class="action-btn edit"
-                                th:onclick="|loadAndOpenEditProductModal(${ord.id})|">
-                                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2"
+                            <button type="button" class="action-btn" th:onclick="|openModal(${ord.id})|">
+
+                                <svg viewBox="0 0 24 24" width="18" height="18" stroke="#3498db" stroke-width="2"
                                     fill="none">
-                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4L18.5 2.5z"></path>
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+
                                 </svg>
+
                             </button>
+
+                            <div th:id="|modal-${ord.id}|" class="modal-overlay">
+                                <div class="modal-card">
+                                    <h2>Pedido KCH - <span th:text="${ord.id}"></span></h2>
+                                    <p><strong>Data:</strong>
+                                        <span th:text="${#temporals.format(ord.orderDate, 'dd/MM/yyyy HH:mm')}"></span>
+                                    </p>
+                                    <p><strong>Status:</strong>
+                                        <span th:text="${ord.status}"></span>
+                                    </p>
+                                    <p><strong>Total:</strong>
+                                        <span th:text="'R$ ' + ${ord.totalAmount}"></span>
+                                    </p>
+                                    <!-- <h3>Itens do Pedido:</h3>
+                                <ul>
+                                    <li th:each="item : ${ord.items}">
+                                        <span th:text="${item.productName}"></span> -
+                                        <span th:text="${item.quantity}"></span> x
+                                        <span th:text="${item.price}"></span>
+                                    </li>
+                                </ul> !-->
+                                    <div class="modal-buttons">
+                                        <button type="button" class="close-btn" th:onclick="|closeModal(${ord.id})|">
+                                            Fechar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
+        <script th:src="@{/js/orders/ordersModal.js}" src="/js/orders/ordersModal.js"></script>
+
     </main>
 
 </body>
