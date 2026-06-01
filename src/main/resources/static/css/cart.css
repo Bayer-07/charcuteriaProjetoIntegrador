@@ -338,6 +338,53 @@ body {
     background: #4a2825;
 }
 
+.btn-add-address-icon {
+    width: 42px;
+    min-width: 42px;
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 8px;
+    background: #610000;
+    color: #fff;
+    cursor: pointer;
+    position: relative;
+    box-shadow: 0 8px 16px rgba(139, 0, 0, 0.18);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.btn-add-address-icon:hover {
+    background: #7a0000;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px rgba(139, 0, 0, 0.24);
+}
+
+.btn-add-address-icon::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    right: 0;
+    background: #2c1614;
+    color: #fff;
+    padding: 6px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(4px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 5;
+}
+
+.btn-add-address-icon:hover::after {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 .shipping-result {
     font-size: 13px;
     color: #27ae60;

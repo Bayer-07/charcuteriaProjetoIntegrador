@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.charcuteria.dto.address.AddressDtoRequest;
@@ -57,6 +58,7 @@ public class AddressController {
     @PostMapping
     public String createAddress(
             @ModelAttribute AddressDtoRequest addressDto,
+            @RequestParam(name = "redirectTo", required = false) String redirectTo,
             @AuthenticationPrincipal User loggedUser,
             RedirectAttributes redirectAttributes) {
 
@@ -68,11 +70,24 @@ public class AddressController {
             addressDto.setUserId(loggedUser.getId());
             addressService.createAddress(addressDto);
             redirectAttributes.addFlashAttribute("successMessage", "Endereço criado com sucesso!");
-            return "redirect:/user/dashboard";
+            return "redirect:" + resolveRedirectPath(redirectTo, "/user/dashboard");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Erro ao criar endereço: " + e.getMessage());
-            return "redirect:/user/dashboard";
+            return "redirect:" + resolveRedirectPath(redirectTo, "/user/dashboard");
         }   
+    }
+
+    private String resolveRedirectPath(String redirectTo, String fallback) {
+        if (redirectTo == null || redirectTo.isBlank()) {
+            return fallback;
+        }
+
+        String trimmedPath = redirectTo.trim();
+        if (!trimmedPath.startsWith("/") || trimmedPath.startsWith("//")) {
+            return fallback;
+        }
+
+        return trimmedPath;
     }
 
     @GetMapping("/{id}/edit")

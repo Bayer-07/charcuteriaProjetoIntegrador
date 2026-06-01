@@ -109,21 +109,15 @@
                     </div>
 
                     <div class="address-section">
-                        <p>Endereços Cadastrados:</p>
-
                         <div th:if="${#lists.isEmpty(addresses)}" class="address-empty">
                             Você ainda não cadastrou nenhum endereço.
                             <div style="margin-top:12px;">
                                 <button type="button" id="openAddressModal" class="btn-add-address">Adicionar endereço</button>
                             </div>
                         </div>
-
-                        <div th:if="${!#lists.isEmpty(addresses)}" style="display:flex; justify-content:center; margin-bottom:14px;">
-                            <button type="button" id="openAddressModal" class="btn-add-address">+ Novo Endereço</button>
-                        </div>
                     </div>
 
-                    <div class="shipping-section">
+                    <div th:if="${!#lists.isEmpty(cartItems)}" class="shipping-section">
                         <label for="shippingAddressSelect">Endereço para calcular frete</label>
 
                         <div th:if="${#lists.isEmpty(addresses)}" class="shipping-empty-note">
@@ -142,7 +136,18 @@
                             <input type="hidden" id="selectedAddressZip" th:value="${addresses[0].zipCode}">
 
                             <button type="button" onclick="calculateShipping()" class="btn-calculate">Calcular</button>
+
+                            <button type="button" id="openAddressModal" class="btn-add-address-icon"
+                                aria-label="Adicionar novo endereco" title="Adicionar novo endereco"
+                                data-tooltip="Adicionar novo endereco">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                    <path d="M12 5v14"></path>
+                                    <path d="M5 12h14"></path>
+                                </svg>
+                            </button>
                         </div>
+
                         <p id="shippingResult" class="shipping-result"></p>
                     </div>
 
@@ -170,6 +175,8 @@
                     </div>
 
                     <form th:action="@{/addresses}" method="POST" th:object="${addressDto}" class="address-modal-form">
+                        <input type="hidden" name="redirectTo" value="/cart">
+
                         <div class="form-group">
                             <label for="street">Rua/Avenida *</label>
                             <input type="text" id="street" name="street" th:field="*{street}" required>

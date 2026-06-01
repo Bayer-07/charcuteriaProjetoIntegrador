@@ -29,11 +29,9 @@ function syncSelectedAddressZip() {
 }
 
 async function validaCep(cep) {
-    console.log('=== VALIDAÇÃO DE CEP ===');
-    console.log('CEP enviado:', cep);
     try {
         const { data } = await axios.post('/api/shipping/validate', { cep: cep });
-        console.log('Resposta validação:', data);
+        ('Resposta validação:', data);
         return data;
     } catch (error) {
         console.error("Erro ao validar CEP:", error);
@@ -56,15 +54,15 @@ async function calculateShipping() {
             .replace(/\s/g, '')
             .trim();
 
-        console.log('Valor original capturado:', totalElement.innerText);
-        console.log('Após limpeza:', rawValue);
+        ('Valor original capturado:', totalElement.innerText);
+        ('Após limpeza:', rawValue);
 
         if (rawValue.includes(',')) {
             rawValue = rawValue.replace(/\./g, '').replace(',', '.');
         }
 
         totalOriginal = parseFloat(rawValue);
-        console.log('Total original parseado:', totalOriginal);
+        ('Total original parseado:', totalOriginal);
     }
 
     if (cep.length !== 8) {
@@ -73,10 +71,10 @@ async function calculateShipping() {
     }
 
     const validation = await validaCep(cep);
-    console.log('Resultado validação:', validation);
+    ('Resultado validação:', validation);
 
     if (!validation.valid) {
-        console.log('CEP inválido. Motivo:', validation.message);
+        ('CEP inválido. Motivo:', validation.message);
         if (validation.message === "FORA_PR") {
             document.getElementsByClassName('popup-cep-fora-pr')[0].classList.remove('inactive');
         } else {
@@ -85,27 +83,26 @@ async function calculateShipping() {
         return;
     }
 
-    console.log('CEP válido. Prosseguindo com cálculo de frete.');
+    ('CEP válido. Prosseguindo com cálculo de frete.');
 
     try {
         const payload = { cep: cep };
-        console.log('Enviando requisição:', payload);
+        ('Enviando requisição:', payload);
 
         const { data } = await axios.post('/api/shipping/calculate', payload);
 
-        console.log('Resposta recebida:', data);
+        ('Resposta recebida:', data);
 
         const menorFrete = parseFloat(data.price) || 15.0;
-        console.log('Valor do frete:', menorFrete);
+        ('Valor do frete:', menorFrete);
 
         resultDiv.innerText = `Frete: R$ ${menorFrete.toFixed(2).replace('.', ',')}`;
         resultDiv.style.display = "block";
 
         const novoTotal = totalOriginal + menorFrete;
-        console.log('Cálculo: totalOriginal:', totalOriginal, '+ menorFrete:', menorFrete, '= novoTotal:', novoTotal);
+        ('Cálculo: totalOriginal:', totalOriginal, '+ menorFrete:', menorFrete, '= novoTotal:', novoTotal);
         const formattedTotal = novoTotal.toFixed(2).replace('.', ',');
         totalElement.innerText = `R$ ${formattedTotal}`;
-        console.log('Total atualizado para:', totalElement.innerText);
 
     } catch (err) {
         console.error(err);
