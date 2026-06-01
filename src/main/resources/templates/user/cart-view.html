@@ -58,17 +58,22 @@
 
                     <div class="item-details">
                         <h3 th:text="${item.productName}">Copa Lombo Defumada</h3>
-                        <p class="item-price" th:text="${'R$ ' + item.unitPrice}">R$ 67,90</p>
+                        <p class="item-price" th:text="${'R$ ' + #numbers.formatDecimal(item.unitPrice, 1, 'POINT', 2, 'COMMA')}"></p>
 
                         <div class="quantity-control">
                             <button class="qty-btn" th:onclick="|updateQty(${item.id}, -1)|">-</button>
-                            <span class="qty-value" th:text="${item.quantity}">1</span>
+                            <span th:id="'qty-' + ${item.id}" class="qty-value" th:text="${item.quantity}">1</span>
                             <button class="qty-btn" th:onclick="|updateQty(${item.id}, 1)|">+</button>
                         </div>
                     </div>
 
                     <div class="item-actions">
-                        <p class="item-subtotal" th:text="${'R$ ' + item.subtotal}">R$ 67,90</p>
+                        <p th:id="'price-' + ${item.id}"
+                            class="item-subtotal"
+                            th:attr="data-unit-price=${item.unitPrice}"
+                            th:text="${'R$ ' + #numbers.formatDecimal(item.subtotal, 1, 'POINT', 2, 'COMMA')}">
+                        </p>
+
                         <form th:action="@{/cart/delete/{id}(id=${item.id})}" method="post">
                             <button class="delete-btn" type="submit">
                                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
@@ -90,7 +95,7 @@
 
                     <div class="summary-row">
                         <span>Subtotal</span>
-                        <span th:text="${'R$ ' + totalCart}">R$ 67,90</span>
+                        <span class="summary-subtotal" th:text="${'R$ ' + #numbers.formatDecimal(totalCart, 1, 'POINT', 2, 'COMMA')}"></span>
                     </div>
 
                     <div class="shipping-section">
@@ -105,8 +110,8 @@
                     <hr class="divider">
 
                     <div class="summary-row">
-                        <span>Subtotal</span>
-                        <span class="total-value" th:text="${'R$ ' + totalCart}">R$ 67,90</span>
+                        <span>Total Final</span>
+                        <span class="total-value" th:text="${'R$ ' + #numbers.formatDecimal(totalCart, 1, 'POINT', 2, 'COMMA')}"></span>
                     </div>
 
                     <button class="btn-checkout">Finalizar Compra</button>
