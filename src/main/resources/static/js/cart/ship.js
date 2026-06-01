@@ -1,13 +1,3 @@
-document.getElementById('cepInput').addEventListener('input', function (e) {
-    let value = e.target.value.replace(/\D/g, '');
-
-    if (value.length > 5) {
-        value = value.replace(/^(\d{5})(\d)/, '$1-$2');
-    }
-
-    e.target.value = value;
-});
-
 function closePopup(popupId) {
     const popup = document.getElementsByClassName(popupId);
     if (popup) {
@@ -16,6 +6,27 @@ function closePopup(popupId) {
 }
 
 let totalOriginal = null;
+
+function getSelectedAddressZip() {
+    const select = document.getElementById('shippingAddressSelect');
+    if (select && select.selectedOptions && select.selectedOptions[0]) {
+        return select.selectedOptions[0].dataset.zip || '';
+    }
+
+    const hiddenZip = document.getElementById('selectedAddressZip');
+    return hiddenZip ? hiddenZip.value : '';
+}
+
+function syncSelectedAddressZip() {
+    const hiddenZip = document.getElementById('selectedAddressZip');
+    const select = document.getElementById('shippingAddressSelect');
+
+    if (!hiddenZip || !select || !select.selectedOptions || !select.selectedOptions[0]) {
+        return;
+    }
+
+    hiddenZip.value = select.selectedOptions[0].dataset.zip || '';
+}
 
 async function validaCep(cep) {
     console.log('=== VALIDAÇÃO DE CEP ===');
@@ -33,9 +44,9 @@ async function validaCep(cep) {
 
 
 async function calculateShipping() {
-    const cepInput = document.getElementById('cepInput');
     const resultDiv = document.getElementById('shippingResult');
     const totalElement = document.querySelector('.total-value');
+    const cep = getSelectedAddressZip().replace(/\D/g, '');
 
     if (!totalElement) return;
 
@@ -55,8 +66,6 @@ async function calculateShipping() {
         totalOriginal = parseFloat(rawValue);
         console.log('Total original parseado:', totalOriginal);
     }
-
-    const cep = cepInput.value.replace(/\D/g, '');
 
     if (cep.length !== 8) {
         document.getElementsByClassName('popup-cep-invalido')[0].classList.remove('inactive');
@@ -105,5 +114,15 @@ async function calculateShipping() {
     }
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+    syncSelectedAddressZip();
+
+    const select = document.getElementById('shippingAddressSelect');
+    if (select) {
+        select.addEventListener('change', syncSelectedAddressZip);
+    }
+});
+
 // 🔥 ESSENCIAL (senão dá "not defined")
+window.syncSelectedAddressZip = syncSelectedAddressZip;
 window.calculateShipping = calculateShipping;
