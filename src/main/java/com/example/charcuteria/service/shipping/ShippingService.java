@@ -24,10 +24,10 @@ public class ShippingService {
 
     @Autowired private RestTemplate restTemplate;
 
-    @Value("${FRETE_ACCESS_TOKEN}")
+    @Value("${FRETE_ACCESS_TOKEN:}")
     private String melhorEnvioToken;
 
-    @Value("${CEP_ORIGEM}")
+    @Value("${CEP_ORIGEM:}")
     private String originCep;
 
     private static final String MELHOR_ENVIO_URL =
