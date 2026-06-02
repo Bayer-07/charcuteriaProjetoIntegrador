@@ -22,14 +22,18 @@
             </div>
             <nav class="nav-menu">
                 <ul>
-                    <li><a href="index.html">Início</a></li>
-                    <li><a href="catalogo.html">Catálogo</a></li>
-                    <li><a href="assinaturas.html">Assinaturas</a></li>
-                    <li><a href="parcerias.html">Parcerias</a></li>
+                    <nav class="nav-menu">
+                        <ul>
+                            <li><a th:href="@{/}" >Início</a></li>
+                            <li><a th:href="@{/produtos}">Catálogo</a></li>
+                            <li><a th:href="@{/subscriptions}" class="active">Assinaturas</a></li>
+                            <li><a th:href="@{/partners}">Parcerias</a></li>
+                        </ul>
+                    </nav>
                 </ul>
             </nav>
             <div class="header-icons">
-                <a href="#" class="icon-link">
+                <a href="/cart" class="icon-link">
                     <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
                         <circle cx="9" cy="21" r="1"></circle>
                         <circle cx="21" cy="21" r="1"></circle>
@@ -57,9 +61,13 @@
             <h1>Minhas Assinaturas</h1>
 
             <div th:if="${!hasSubscriptions}">
-                <div style="text-align: center; padding: 24px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(250, 248, 246, 0.98)); border: 1px dashed rgba(32, 26, 23, 0.12); border-radius: 12px; margin-top: 16px;">
-                    <p style="color: #6a5f59; margin: 0 0 16px; font-size: 0.95rem;">Contratar uma assinatura e aproveitar os benefícios</p>
-                    <a href="/subscriptions" style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; height: 40px; border-radius: 8px; background: linear-gradient(135deg, #183b2e 0%, #235743 100%); color: #fff; font-weight: 600; font-size: 0.95rem; box-shadow: 0 8px 18px rgba(24, 59, 46, 0.14); text-decoration: none; transition: all 0.2s ease; letter-spacing: 0.3px;">Ver Planos</a>
+                <div
+                    style="text-align: center; padding: 24px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(250, 248, 246, 0.98)); border: 1px dashed rgba(32, 26, 23, 0.12); border-radius: 12px; margin-top: 16px;">
+                    <p style="color: #6a5f59; margin: 0 0 16px; font-size: 0.95rem;">Contratar uma assinatura e
+                        aproveitar os benefícios</p>
+                    <a href="/subscriptions"
+                        style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; height: 40px; border-radius: 8px; background: linear-gradient(135deg, #183b2e 0%, #235743 100%); color: #fff; font-weight: 600; font-size: 0.95rem; box-shadow: 0 8px 18px rgba(24, 59, 46, 0.14); text-decoration: none; transition: all 0.2s ease; letter-spacing: 0.3px;">Ver
+                        Planos</a>
                 </div>
             </div>
 
@@ -78,11 +86,14 @@
                     <div class="subscription-card-details">
                         <div class="detail-item" style="grid-column: 1 / -1;">
                             <span class="detail-label">Descrição:</span>
-                            <span class="detail-value" th:text="${subscription.planDescription}">Descrição do plano</span>
+                            <span class="detail-value" th:text="${subscription.planDescription}">Descrição do
+                                plano</span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">Preço Mensal:</span>
-                            <span class="detail-value" th:text="'R$ ' + ${#numbers.formatDecimal(subscription.planPrice, 1, 'POINT', 2, 'COMMA')}">R$ 0,00</span>
+                            <span class="detail-value"
+                                th:text="'R$ ' + ${#numbers.formatDecimal(subscription.planPrice, 1, 'POINT', 2, 'COMMA')}">R$
+                                0,00</span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">Data de Início:</span>
@@ -91,16 +102,28 @@
                     </div>
 
                     <div class="subscription-card-actions">
-                        <form th:if="${subscription.status == 'ACTIVE'}" th:action="@{/user/subscriptions/{id}/pause(id=${subscription.subscriptionId})}" method="POST" class="action-form" onsubmit="return showConfirmation(event, 'Pausar Assinatura', 'Deseja realmente pausar sua assinatura?')">
+                        <form th:if="${subscription.status == 'ACTIVE'}"
+                            th:action="@{/user/subscriptions/{id}/pause(id=${subscription.subscriptionId})}"
+                            method="POST" class="action-form"
+                            onsubmit="return showConfirmation(event, 'Pausar Assinatura', 'Deseja realmente pausar sua assinatura?')">
                             <button type="submit" class="btn-pause">Pausar</button>
                         </form>
-                        <form th:if="${subscription.status == 'PAUSED'}" th:action="@{/user/subscriptions/{id}/renew(id=${subscription.subscriptionId})}" method="POST" class="action-form" onsubmit="return showConfirmation(event, 'Renovar Assinatura', 'Deseja realmente renovar sua assinatura?')">
+                        <form th:if="${subscription.status == 'PAUSED'}"
+                            th:action="@{/user/subscriptions/{id}/renew(id=${subscription.subscriptionId})}"
+                            method="POST" class="action-form"
+                            onsubmit="return showConfirmation(event, 'Renovar Assinatura', 'Deseja realmente renovar sua assinatura?')">
                             <button type="submit" class="btn-renew">Renovar</button>
                         </form>
-                        <form th:if="${subscription.status == 'CANCELLED'}" th:action="@{/user/subscriptions/{id}/reactivate(id=${subscription.subscriptionId})}" method="POST" class="action-form" onsubmit="return showConfirmation(event, 'Reativar Assinatura', 'Deseja realmente reativar sua assinatura?')">
+                        <form th:if="${subscription.status == 'CANCELLED'}"
+                            th:action="@{/user/subscriptions/{id}/reactivate(id=${subscription.subscriptionId})}"
+                            method="POST" class="action-form"
+                            onsubmit="return showConfirmation(event, 'Reativar Assinatura', 'Deseja realmente reativar sua assinatura?')">
                             <button type="submit" class="btn-reactivate">Reativar</button>
                         </form>
-                        <form th:if="${subscription.status != 'CANCELLED'}" th:action="@{/user/subscriptions/{id}/cancel(id=${subscription.subscriptionId})}" method="POST" class="action-form" onsubmit="return showConfirmation(event, 'Cancelar Assinatura', 'Deseja realmente cancelar sua assinatura?')">
+                        <form th:if="${subscription.status != 'CANCELLED'}"
+                            th:action="@{/user/subscriptions/{id}/cancel(id=${subscription.subscriptionId})}"
+                            method="POST" class="action-form"
+                            onsubmit="return showConfirmation(event, 'Cancelar Assinatura', 'Deseja realmente cancelar sua assinatura?')">
                             <button type="submit" class="btn-cancel">Cancelar</button>
                         </form>
                     </div>
@@ -298,7 +321,10 @@
             flex-wrap: wrap;
         }
 
-        .btn-pause, .btn-renew, .btn-cancel, .btn-reactivate {
+        .btn-pause,
+        .btn-renew,
+        .btn-cancel,
+        .btn-reactivate {
             padding: 8px 16px;
             border: none;
             border-radius: 6px;
@@ -420,7 +446,7 @@
             letter-spacing: -0.01em;
         }
 
-        .modal-confirmation-content > p:first-of-type {
+        .modal-confirmation-content>p:first-of-type {
             margin: 0 0 6px;
             color: #555;
             font-size: 1rem;
@@ -495,19 +521,19 @@
             return false;
         }
 
-        document.getElementById('confirmBtn').addEventListener('click', function() {
+        document.getElementById('confirmBtn').addEventListener('click', function () {
             if (pendingForm) {
                 document.getElementById('confirmationModal').style.display = 'none';
                 pendingForm.submit();
             }
         });
 
-        document.getElementById('cancelBtn').addEventListener('click', function() {
+        document.getElementById('cancelBtn').addEventListener('click', function () {
             document.getElementById('confirmationModal').style.display = 'none';
             pendingForm = null;
         });
 
-        document.getElementById('confirmationModal').addEventListener('click', function(event) {
+        document.getElementById('confirmationModal').addEventListener('click', function (event) {
             if (event.target === this) {
                 this.style.display = 'none';
                 pendingForm = null;
