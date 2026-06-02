@@ -10,16 +10,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Optional;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.example.charcuteria.config.SecurityConfig;
 import com.example.charcuteria.controller.address.AddressController;
+import com.example.charcuteria.dto.address.AddressDtoRequest;
 import com.example.charcuteria.enums.UserRoleEnum;
 import com.example.charcuteria.model.Address;
 import com.example.charcuteria.model.User;
@@ -54,7 +57,8 @@ public class AddressTests {
                 .param("number", "123")
                 .param("city", "Toledo")
                 .param("state", "PR")
-                .param("zipCode", "85900-000"))
+                .param("zipCode", "85900-000")
+                .param("isDefault", "true"))
             .andExpect(status().is3xxRedirection())
             .andExpect(flash().attributeExists("successMessage"))
             .andExpect(redirectedUrl("/user/dashboard"));
@@ -68,14 +72,22 @@ public class AddressTests {
         address.setId(10);
         address.setUSerId(1);
         address.setStreet("Rua Original");
+        address.setIsDefault(true);
 
         when(addressService.getAddressById(10)).thenReturn(Optional.of(address));
 
-        mockMvc.perform(get("/addresses/10/edit")
+        MvcResult result = mockMvc.perform(get("/addresses/10/edit")
                 .with(user(testUser)))
             .andExpect(status().isOk())
             .andExpect(view().name("address/address-form"))
-            .andExpect(model().attributeExists("addressDto"));
+            .andExpect(model().attributeExists("addressDto"))
+            .andReturn();
+
+        Address foundAddress = (Address) result.getModelAndView().getModel().get("address");
+        AddressDtoRequest dto = (AddressDtoRequest) result.getModelAndView().getModel().get("addressDto");
+
+        Assertions.assertEquals(Boolean.TRUE, foundAddress.getIsDefault());
+        Assertions.assertEquals(Boolean.TRUE, dto.getIsDefault());
     }
 
     @Test
@@ -91,7 +103,7 @@ public class AddressTests {
                 .param("street", "Tentativa Hack"))
             .andExpect(status().is3xxRedirection())
             .andExpect(flash().attribute("errorMessage", "Endereço não encontrado ou você não tem permissão"))
-            .andExpect(redirectedUrl("/addresses"));
+            .andExpect(redirectedUrl("/user/dashboard"));
     }
 
     @Test
@@ -109,5 +121,37 @@ public class AddressTests {
             .andExpect(redirectedUrl("/user/dashboard"));
 
         verify(addressService).deleteAddress(10);
+    }
+
+    @Test
+    void testSetDefaultAddress_Success() throws Exception {
+        Address address = new Address();
+        address.setId(10);
+        address.setUSerId(1);
+
+        when(addressService.getAddressById(10)).thenReturn(Optional.of(address));
+
+        mockMvc.perform(post("/addresses/10/default")
+                .with(user(testUser)))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(flash().attribute("successMessage", "Endereço padrão atualizado com sucesso!"))
+            .andExpect(redirectedUrl("/user/dashboard"));
+
+        verify(addressService).setDefaultAddress(10, 1);
+    }
+
+    @Test
+    void testSetDefaultAddress_ForbiddenForDifferentUser() throws Exception {
+        Address addressOfAnotherUser = new Address();
+        addressOfAnotherUser.setId(20);
+        addressOfAnotherUser.setUSerId(99);
+
+        when(addressService.getAddressById(20)).thenReturn(Optional.of(addressOfAnotherUser));
+
+        mockMvc.perform(post("/addresses/20/default")
+                .with(user(testUser)))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(flash().attribute("errorMessage", "Endereço não encontrado ou você não tem permissão"))
+            .andExpect(redirectedUrl("/user/dashboard"));
     }
 }
