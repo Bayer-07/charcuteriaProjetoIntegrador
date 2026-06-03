@@ -53,6 +53,44 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         const products = await response.json();
         renderProducts(products);
+
+        container.addEventListener('submit', async function(event) {
+            if (event.target && event.target.tagName === 'FORM') {
+                event.preventDefault(); // isso aq tira o reload
+
+                const form = event.target;
+                const formData = new FormData(form);
+                const submitButton = form.querySelector('.add-button');
+
+                submitButton.disabled = true;
+                const originalText = submitButton.textContent;
+                submitButton.textContent = 'Adicionando...';
+
+                try {
+                    const addResponse = await fetch(form.action, {
+                        method: form.method,
+                        body: new URLSearchParams(formData)
+                    });
+
+                    if (!addResponse.ok) throw new Error('Failed to add to cart');
+
+                    submitButton.textContent = 'Adicionado!';
+                    setTimeout(() => {
+                        submitButton.textContent = originalText;
+                        submitButton.disabled = false;
+                    }, 2000);
+
+                } catch (error) {
+                    console.error('Network or server error during cart addition:', error);
+                    submitButton.textContent = 'Erro';
+                    submitButton.disabled = false;
+
+                    setTimeout(() => {
+                        submitButton.textContent = originalText;
+                    }, 5000);
+                }
+            }
+        });
     } catch (error) {
         container.innerHTML = '<p class="featured-products-empty">Nao foi possivel carregar os produtos agora.</p>';
         console.error(error);

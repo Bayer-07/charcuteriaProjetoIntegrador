@@ -48,6 +48,9 @@ public class CustomerTests {
     @MockBean
     private PasswordEncoder passwordEncoder;
 
+    @MockBean
+    private com.example.charcuteria.service.address.AddressService addressService;
+
     // testing get view returns
     @Test
     void testRegisterUserView() throws Exception {

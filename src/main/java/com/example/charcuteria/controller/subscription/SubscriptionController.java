@@ -15,8 +15,6 @@ import com.example.charcuteria.dto.subscription.SubscriptionResponse;
 import com.example.charcuteria.model.User;
 import com.example.charcuteria.service.subscription.SubscriptionPlanService;
 import com.example.charcuteria.service.subscription.SubscriptionService;
-import com.example.charcuteria.service.subscription.SubscriptionService;
-import com.example.charcuteria.service.subscription.SubscriptionPlanService;
 
 @Controller
 @RequestMapping("/subscriptions")
@@ -30,13 +28,13 @@ public class SubscriptionController {
         this.planService = planService;
     }
 
-    @GetMapping
+    @GetMapping()
     public String listSubscriptions(@AuthenticationPrincipal User loggedUser, Model model) {
         if (loggedUser == null) {
             return "redirect:/login";
         }
-        model.addAttribute("subscriptions", service.returnByUserId(loggedUser.getId()));
-        return "subscription/list";
+        model.addAttribute("plans", planService.returnAll());
+        return "public/subscriptions-options";
     }
 
     @GetMapping("/{id}")
