@@ -50,6 +50,10 @@
         </div>
     </header>
 
+    <div th:if="${param.error}" id="toast-error" class="toast-error">
+        <p>Usuário ou senha inválidos.</p>
+    </div>
+
     <main class="login-wrapper">
         <div class="card-login">
             <div class="logo-wrapper">
@@ -79,6 +83,8 @@
     </main>
 
     <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+    <script th:src="@{/js/login/loginToast.js}"></script>
 </body>
 
 </html>
