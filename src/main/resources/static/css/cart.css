@@ -4,6 +4,7 @@ body {
     font-family: 'Playfair Display', serif;
     margin: 0;
     padding: 0;
+    position: relative;
 }
 
 .cart-container {
@@ -158,6 +159,86 @@ body {
     margin-bottom: 20px;
 }
 
+.address-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.address-section > p:first-of-type {
+    font-weight: 600;
+    color: #2f2723;
+    font-size: 0.95rem;
+    letter-spacing: 0.3px;
+    margin: 0;
+    padding-bottom: 12px;
+    border-bottom: 2px solid rgba(24, 59, 46, 0.1);
+}
+
+.address-empty {
+    color: #6a5f59;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(250, 248, 246, 0.98));
+    border: 1px dashed rgba(32, 26, 23, 0.12);
+    border-radius: 12px;
+    padding: 24px;
+    line-height: 1.6;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+.address-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.address-card {
+    position: relative;
+    background: linear-gradient(180deg, #fff, #fbf8f6);
+    border: 1px solid rgba(44, 22, 20, 0.08);
+    border-radius: 14px;
+    padding: 18px 18px 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03);
+}
+
+.address-card h3 {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    color: #1f1a17;
+}
+
+.address-line {
+    margin: 0 0 4px 0;
+    color: #6d615b;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.address-meta {
+    margin: 10px 0 0 0;
+    color: #8b0000;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.btn-add-address {
+    background: #610000;
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    padding: 11px 18px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(139, 0, 0, 0.18);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-add-address:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 24px rgba(139, 0, 0, 0.24);
+}
+
 .summary-row span:first-child {
     color: #888;
     font-size: 13px;
@@ -177,7 +258,6 @@ body {
     padding: 15px;
     border-radius: 8px;
     border: 1px solid #f0f0f0;
-    margin: 10px 0 25px 0;
 }
 
 .shipping-section label {
@@ -192,25 +272,56 @@ body {
 .shipping-input-group {
     display: flex;
     gap: 8px;
+    align-items: stretch;
+    flex-wrap: wrap;
 }
 
+.shipping-select,
+.selected-address-preview,
 .shipping-input-group input {
-    width: 60%;
+    width: 100%;
     padding: 10px 12px;
     border: 1px solid #ddd;
     border-radius: 6px;
     font-size: 14px;
-    font-family: 'Courier New', monospace;
     outline: none;
     transition: border-color 0.3s;
+    box-sizing: border-box;
+    background: #fff;
 }
 
-.shipping-input-group input:focus {
+.shipping-select {
+    min-height: 42px;
+    flex: 1 1 100%;
+    color: #2c1614;
+}
+
+.selected-address-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1 1 100%;
+    background: linear-gradient(180deg, #fff, #fbfaf8);
+}
+
+.selected-address-preview strong {
+    font-size: 14px;
+    color: #1f1a17;
+}
+
+.selected-address-preview span {
+    font-size: 12px;
+    color: #7b6f69;
+}
+
+.shipping-input-group input:focus,
+.shipping-select:focus {
     border-color: #8b0000;
 }
 
 .btn-calculate {
     flex: 1;
+    min-height: 42px;
     background: #2c1614;
     color: white;
     border: none;
@@ -227,12 +338,170 @@ body {
     background: #4a2825;
 }
 
+.btn-add-address-icon {
+    width: 42px;
+    min-width: 42px;
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 8px;
+    background: #610000;
+    color: #fff;
+    cursor: pointer;
+    position: relative;
+    box-shadow: 0 8px 16px rgba(139, 0, 0, 0.18);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.btn-add-address-icon:hover {
+    background: #7a0000;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px rgba(139, 0, 0, 0.24);
+}
+
+.btn-add-address-icon::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    right: 0;
+    background: #2c1614;
+    color: #fff;
+    padding: 6px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(4px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 5;
+}
+
+.btn-add-address-icon:hover::after {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 .shipping-result {
     font-size: 13px;
     color: #27ae60;
     margin-top: 12px;
     font-weight: 600;
     display: none;
+}
+
+.shipping-hint,
+.shipping-empty-note {
+    font-size: 12px;
+    color: #8a7f79;
+    margin: 10px 0 0 0;
+    line-height: 1.4;
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+}
+
+.modal-content {
+    position: relative;
+    z-index: 2100;
+    width: 920px;
+    max-width: calc(100% - 40px);
+    margin: 0 16px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+}
+
+.modal .form-shell {
+    border-radius: 16px;
+    padding: 28px 32px;
+    background: #fff;
+}
+
+.address-modal-form .form-group {
+    margin-bottom: 16px;
+}
+
+.address-modal-form .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.address-modal-form .form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2f2723;
+}
+
+.address-modal-form .form-group input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.address-modal-form .form-group input:focus {
+    border-color: #8b0000;
+}
+
+.form-header h1 {
+    margin: 0 0 8px 0;
+    color: #1f1a17;
+    font-size: 26px;
+}
+
+.form-header p,
+.form-hint {
+    color: #7b6f69;
+    font-size: 14px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 18px;
+}
+
+.btn-submit {
+    background: #610000;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 18px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-cancel {
+    background: #f5f2ef;
+    color: #4d433e;
+    border: 1px solid #e5ddd7;
+    border-radius: 10px;
+    padding: 12px 18px;
+    font-weight: 700;
+    cursor: pointer;
 }
 
 .divider {
@@ -287,11 +556,66 @@ body {
     .cart-content {
         flex-direction: column;
     }
+
     .cart-summary {
         width: 100%;
         position: static;
     }
+
     .cart-items {
         width: 100%;
     }
+}
+
+.popup-cep-invalido {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.356);
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.popup-cep-fora-pr {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.356);
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.popup-content button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #610000;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+}
+
+    .popup-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    z-index: 10;
+}
+
+.inactive {
+    display: none;
 }

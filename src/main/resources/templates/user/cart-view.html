@@ -10,13 +10,28 @@
     <link rel="stylesheet" th:href="@{/css/cart.css}" href="/css/cart.css" />
     <link rel="stylesheet" th:href="@{/css/header.css}" href="/css/header.css" />
     <link rel="stylesheet" th:href="@{/css/footer.css}" href="/css/footer.css" />
+    <script th:src="@{/js/address/addressModal.js}" defer></script>
     <script th:src="@{/js/cart/ship.js}" defer></script>
     <script th:src="@{/js/cart/updateQuantity.js}" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="shortcut icon" th:href="@{/images/logo.png}" href="/images/logo.png" type="image/x-icon">
 </head>
 
 <body>
-    <header class="main-header">
+    <div class="popup-cep-invalido inactive">
+        <div class="popup-content">
+            <p>O CEP informado é inválido.</p>
+            <button class="close-btn" onclick="closePopup('popup-cep-invalido')">Fechar</button>
+        </div>
+    </div>
+    
+    <div class="popup-cep-fora-pr inactive">
+        <div class="popup-content">
+            <p>Desculpe, não realizamos entregas fora do Paraná.</p>
+            <button class="close-btn" onclick="closePopup('popup-cep-fora-pr')">Fechar</button>
+        </div>
+    </div>
+    <header class="main-header ">
         <div class="header-container">
             <div class="logo">
                 <span class="brand-name">Koch</span>
@@ -98,12 +113,46 @@
                         <span class="summary-subtotal" th:text="${'R$ ' + #numbers.formatDecimal(totalCart, 1, 'POINT', 2, 'COMMA')}"></span>
                     </div>
 
-                    <div class="shipping-section">
-                        <label for="cepInput">Calcular Frete</label>
-                        <div class="shipping-input-group">
-                            <input type="text" id="cepInput" placeholder="00000-000" maxlength="9">
-                            <button type="button" onclick="calculateShipping()" class="btn-calculate">Calcular</button>
+                    <div class="address-section">
+                        <div th:if="${#lists.isEmpty(addresses)}" class="address-empty">
+                            Você ainda não cadastrou nenhum endereço.
+                            <div style="margin-top:12px;">
+                                <button type="button" id="openAddressModal" class="btn-add-address">Adicionar endereço</button>
+                            </div>
                         </div>
+                    </div>
+
+                    <div th:if="${!#lists.isEmpty(cartItems)}" class="shipping-section">
+                        <label for="shippingAddressSelect">Endereço para calcular frete</label>
+
+                        <div th:if="${#lists.isEmpty(addresses)}" class="shipping-empty-note">
+                            Cadastre um endereço para calcular o frete.
+                        </div>
+
+                        <div th:if="${!#lists.isEmpty(addresses)}" class="shipping-input-group">
+                            <select id="shippingAddressSelect" class="shipping-select" onchange="syncSelectedAddressZip()">
+                                <option th:each="address : ${addresses}" th:value="${address.id}"
+                                    th:data-zip="${address.zipCode}"
+                                    th:selected="${address.isDefault}"
+                                    th:text="${address.street + ', ' + address.number + ' - ' + address.city + ' / ' + address.state + ' | CEP ' + address.zipCode}">
+                                    Rua Principal, 123 - Cidade / UF | CEP 00000-000</option>
+                            </select>
+
+                            <input type="hidden" id="selectedAddressZip" th:value="${addresses[0].zipCode}">
+
+                            <button type="button" onclick="calculateShipping()" class="btn-calculate">Calcular</button>
+
+                            <button type="button" id="openAddressModal" class="btn-add-address-icon"
+                                aria-label="Adicionar novo endereco" title="Adicionar novo endereco"
+                                data-tooltip="Adicionar novo endereco">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                    <path d="M12 5v14"></path>
+                                    <path d="M5 12h14"></path>
+                                </svg>
+                            </button>
+                        </div>
+
                         <p id="shippingResult" class="shipping-result"></p>
                     </div>
 
@@ -119,6 +168,71 @@
             </aside>
         </div>
     </main>
+
+    <div id="addressModal" class="modal" style="display:none;">
+        <div class="modal-overlay" id="addressModalOverlay"></div>
+        <div class="modal-content">
+            <div class="form-container">
+                <div class="form-shell">
+                    <div class="form-header">
+                        <h1>Novo Endereço</h1>
+                        <p>Preencha os dados abaixo para salvar o endereço na sua conta.</p>
+                    </div>
+
+                    <form th:action="@{/addresses}" method="POST" th:object="${addressDto}" class="address-modal-form">
+                        <input type="hidden" name="redirectTo" value="/cart">
+
+                        <div class="form-group">
+                            <label for="street">Rua/Avenida *</label>
+                            <input type="text" id="street" name="street" th:field="*{street}" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="number">Número *</label>
+                                <input type="text" id="number" name="number" th:field="*{number}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="complement">Complemento</label>
+                                <input type="text" id="complement" name="complement" th:field="*{complement}"
+                                    placeholder="Apt, Casa, Sala...">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="neighborhood">Bairro *</label>
+                            <input type="text" id="neighborhood" name="neighborhood" th:field="*{neighborhood}"
+                                required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city">Cidade *</label>
+                                <input type="text" id="city" name="city" th:field="*{city}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="state">Estado *</label>
+                                <input type="text" id="state" name="state" th:field="*{state}" placeholder="SP"
+                                    maxlength="2" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="zipCode">CEP *</label>
+                            <input type="text" id="zipCode" name="zipCode" th:field="*{zipCode}" placeholder="12345-678"
+                                required>
+                            <span class="form-hint">Formato: 12345-678</span>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn-submit">Salvar Endereço</button>
+                            <button type="button" class="btn-cancel" id="closeAddressModal">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
