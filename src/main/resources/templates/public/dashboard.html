@@ -23,14 +23,18 @@
             </div>
             <nav class="nav-menu">
                 <ul>
-                    <li><a href="/">Início</a></li>
-                    <li><a href="/produtos">Catálogo</a></li>
-                    <li><a href="/subscriptions">Assinaturas</a></li>
-                    <li><a href="/partners">Parcerias</a></li>
+                    <nav class="nav-menu">
+                        <ul>
+                            <li><a th:href="@{/}">Início</a></li>
+                            <li><a th:href="@{/produtos}">Catálogo</a></li>
+                            <li><a th:href="@{/subscriptions}">Assinaturas</a></li>
+                            <li><a th:href="@{/partners}" class="active">Parcerias</a></li>
+                        </ul>
+                    </nav>
                 </ul>
             </nav>
             <div class="header-icons">
-                <a href="#" class="icon-link">
+                <a href="/cart" class="icon-link">
                     <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
                         <circle cx="9" cy="21" r="1"></circle>
                         <circle cx="21" cy="21" r="1"></circle>
@@ -184,47 +188,7 @@
             </div>
         </div>
     </div>
-    <footer class="main-footer">
-        <div class="footer-container">
-            <div class="footer-column footer-logo">
-                <img th:src="@{/images/logo.png}" src="/images/logo.png" alt="Koch Charcutaria Logo">
-            </div>
-
-            <div class="footer-column">
-                <h3>Catálogo</h3>
-                <ul>
-                    <li><a href="/catalogo">Catálogo</a></li>
-                    <li><a href="/subscriptions">Assinaturas</a></li>
-                    <li><a href="/parcerias">Parcerias</a></li>
-                    <li><a href="/privacidade">Política de privacidade</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-column">
-                <h3>Contato</h3>
-                <address>
-                    <p>Endereço, número - Cidade, Estado</p>
-                    <p>Contato</p>
-                    <p><a href="mailto:contato@koch.com.br">E-mail</a></p>
-                </address>
-                <div class="social-icons">
-                    <a href="https://instagram.com" target="_blank" aria-label="Instagram">
-                        <svg viewBox="0 0 24 24" width="32" height="32" stroke="currentColor" stroke-width="2"
-                            fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                        </svg>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="footer-bottom">
-            <hr>
-            <p>&copy; 2026 Koch Charcutaria. Todos os direitos reservados.</p>
-        </div>
-    </footer>
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
 
     <!-- Delete confirmation modal -->
     <div id="deleteConfirmModal" class="modal-confirmation" style="display:none;">

@@ -24,9 +24,9 @@
                 <ul>
                     <nav class="nav-menu">
                         <ul>
-                            <li><a th:href="@{/}" class="active">Início</a></li>
+                            <li><a th:href="@{/}">Início</a></li>
                             <li><a th:href="@{/produtos}">Catálogo</a></li>
-                            <li><a th:href="@{/subscriptions}">Assinaturas</a></li>
+                            <li><a th:href="@{/subscriptions}" class="active">Assinaturas</a></li>
                             <li><a th:href="@{/partners}">Parcerias</a></li>
                         </ul>
                     </nav>
@@ -61,14 +61,16 @@
         <section class="plans-section">
             <div class="plans-grid">
 
-                <div th:each="plan, iterStat : ${plans}" class="plan-card" th:classappend="${iterStat.index == 1} ? 'plan-card featured' : 'plan-card'">
+                <div th:each="plan, iterStat : ${plans}" class="plan-card"
+                    th:classappend="${iterStat.index == 1} ? 'plan-card featured' : 'plan-card'">
 
                     <div class="card-body">
                         <h2 class="plan-title" th:text="${plan.name}">Plano Básico</h2>
 
                         <div class="plan-price">
                             <span class="currency">R$</span>
-                            <span class="amount" th:text="${#numbers.formatDecimal(plan.price, 1, 'POINT', 2, 'COMMA')}">89,90</span>
+                            <span class="amount"
+                                th:text="${#numbers.formatDecimal(plan.price, 1, 'POINT', 2, 'COMMA')}">89,90</span>
                             <span class="period">/mês</span>
                         </div>
 
