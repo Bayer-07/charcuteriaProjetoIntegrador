@@ -11,6 +11,8 @@
     <link rel="stylesheet" th:href="@{/css/styleIndex.css}" href="/css/styleIndex.css" />
     <link rel="stylesheet" th:href="@{/css/footer.css}" href="/css/footer.css" />
     <link rel="shortcut icon" th:href="@{/images/logo.png}" href="/images/logo.png" type="image/x-icon">
+    <script th:src="@{/js/carrossel.js}" defer></script>
+    <script th:src="@{/js/indexTopProducts.js}" src="/js/indexTopProducts.js" defer></script>
 </head>
 
 <body>
@@ -143,9 +145,6 @@
     </main>
 
     <footer th:replace="~{fragments/footer :: footer}"></footer>
-
-    <script th:src="@{/js/carrossel.js}"></script>
-    <script th:src="@{/js/indexTopProducts.js}" src="/js/indexTopProducts.js"></script>
 </body>
 
 </html>

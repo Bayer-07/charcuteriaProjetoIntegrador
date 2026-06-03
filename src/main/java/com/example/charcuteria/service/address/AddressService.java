@@ -31,6 +31,13 @@ public class AddressService {
             addressDto.getState(),
             addressDto.getZipCode());
 
+        boolean isDefault = Boolean.TRUE.equals(addressDto.getIsDefault());
+        newAddress.setIsDefault(isDefault);
+
+        if (isDefault) {
+            addressRepository.clearDefaultByUserId(addressDto.getUserId());
+        }
+
         addressRepository.createAddress(newAddress);
     }
 
@@ -51,6 +58,12 @@ public class AddressService {
 
         if (existingAddress.isPresent()) {
             Address address = existingAddress.get();
+            boolean isDefault = addressDto.getIsDefault() != null ? addressDto.getIsDefault() : Boolean.TRUE.equals(address.getIsDefault());
+
+            if (isDefault) {
+                addressRepository.clearDefaultByUserIdExceptId(addressDto.getUserId(), id);
+            }
+
             address.setUSerId(addressDto.getUserId());
             address.setStreet(addressDto.getStreet());
             address.setNumber(addressDto.getNumber());
@@ -59,7 +72,24 @@ public class AddressService {
             address.setCity(addressDto.getCity());
             address.setState(addressDto.getState());
             address.setZipCode(addressDto.getZipCode());
+            address.setIsDefault(isDefault);
 
+            addressRepository.updateAddress(id, address);
+        } else {
+            throw new RuntimeException("Endereço não encontrado com ID: " + id);
+        }
+    }
+
+    public void setDefaultAddress(Integer id, Integer userId) {
+        Optional<Address> existingAddress = addressRepository.findById(id);
+
+        if (existingAddress.isPresent()) {
+            Address address = existingAddress.get();
+            if (!address.getUserId().equals(userId)) {
+                throw new RuntimeException("Você não tem permissão para alterar este endereço");
+            }
+            addressRepository.clearDefaultByUserIdExceptId(userId, id);
+            address.setIsDefault(true);
             addressRepository.updateAddress(id, address);
         } else {
             throw new RuntimeException("Endereço não encontrado com ID: " + id);

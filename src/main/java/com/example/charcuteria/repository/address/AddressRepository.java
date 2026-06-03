@@ -33,7 +33,7 @@ public class AddressRepository {
     };
 
     public void createAddress(Address address) {
-        String sql = "INSERT INTO addresses (user_id, street, number, complement, neighborhood, city, state, zip_code, is_default) VALUES (?, ?, ?, ?, ?, ?, ?, ?, TRUE)";
+        String sql = "INSERT INTO addresses (user_id, street, number, complement, neighborhood, city, state, zip_code, is_default) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         jdbcTemplate.update(
                 sql,
@@ -44,7 +44,8 @@ public class AddressRepository {
                 address.getNeighborhood(),
                 address.getCity(),
                 address.getState(),
-                address.getZipCode());
+                address.getZipCode(),
+                address.getIsDefault());
     }
 
     public Optional<Address> findById(Integer id) {
@@ -83,6 +84,16 @@ public class AddressRepository {
                 address.getZipCode(),
                 address.getIsDefault(),
                 id);
+    }
+
+    public void clearDefaultByUserId(Integer userId) {
+        String sql = "UPDATE addresses SET is_default = FALSE WHERE user_id = ?";
+        jdbcTemplate.update(sql, userId);
+    }
+
+    public void clearDefaultByUserIdExceptId(Integer userId, Integer addressId) {
+        String sql = "UPDATE addresses SET is_default = FALSE WHERE user_id = ? AND id <> ? AND is_default = TRUE";
+        jdbcTemplate.update(sql, userId, addressId);
     }
 
     public void deleteById(Integer id) {

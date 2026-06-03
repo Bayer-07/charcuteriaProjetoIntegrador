@@ -18,28 +18,28 @@ services:
     networks:
       - charcuteria-network
 
-  # app:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   container_name: charcuteria-app
-  #   environment:
-  #     SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/chacuteria_db
-  #     SPRING_DATASOURCE_USERNAME: admin
-  #     SPRING_DATASOURCE_PASSWORD: password123
-  #     SPRING_PROFILES_ACTIVE: prod
-  #     MAIL_USERNAME: ${MAIL_USERNAME:-seu_email@gmail.com}
-  #     MAIL_PASSWORD: ${MAIL_PASSWORD:-sua_senha}
-  #   ports:
-  #     - "8080:8080"
-  #   depends_on:
-  #     db:
-  #       condition: service_healthy
-  #   networks:
-  #     - charcuteria-network
-  #   volumes:
-  #     - ./logs:/app/logs
-  #   restart: unless-stopped
+#   app:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile
+#     container_name: charcuteria-app
+#     environment:
+#       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/chacuteria_db
+#       SPRING_DATASOURCE_USERNAME: admin
+#       SPRING_DATASOURCE_PASSWORD: password123
+#       SPRING_PROFILES_ACTIVE: prod
+#       MAIL_USERNAME: ${MAIL_USERNAME:-seu_email@gmail.com}
+#       MAIL_PASSWORD: ${MAIL_PASSWORD:-sua_senha}
+#     ports:
+#       - "8080:8080"
+#     depends_on:
+#       db:
+#         condition: service_healthy
+#     networks:
+#       - charcuteria-network
+#     volumes:
+#       - ./logs:/app/logs
+#     restart: unless-stopped
 
 networks:
   charcuteria-network:

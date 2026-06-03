@@ -31,16 +31,12 @@ public class AddressController {
     }
 
     @GetMapping
-    public String listAddresses(@AuthenticationPrincipal User loggedUser, Model model) {
+    public String listAddresses(@AuthenticationPrincipal User loggedUser) {
         if (loggedUser == null) {
             return "redirect:/login";
         }
 
-        List<Address> addresses = addressService.getAddressesByUserId(loggedUser.getId());
-        model.addAttribute("addresses", addresses);
-        model.addAttribute("userEmail", loggedUser.getEmail());
-
-        return "user/dashboard";
+        return "redirect:/user/dashboard";
     }
 
     @GetMapping("/new")
@@ -105,13 +101,13 @@ public class AddressController {
 
         if (address.isEmpty()) {
             redirectAttributes.addFlashAttribute("errorMessage", "Endereço não encontrado");
-            return "redirect:/addresses";
+            return "redirect:/user/dashboard";
         }
 
         Address foundAddress = address.get();
         if (!foundAddress.getUserId().equals(loggedUser.getId())) {
             redirectAttributes.addFlashAttribute("errorMessage", "Você não tem permissão para editar este endereço");
-            return "redirect:/addresses";
+            return "redirect:/user/dashboard";
         }
 
         model.addAttribute("address", foundAddress);
@@ -124,6 +120,7 @@ public class AddressController {
         dto.setCity(foundAddress.getCity());
         dto.setState(foundAddress.getState());
         dto.setZipCode(foundAddress.getZipCode());
+        dto.setIsDefault(foundAddress.getIsDefault());
 
         model.addAttribute("addressDto", dto);
         model.addAttribute("addressId", id);
@@ -147,16 +144,43 @@ public class AddressController {
 
             if (address.isEmpty() || !address.get().getUserId().equals(loggedUser.getId())) {
                 redirectAttributes.addFlashAttribute("errorMessage", "Endereço não encontrado ou você não tem permissão");
-                return "redirect:/addresses";
+                return "redirect:/user/dashboard";
             }
 
             addressDto.setUserId(loggedUser.getId());
             addressService.updateAddress(id, addressDto);
             redirectAttributes.addFlashAttribute("successMessage", "Endereço atualizado com sucesso!");
-            return "redirect:/addresses";
+            return "redirect:/user/dashboard";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Erro ao atualizar endereço: " + e.getMessage());
             return "redirect:/addresses/" + id + "/edit";
+        }
+    }
+
+    @PostMapping("/{id}/default")
+    public String setDefaultAddress(
+            @PathVariable Integer id,
+            @AuthenticationPrincipal User loggedUser,
+            RedirectAttributes redirectAttributes) {
+
+        if (loggedUser == null) {
+            return "redirect:/login";
+        }
+
+        try {
+            var address = addressService.getAddressById(id);
+
+            if (address.isEmpty() || !address.get().getUserId().equals(loggedUser.getId())) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Endereço não encontrado ou você não tem permissão");
+                return "redirect:/user/dashboard";
+            }
+
+            addressService.setDefaultAddress(id, loggedUser.getId());
+            redirectAttributes.addFlashAttribute("successMessage", "Endereço padrão atualizado com sucesso!");
+            return "redirect:/user/dashboard";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Erro ao atualizar endereço padrão: " + e.getMessage());
+            return "redirect:/user/dashboard";
         }
     }
 
