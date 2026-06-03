@@ -38,7 +38,7 @@ public class PartnersTest {
     void testShowForm() throws Exception {
         mockMvc.perform(get("/partners"))
             .andExpect(status().isOk())
-            .andExpect(view().name("partners/partners"))
+            .andExpect(view().name("public/partners"))
             .andExpect(model().attributeExists("partner"));
     }
 
