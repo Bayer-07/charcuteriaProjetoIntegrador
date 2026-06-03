@@ -44,7 +44,7 @@ public class UserController {
     @GetMapping("/registerAdmin")
     public String showAdminRegistrationAdmin(Model model) {
         model.addAttribute("userDto", new UserRegistrationDto());
-        return "public/adminRegistration-view";
+        return "admin/adminRegistration-view";
     }
 
     @GetMapping("/login")
@@ -85,7 +85,7 @@ public class UserController {
         model.addAttribute("user", loggedUser);
         model.addAttribute("addresses", addresses);
         model.addAttribute("addressDto", new AddressDtoRequest());
-        return "public/dashboard";
+        return "user/dashboard";
     }
 
     // Post

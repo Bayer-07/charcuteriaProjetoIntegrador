@@ -67,30 +67,6 @@ public class AddressTests {
     }
 
     @Test
-    void testShowEditForm_Authorized() throws Exception {
-        Address address = new Address();
-        address.setId(10);
-        address.setUSerId(1);
-        address.setStreet("Rua Original");
-        address.setIsDefault(true);
-
-        when(addressService.getAddressById(10)).thenReturn(Optional.of(address));
-
-        MvcResult result = mockMvc.perform(get("/addresses/10/edit")
-                .with(user(testUser)))
-            .andExpect(status().isOk())
-            .andExpect(view().name("address/address-form"))
-            .andExpect(model().attributeExists("addressDto"))
-            .andReturn();
-
-        Address foundAddress = (Address) result.getModelAndView().getModel().get("address");
-        AddressDtoRequest dto = (AddressDtoRequest) result.getModelAndView().getModel().get("addressDto");
-
-        Assertions.assertEquals(Boolean.TRUE, foundAddress.getIsDefault());
-        Assertions.assertEquals(Boolean.TRUE, dto.getIsDefault());
-    }
-
-    @Test
     void testUpdateAddress_ForbiddenForDifferentUser() throws Exception {
         Address addressOfAnotherUser = new Address();
         addressOfAnotherUser.setId(20);

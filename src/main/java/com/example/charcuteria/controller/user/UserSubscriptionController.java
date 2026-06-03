@@ -42,7 +42,7 @@ public class UserSubscriptionController {
             model.addAttribute("hasSubscriptions", false);
         }
         
-        return "public/subscriptions";
+        return "user/subscriptions";
     }
 
     @GetMapping("/subscribe")

@@ -26,7 +26,7 @@ public class OrderController {
             return "redirect:/login";
         }
         model.addAttribute("orders", orderService.findByUserId(loggedUser.getId()));
-        return "public/orders-list";
+        return "user/orders-list";
     }
 
     @GetMapping("/{id}")

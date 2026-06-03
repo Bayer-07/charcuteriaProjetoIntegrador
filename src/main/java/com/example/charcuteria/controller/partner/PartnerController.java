@@ -30,7 +30,7 @@
         @GetMapping
         public String form(Model model) {
             model.addAttribute("partner", new PartnerRequest());
-            return "partners/partners";
+            return "public/partners";
         }
 
         @PostMapping

@@ -47,7 +47,7 @@ public class AdminTests {
     void testAdminRegistrationView_Authorized() throws Exception {
         mockMvc.perform(get("/registerAdmin"))
             .andExpect(status().isOk())
-            .andExpect(view().name("public/adminRegistration-view"));
+            .andExpect(view().name("admin/adminRegistration-view"));
     }
 
     @Test
