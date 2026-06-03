@@ -37,18 +37,6 @@ public class AddressController {
         return "redirect:/user/dashboard";
     }
 
-    @GetMapping("/new")
-    public String showCreateForm(@AuthenticationPrincipal User loggedUser, Model model) {
-        if (loggedUser == null) {
-            return "redirect:/login";
-        }
-
-        model.addAttribute("addressDto", new AddressDtoRequest());
-        model.addAttribute("userId", loggedUser.getId());
-
-        return "address/address-form"; 
-    }
-
     @PostMapping
     public String createAddress(
             @ModelAttribute AddressDtoRequest addressDto,
@@ -82,48 +70,6 @@ public class AddressController {
         }
 
         return trimmedPath;
-    }
-
-    @GetMapping("/{id}/edit")
-    public String showEditForm(
-            @PathVariable Integer id,
-            @AuthenticationPrincipal User loggedUser,
-            Model model,
-            RedirectAttributes redirectAttributes) {
-
-        if (loggedUser == null) {
-            return "redirect:/login";
-        }
-
-        var address = addressService.getAddressById(id);
-
-        if (address.isEmpty()) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Endereço não encontrado");
-            return "redirect:/user/dashboard";
-        }
-
-        Address foundAddress = address.get();
-        if (!foundAddress.getUserId().equals(loggedUser.getId())) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Você não tem permissão para editar este endereço");
-            return "redirect:/user/dashboard";
-        }
-
-        model.addAttribute("address", foundAddress);
-        AddressDtoRequest dto = new AddressDtoRequest();
-        dto.setUserId(foundAddress.getUserId());
-        dto.setStreet(foundAddress.getStreet());
-        dto.setNumber(foundAddress.getNumber());
-        dto.setComplement(foundAddress.getComplement());
-        dto.setNeighborhood(foundAddress.getNeighborhood());
-        dto.setCity(foundAddress.getCity());
-        dto.setState(foundAddress.getState());
-        dto.setZipCode(foundAddress.getZipCode());
-        dto.setIsDefault(foundAddress.getIsDefault());
-
-        model.addAttribute("addressDto", dto);
-        model.addAttribute("addressId", id);
-
-        return "address/address-form";
     }
 
     @PostMapping("/{id}/edit")
