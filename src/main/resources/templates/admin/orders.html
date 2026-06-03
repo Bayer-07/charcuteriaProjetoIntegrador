@@ -3,12 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Assinaturas | Koch Charcutaria</title>
+    <title>Pedidos | Koch Charcutaria</title>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/sidebar.css}" href="/css/sidebar.css" />
     <link rel="stylesheet" th:href="@{/css/dashboard.css}" href="/css/dashboard.css" />
-    <link rel="stylesheet" th:href="@{/css/subscriptions.css}" href="/css/subscriptions.css" />
+    <link rel="stylesheet" th:href="@{/css/adminOrders.css}" href="/css/adminOrders.css" />
     <link rel="shortcut icon" th:href="@{/images/logo.png}" href="/images/logo.png" type="image/x-icon">
 </head>
 
@@ -46,7 +46,7 @@
                         <span>Produtos</span>
                     </a>
                 </li>
-                <li>
+                <li class="active">
                     <a href="/admin/orders">
                         <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2"
                             fill="none">
@@ -57,7 +57,8 @@
                         <span>Pedidos</span>
                     </a>
                 </li>
-                <li class="active">
+
+                <li>
                     <a href="/admin/subscriptions">
                         <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2"
                             fill="none">
@@ -87,26 +88,67 @@
             <table class="products-table">
                 <thead>
                     <tr>
-                        <th class="col-name">Nome</th>
-                        <th class="col-category">Email</th>
-                        <th class="col-price">Plano</th>
-                        <th class="col-id">Status</th>
-                        <th class="col-id">Data Início</th>
+                        <th class="col-id">Pedido</th>
+                        <th class="col-date">Data</th>
+                        <th class="col-status">Status</th>
+                        <th class="col-total">Total</th>
+                        <th class="col-actions">Ações</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    <tr th:each="sub : ${subscriptions}">
-                        <td class="cell-name" th:text="${sub.userName}"></td>
-                        <td class="cell-category" th:text="${sub.userEmail}"></td>
-                        <td class="cell-price" th:text="${sub.planName}"></td>
-                        <td class="cell-id" th:text="${sub.status}"
-                        th:classappend="${sub.status == 'ACTIVE'} ? 'text-active' : 'text-inactive'"></td>
-                        <td class="cell-id" th:text="${sub.startedAt}"></td>
+                    <tr th:each="ord : ${orders}">
+                        <td class="cell-id" th:text="'KCH - ' + ${ord.id}"></td>
+                        <td class="cell-date" th:text="${#temporals.format(ord.orderDate, 'dd/MM/yyyy HH:mm')}"></td>
+                        <td class="cell-status" th:text="${ord.status}"
+                            th:classappend="${ord.status == 'PENDING'} ? 'text-pending' : 'text-active'"></td>
+                        <td class="cell-total" th:text="${ord.totalAmount}"></td>
+                        <td class="cell-actions">
+                            <button type="button" class="action-btn" th:onclick="|openModal(${ord.id})|">
+
+                                <svg viewBox="0 0 24 24" width="18" height="18" stroke="#3498db" stroke-width="2"
+                                    fill="none">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+
+                                </svg>
+
+                            </button>
+
+                            <div th:id="|modal-${ord.id}|" class="modal-overlay">
+                                <div class="modal-card">
+                                    <h2>Pedido KCH - <span th:text="${ord.id}"></span></h2>
+                                    <p><strong>Data:</strong>
+                                        <span th:text="${#temporals.format(ord.orderDate, 'dd/MM/yyyy HH:mm')}"></span>
+                                    </p>
+                                    <p><strong>Status:</strong>
+                                        <span th:text="${ord.status}"></span>
+                                    </p>
+                                    <p><strong>Total:</strong>
+                                        <span th:text="'R$ ' + ${ord.totalAmount}"></span>
+                                    </p>
+                                    <!-- <h3>Itens do Pedido:</h3>
+                                <ul>
+                                    <li th:each="item : ${ord.items}">
+                                        <span th:text="${item.productName}"></span> -
+                                        <span th:text="${item.quantity}"></span> x
+                                        <span th:text="${item.price}"></span>
+                                    </li>
+                                </ul> !-->
+                                    <div class="modal-buttons">
+                                        <button type="button" class="close-btn" th:onclick="|closeModal(${ord.id})|">
+                                            Fechar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
+        <script th:src="@{/js/orders/ordersModal.js}" src="/js/orders/ordersModal.js"></script>
+
     </main>
 
 </body>
