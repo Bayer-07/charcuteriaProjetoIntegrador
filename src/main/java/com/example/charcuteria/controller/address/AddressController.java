@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.charcuteria.dto.address.AddressDtoRequest;
@@ -30,16 +31,12 @@ public class AddressController {
     }
 
     @GetMapping
-    public String listAddresses(@AuthenticationPrincipal User loggedUser, Model model) {
+    public String listAddresses(@AuthenticationPrincipal User loggedUser) {
         if (loggedUser == null) {
             return "redirect:/login";
         }
 
-        List<Address> addresses = addressService.getAddressesByUserId(loggedUser.getId());
-        model.addAttribute("addresses", addresses);
-        model.addAttribute("userEmail", loggedUser.getEmail());
-
-        return "user/dashboard";
+        return "redirect:/user/dashboard";
     }
 
     @GetMapping("/new")
@@ -57,6 +54,7 @@ public class AddressController {
     @PostMapping
     public String createAddress(
             @ModelAttribute AddressDtoRequest addressDto,
+            @RequestParam(name = "redirectTo", required = false) String redirectTo,
             @AuthenticationPrincipal User loggedUser,
             RedirectAttributes redirectAttributes) {
 
@@ -68,11 +66,24 @@ public class AddressController {
             addressDto.setUserId(loggedUser.getId());
             addressService.createAddress(addressDto);
             redirectAttributes.addFlashAttribute("successMessage", "Endereço criado com sucesso!");
-            return "redirect:/user/dashboard";
+            return "redirect:" + resolveRedirectPath(redirectTo, "/user/dashboard");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Erro ao criar endereço: " + e.getMessage());
-            return "redirect:/user/dashboard";
+            return "redirect:" + resolveRedirectPath(redirectTo, "/user/dashboard");
         }   
+    }
+
+    private String resolveRedirectPath(String redirectTo, String fallback) {
+        if (redirectTo == null || redirectTo.isBlank()) {
+            return fallback;
+        }
+
+        String trimmedPath = redirectTo.trim();
+        if (!trimmedPath.startsWith("/") || trimmedPath.startsWith("//")) {
+            return fallback;
+        }
+
+        return trimmedPath;
     }
 
     @GetMapping("/{id}/edit")
@@ -90,13 +101,13 @@ public class AddressController {
 
         if (address.isEmpty()) {
             redirectAttributes.addFlashAttribute("errorMessage", "Endereço não encontrado");
-            return "redirect:/addresses";
+            return "redirect:/user/dashboard";
         }
 
         Address foundAddress = address.get();
         if (!foundAddress.getUserId().equals(loggedUser.getId())) {
             redirectAttributes.addFlashAttribute("errorMessage", "Você não tem permissão para editar este endereço");
-            return "redirect:/addresses";
+            return "redirect:/user/dashboard";
         }
 
         model.addAttribute("address", foundAddress);
@@ -109,6 +120,7 @@ public class AddressController {
         dto.setCity(foundAddress.getCity());
         dto.setState(foundAddress.getState());
         dto.setZipCode(foundAddress.getZipCode());
+        dto.setIsDefault(foundAddress.getIsDefault());
 
         model.addAttribute("addressDto", dto);
         model.addAttribute("addressId", id);
@@ -132,16 +144,43 @@ public class AddressController {
 
             if (address.isEmpty() || !address.get().getUserId().equals(loggedUser.getId())) {
                 redirectAttributes.addFlashAttribute("errorMessage", "Endereço não encontrado ou você não tem permissão");
-                return "redirect:/addresses";
+                return "redirect:/user/dashboard";
             }
 
             addressDto.setUserId(loggedUser.getId());
             addressService.updateAddress(id, addressDto);
             redirectAttributes.addFlashAttribute("successMessage", "Endereço atualizado com sucesso!");
-            return "redirect:/addresses";
+            return "redirect:/user/dashboard";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Erro ao atualizar endereço: " + e.getMessage());
             return "redirect:/addresses/" + id + "/edit";
+        }
+    }
+
+    @PostMapping("/{id}/default")
+    public String setDefaultAddress(
+            @PathVariable Integer id,
+            @AuthenticationPrincipal User loggedUser,
+            RedirectAttributes redirectAttributes) {
+
+        if (loggedUser == null) {
+            return "redirect:/login";
+        }
+
+        try {
+            var address = addressService.getAddressById(id);
+
+            if (address.isEmpty() || !address.get().getUserId().equals(loggedUser.getId())) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Endereço não encontrado ou você não tem permissão");
+                return "redirect:/user/dashboard";
+            }
+
+            addressService.setDefaultAddress(id, loggedUser.getId());
+            redirectAttributes.addFlashAttribute("successMessage", "Endereço padrão atualizado com sucesso!");
+            return "redirect:/user/dashboard";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Erro ao atualizar endereço padrão: " + e.getMessage());
+            return "redirect:/user/dashboard";
         }
     }
 

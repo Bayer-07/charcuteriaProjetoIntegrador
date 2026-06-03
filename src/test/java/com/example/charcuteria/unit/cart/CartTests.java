@@ -27,6 +27,7 @@ import com.example.charcuteria.controller.cart.CartController;
 import com.example.charcuteria.dto.cart.CartResponseDto;
 import com.example.charcuteria.enums.UserRoleEnum;
 import com.example.charcuteria.model.User;
+import com.example.charcuteria.service.address.AddressService;
 import com.example.charcuteria.service.cart.CartService;
 
 @WebMvcTest(CartController.class)
@@ -38,6 +39,9 @@ public class CartTests {
     @MockBean
     private CartService cartService;
 
+    @MockBean
+    private AddressService addressService;
+
     private User testUser;
 
     @BeforeEach
@@ -46,6 +50,8 @@ public class CartTests {
         testUser.setId(1);
         testUser.setEmail("user@test.com");
         testUser.setRole(UserRoleEnum.CUSTOMER);
+
+        when(addressService.getAddressesByUserId(1)).thenReturn(Collections.emptyList());
     }
 
     @Test

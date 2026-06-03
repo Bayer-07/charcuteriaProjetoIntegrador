@@ -20,8 +20,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.charcuteria.dto.address.AddressDtoRequest;
 import com.example.charcuteria.dto.cart.CartResponseDto;
+import com.example.charcuteria.model.Address;
 import com.example.charcuteria.model.User;
+import com.example.charcuteria.service.address.AddressService;
 import com.example.charcuteria.service.cart.CartService;
 
 @Controller
@@ -30,6 +33,9 @@ public class CartController {
 
     @Autowired
     private CartService cartService;
+
+    @Autowired
+    private AddressService addressService;
 
     @PostMapping("/add")
     public String addCart(@RequestParam Integer productId, @AuthenticationPrincipal User user, @RequestHeader("Referer") String referer,
@@ -47,8 +53,16 @@ public class CartController {
 
     @GetMapping("")
     public String showCart(@AuthenticationPrincipal User loggedUser, Model model) {
+        if (loggedUser == null) {
+            return "redirect:/login";
+        }
+
         List<CartResponseDto> cartItems = cartService.getAllCartItems(loggedUser.getId());
+        List<Address> addresses = addressService.getAddressesByUserId(loggedUser.getId());
+
         model.addAttribute("cartItems", cartItems);
+        model.addAttribute("addresses", addresses);
+        model.addAttribute("addressDto", new AddressDtoRequest());
 
         BigDecimal totalFinal = cartItems.stream()
             .map(CartResponseDto::subtotal)

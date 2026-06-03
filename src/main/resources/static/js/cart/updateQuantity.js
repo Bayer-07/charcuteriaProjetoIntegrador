@@ -78,3 +78,4 @@ function updateGlobalTotal() {
     if (summarySubtotalNode) summarySubtotalNode.textContent = formattedTotal;
     if (finalTotalNode) finalTotalNode.textContent = formattedTotal;
 }
+
