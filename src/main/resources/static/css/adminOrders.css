@@ -1,52 +1,12 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .dashboard-content {
     margin-left: 260px;
     padding: 40px;
+    background-color: #ffffff;
     min-height: 100vh;
-    background-color: #fff;
-}
-
-.content-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #e0e0e0;
-    padding-bottom: 15px;
-    margin-bottom: 30px;
-}
-
-.productsCategory {
-    display: flex;
-    gap: 25px;
-    align-items: center;
-}
-
-.filter-link {
-    font-size: 24px;
-    font-weight: 700;
-    color: #999;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    position: relative;
-    cursor: pointer;
-}
-
-.filter-link:hover {
-    color: #666;
-}
-
-.filter-link.active {
-    color: #2c1614;
-}
-
-.filter-link.active::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background-color: #8b0000;
-    border-radius: 2px;
 }
 
 .table-container {
@@ -72,87 +32,86 @@
     transition: transform 0.1s ease;
 }
 
+.products-table td {
+    padding: 15px 20px;
+    border-top: 1px solid #d1d1d1;
+    border-bottom: 1px solid #d1d1d1;
+    color: #444;
+}
+
 .products-table td:first-child {
-    padding-left: 1%;
     border-left: 1px solid #d1d1d1;
     border-radius: 8px 0 0 8px;
 }
 
 .products-table td:last-child {
-    padding-right: 5%;
     border-right: 1px solid #d1d1d1;
     border-radius: 0 8px 8px 0;
 }
 
-.col-id {
-    margin-left: 10px;
+/* Colunas */
+
+.col-id,
+.cell-id {
     width: 20%;
-    font-weight: bold;
 }
 
 .cell-id {
-    margin-left: 10px;
     color: #999;
-    width: 20%;
-    font-weight: bold;
+    font-weight: 600;
 }
 
-.col-date {
-    width: 20%; 
-    font-weight: 500;
+.col-date,
+.cell-date {
+    width: 25%;
 }
 
 .cell-date {
-    width: 20%; 
-    font-weight: 500;
     color: #555;
 }
 
-.col-status {
-    width: 30%;
+.col-status,
+.cell-status {
+    width: 25%;
 }
 
 .cell-status {
-    width: 30%;
-    color: #888;
+    font-weight: 500;
 }
 
-.col-total {
-    font-weight: 600;
-    width: 20px;
+.col-total,
+.cell-total {
+    width: 15%;
 }
 
 .cell-total {
     font-weight: 600;
     color: #555;
-    width: 20px;
 }
 
+/* Ações */
+
+.col-actions,
 .cell-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 15px;
-    align-items: left;
-    border-left: none;
+    width: 120px;
+    text-align: right;
+    padding-right: 24px !important;
 }
 
 .products-table th.col-actions {
     text-align: right;
 }
 
+.cell-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+}
 
 .action-btn {
-    text-align: left;
     text-decoration: none;
     transition: transform 0.2s;
-}
-
-.action-btn.edit {
-    color: #3498db;
-}
-
-.action-btn.delete {
-    color: #e74c3c;
 }
 
 .action-btn:hover {
@@ -168,19 +127,25 @@ button.action-btn {
     color: inherit;
 }
 
+/* Status */
+
 .text-active {
-    color: green;
+    color: #27ae60;
+    font-weight: 600;
 }
 
 .text-pending {
-    color: red;
+    color: #e74c3c;
+    font-weight: 600;
 }
+
+/* Modal */
 
 .modal-overlay {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,.5);
+    background: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
     z-index: 9999;
@@ -191,32 +156,42 @@ button.action-btn {
 }
 
 .modal-card {
-    background: white;
+    background: #fff;
     padding: 24px;
     border-radius: 12px;
+    min-width: 400px;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .15);
+}
+
+.modal-card h2 {
+    margin-bottom: 20px;
+    color: #2c1614;
+}
+
+.modal-card p {
+    margin: 10px 0;
+    color: #555;
 }
 
 .modal-buttons {
-    display:flex;
+    display: flex;
     justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
+    margin-top: 25px;
 }
 
 .close-btn {
-    padding: 12px 0;
-       margin-top: 20px auto 0;
-    width: 40%;
+    padding: 12px 24px;
     background: #fff;
     border: 1px solid #ddd;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
     font-weight: 500;
     color: #666;
-    transition: background 0.2s;
-    text-align: center;
+    transition: all 0.2s ease;
 }
 
 .close-btn:hover {
-    background: #f3a0a0;
+    background: #f5f5f5;
+    border-color: #bbb;
 }
