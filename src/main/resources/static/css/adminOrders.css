@@ -195,3 +195,23 @@ button.action-btn {
     background: #f5f5f5;
     border-color: #bbb;
 }
+
+@media (max-width: 1055px) {
+    .dashboard-content {
+        padding: 20px;
+    }
+
+    .products-table td {
+        padding: 12px 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .table-container {
+        overflow-x: auto;
+    }
+
+    .products-table {
+        min-width: 700px;
+    }
+}

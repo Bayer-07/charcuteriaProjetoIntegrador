@@ -88,13 +88,22 @@ body {
     font-weight: 600;
 }
 
+@media (max-width: 1055px) {
+    .dashboard-content {
+        padding: 20px;
+    }
 
-.text-active {
-    color: #27ae60;
-    font-weight: 600;
+    .products-table td {
+        padding: 12px 10px;
+    }
 }
 
-.text-inactive {
-    color: #e74c3c;
-    font-weight: 600;
+@media (max-width: 768px) {
+    .table-container {
+        overflow-x: auto;
+    }
+
+    .products-table {
+        min-width: 700px;
+    }
 }

@@ -33,7 +33,7 @@ body {
     display: grid;
     /* Responsive columns: will shrink if screen gets smaller */
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
+    gap: 4%;
 }
 
 .stat-card {
@@ -63,3 +63,9 @@ body {
     font-weight: 800; /* Heavy weight for the numbers */
     margin: 0;
 }
+
+@media (max-width: 992px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}   
