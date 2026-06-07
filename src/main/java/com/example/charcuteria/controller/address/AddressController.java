@@ -3,7 +3,6 @@ package com.example.charcuteria.controller.address;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.charcuteria.dto.address.AddressDtoRequest;
-import com.example.charcuteria.model.Address;
 import com.example.charcuteria.model.User;
 import com.example.charcuteria.service.address.AddressService;
 
@@ -56,7 +54,7 @@ public class AddressController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Erro ao criar endereço: " + e.getMessage());
             return "redirect:" + resolveRedirectPath(redirectTo, "/user/dashboard");
-        }   
+        }
     }
 
     private String resolveRedirectPath(String redirectTo, String fallback) {
