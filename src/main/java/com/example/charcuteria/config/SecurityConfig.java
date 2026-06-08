@@ -63,6 +63,7 @@ public class SecurityConfig {
                         .usernameParameter("email") // <--- username == email
                         .passwordParameter("password") // <--- password == password
                         .defaultSuccessUrl("/handleProfile", true) // redirect pra onde vc vai depois de logar
+                        .failureUrl("/login?error=true") // login incorreto
                         .permitAll())
                 .logout(logout -> logout
                         .logoutUrl("/logout")

@@ -1,3 +1,7 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .dashboard-content {
     margin-left: 260px;
     padding: 40px;
@@ -188,3 +192,52 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+@media (max-width: 1055px) {
+    .dashboard-content {
+        padding: 20px;
+    }
+
+    .products-table td {
+        padding: 12px 10px;
+    }
+}
+
+@media (max-width: 920px) {
+    .content-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .filter-link {
+    font-size: 18px;
+    }
+
+    .col-actions,
+    .cell-actions {
+        width: 80px;
+    }
+
+    .cell-actions {
+        gap: 8px;
+        padding-right: 10px !important;
+    }
+
+    .buttonsCreate {
+        width: 100%;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 882px) {
+    .table-container {
+        overflow-x: auto;
+    }
+
+    .products-table {
+        min-width: 700px;
+    }
+}
+

@@ -90,8 +90,8 @@
                         <th class="col-name">Nome</th>
                         <th class="col-category">Email</th>
                         <th class="col-price">Plano</th>
-                        <th class="col-id">Status</th>
-                        <th class="col-id">Data Início</th>
+                        <th class="col-status">Status</th>
+                        <th class="col-date">Data Início</th>
                     </tr>
                 </thead>
 
@@ -100,14 +100,16 @@
                         <td class="cell-name" th:text="${sub.userName}"></td>
                         <td class="cell-category" th:text="${sub.userEmail}"></td>
                         <td class="cell-price" th:text="${sub.planName}"></td>
-                        <td class="cell-id" th:text="${sub.status}"
+                        <td class="cell-status" th:text="${sub.status}"
                         th:classappend="${sub.status == 'ACTIVE'} ? 'text-active' : 'text-inactive'"></td>
-                        <td class="cell-id" th:text="${sub.startedAt}"></td>
+                        <td class="cell-date" th:text="${sub.startedAt}"></td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </main>
+
+    <script src="/js/subscriptions/activeInactive.js"></script>
 
 </body>
 

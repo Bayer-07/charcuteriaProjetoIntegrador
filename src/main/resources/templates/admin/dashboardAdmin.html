@@ -68,7 +68,7 @@
 
             <div class="stat-card">
                 <p class="stat-label">Receita do Mês</p>
-                <h2 class="stat-value" th:text="${'R' + #numbers.formatCurrency(data.price)}"></h2>
+                <h2 class="stat-value" th:text="${#numbers.formatCurrency(data.price)}"></h2>
             </div>
 
             <div class="stat-card">
