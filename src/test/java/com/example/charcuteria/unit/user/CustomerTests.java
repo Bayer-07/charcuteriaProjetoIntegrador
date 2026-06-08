@@ -170,6 +170,6 @@ public class CustomerTests {
                 .param("password", "wrong-password")
             )
             .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("/login?error"));
+            .andExpect(redirectedUrl("/login?error=true"));
     }
 }
