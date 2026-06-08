@@ -72,7 +72,7 @@
                     <label>Senha</label>
                     <input type="password" th:field="*{password}" placeholder="********" required>
                 </div>
-                <div class="form-login" th:text="${loginError}"></div>
+                <div th:if="${loginError}" id="toast-error" class="toast-error" th:text="${loginError}"></div>
                 <button class="btn-login" type="submit">Entrar</button>
             </form>
             <div class="card-footer">
