@@ -138,5 +138,4 @@ public class UserController {
             return "user/registration-view";
         }
     }
-
 }
