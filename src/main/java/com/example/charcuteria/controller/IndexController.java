@@ -24,6 +24,11 @@ public class IndexController {
         return "public/index";
     }
 
+    @GetMapping("/politica")
+    public String politica() {
+        return "public/politica-de-privacidade";
+    }
+
     @GetMapping("/index")
     public String getIndex() {
         return "redirect:public/index";
