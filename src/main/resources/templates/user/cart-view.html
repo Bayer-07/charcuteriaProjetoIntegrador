@@ -7,11 +7,16 @@
     <title>Produtos | Koch Charcutaria</title>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/cart.css}" />
+    <link rel="stylesheet" th:href="@{/css/modal.css}" />
     <link rel="stylesheet" th:href="@{/css/header.css}" />
     <link rel="stylesheet" th:href="@{/css/footer.css}" />
+
     <script th:src="@{/js/address/addressModal.js}" defer></script>
     <script th:src="@{/js/cart/ship.js}" defer></script>
-    <script th:src="@{/js/cart/updateQuantity.js}" defer></script>
+
+    <script type="module" th:src="@{/js/cart/renderButtons.js}"></script>
+    <script type="module" th:src="@{/js/cart/updateQuantity.js}"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="shortcut icon" th:href="@{/images/logo.png}" type="image/x-icon">
 </head>
@@ -62,11 +67,10 @@
                     </div>
                     <div class="item-actions">
                         <p th:id="'price-' + ${item.id}" class="item-subtotal" th:attr="data-unit-price=${item.unitPrice}" th:text="${'R$ ' + #numbers.formatDecimal(item.subtotal, 1, 'POINT', 2, 'COMMA')}"></p>
-                        <form th:action="@{/cart/delete/{id}(id=${item.id})}" method="post">
-                            <button class="delete-btn" type="submit">
+
+                            <button class="delete-btn" type="button" th:onclick="|openDeleteProductModal('${item.id}')|">
                                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                             </button>
-                        </form>
                     </div>
                 </div>
             </section>
@@ -120,6 +124,21 @@
     </main>
 
     <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+    <div id="deleteProductModal" class="modal-overlay">
+        <div class="modal-card">
+            <h2>Deseja Excluir</h2>
+            <p>Deseja realmente excluir esse produto do carrinho?<br>
+            </p>
+
+            <div class="modal-buttons">
+                <button type="button" class="btn-cancel" onclick="closeDeleteProductModal()">Cancelar</button>
+                <form id="deleteProductForm" method="post">
+                    <button type="submit" class="btn-confirm">Confirmar</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <script>
         function prepareCheckout(event) {
