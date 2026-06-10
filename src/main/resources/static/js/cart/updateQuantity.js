@@ -1,8 +1,24 @@
-/**
- * Updates item quantity via the AJAX-specific endpoint.
- */
+import { openDeleteProductModal } from "./renderButtons.js";
+
 async function updateQty(itemId, delta) {
-    const url = `/cart/ajax/update-quantity?itemId=${itemId}&delta=${delta}`;
+    const quantityNode = document.getElementById(`qty-${itemId}`);
+    const priceNode = document.getElementById(`price-${itemId}`);
+
+    if (!quantityNode || !priceNode) {
+        console.error(`Required DOM nodes missing for itemId: ${itemId}`);
+        return;
+    }
+
+    const currentQty = parseInt(quantityNode.textContent, 10);
+    const parsedDelta = parseInt(delta, 10);
+    const newQty = currentQty + parsedDelta;
+
+    if (newQty <= 0) {
+        openDeleteProductModal(itemId);
+        return;
+    }
+
+    const url = `/cart/ajax/update-quantity?itemId=${itemId}&delta=${parsedDelta}`;
 
     try {
         const response = await fetch(url, {
@@ -18,54 +34,35 @@ async function updateQty(itemId, delta) {
         const state = await response.json();
 
         if (state.success) {
-            const quantityNode = document.getElementById(`qty-${itemId}`);
-            const priceNode = document.getElementById(`price-${itemId}`);
+            quantityNode.textContent = newQty;
 
-            if (quantityNode && priceNode) {
-                // 1. Update Quantity
-                const currentQty = parseInt(quantityNode.textContent, 10);
-                const newQty = Math.max(0, currentQty + parseInt(delta, 10));
-                quantityNode.textContent = newQty;
+            const rawUnitPriceString = priceNode.getAttribute('data-unit-price').toString().replace(',', '.');
+            const unitPrice = parseFloat(rawUnitPriceString);
+            const newSubtotal = unitPrice * newQty;
 
-                // 2. Defensive Parsing: Handle potential Brazilian commas from Java
-                const rawUnitPriceString = priceNode.getAttribute('data-unit-price').toString().replace(',', '.');
-                const unitPrice = parseFloat(rawUnitPriceString);
+            priceNode.textContent = newSubtotal.toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            });
 
-                const newSubtotal = unitPrice * newQty;
+            priceNode.setAttribute('data-current-subtotal', newSubtotal);
 
-                // 3. Update Item Subtotal UI
-                priceNode.textContent = newSubtotal.toLocaleString('pt-BR', {
-                    style: 'currency',
-                    currency: 'BRL'
-                });
-
-                // Store the new raw subtotal in a data attribute
-                priceNode.setAttribute('data-current-subtotal', newSubtotal);
-
-                // 4. Trigger global total recalculation
-                updateGlobalTotal();
-            }
+            updateGlobalTotal();
         }
     } catch (error) {
         console.error("Failed to update cart state: ", error);
     }
 }
 
-/**
- * Calculates the global cart totals with defensive type coercion.
- */
 function updateGlobalTotal() {
     let total = 0;
 
-    // Iterate over all item subtotals
     document.querySelectorAll('.item-subtotal').forEach(node => {
         let rawValue = node.getAttribute('data-current-subtotal') || node.getAttribute('data-unit-price');
-        // Ensure decimal consistency before parsing
         rawValue = rawValue.toString().replace(',', '.');
         total += parseFloat(rawValue);
     });
 
-    // Format the final value
     const formattedTotal = total.toLocaleString('pt-BR', {
         style: 'currency',
         currency: 'BRL'
@@ -79,3 +76,5 @@ function updateGlobalTotal() {
     if (finalTotalNode) finalTotalNode.textContent = formattedTotal;
 }
 
+window.updateQty = updateQty;
+window.updateGlobalTotal = updateGlobalTotal;
