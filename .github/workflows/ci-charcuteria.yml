@@ -5,28 +5,46 @@ on:
     branches:
       - "**"
   pull_request:
-    branches:
-      - "**"
+    types: [opened, synchronize, reopened]
 
 jobs:
   build_e_testes:
+    name: Build, Testes e Análise
     runs-on: ubuntu-latest
 
     steps:
       - name: Baixar o código fonte
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          fetch-depth: 0
 
       - name: Configurar o Java 21 (Temurin)
         uses: actions/setup-java@v4
         with:
           java-version: "21"
           distribution: "temurin"
-          cache: maven 
+
+      - name: Cache do SonarQube
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Cache do Maven
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
 
       - name: Rodar o Docker
         run: docker compose -f docker-compose.yaml up -d
-      - name: Testar com Maven
-        run: ./mvnw clean test
 
-      - name: Compilar com Maven
-        run: ./mvnw clean package -DskipTests
+      - name: Build, testes e análise Sonar
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          ./mvnw -B verify \
+            org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+            -Dsonar.projectKey=Bayer-07_charcuteriaProjetoIntegrador
