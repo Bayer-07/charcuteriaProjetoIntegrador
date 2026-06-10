@@ -92,8 +92,13 @@ public class UserController {
     @PostMapping("/register")
     public String createUser(@Valid @ModelAttribute("userDto") UserRegistrationDto userDto, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "public/registration-view";
-        }
+            model.addAttribute(
+                "registrationError",
+                 result.getFieldError().getDefaultMessage()
+    );
+
+    return "public/registration-view";
+}
 
         try {
             if (!userDto.getPassword().equals(userDto.getPasswordControl())) throw new BusinessException(UserErrorCode.DIFFERENT_PASSWORDS);
@@ -112,7 +117,13 @@ public class UserController {
     // vai pra rota privada pra admin quando acabarem os testes
     @PostMapping("/registerAdmin")
     public String createAdmin(@Valid @ModelAttribute("userDto") UserRegistrationDto userDto, BindingResult result, Model model) {
-        if (result.hasErrors()) return "user/adminRegistration-view";
+        if (result.hasErrors()) {
+            model.addAttribute(
+                "registrationError",
+                result.getFieldError().getDefaultMessage()
+    );
+     return "user/adminRegistration-view";
+};
 
         try {
             if (!userDto.getPassword().equals(userDto.getPasswordControl())) throw new BusinessException(UserErrorCode.DIFFERENT_PASSWORDS);
@@ -127,5 +138,4 @@ public class UserController {
             return "user/registration-view";
         }
     }
-
 }
