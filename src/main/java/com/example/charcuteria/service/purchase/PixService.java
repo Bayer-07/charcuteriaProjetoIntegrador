@@ -22,13 +22,13 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 @Service
 public class PixService {
 
-    @Value("${pix.key}")
+    @Value("${pix.key:test_key}")
     private String pixKey;
 
-    @Value("${pix.merchant.name}")
+    @Value("${pix.merchant.name:test_name}")
     private String merchantName;
 
-    @Value("${pix.merchant.city}")
+    @Value("${pix.merchant.city:test_city}")
     private String merchantCity;
 
     public PixResult generatePixForPurchase(BigDecimal amount, Long purchaseId) {
