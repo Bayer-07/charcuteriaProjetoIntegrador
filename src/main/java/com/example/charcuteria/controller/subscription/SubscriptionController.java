@@ -29,9 +29,6 @@ public class SubscriptionController {
 
     @GetMapping()
     public String listSubscriptions(@AuthenticationPrincipal User loggedUser, Model model) {
-        if (loggedUser == null) {
-            return "redirect:/login";
-        }
         model.addAttribute("plans", planService.returnAll());
         return "public/subscriptions-options";
     }

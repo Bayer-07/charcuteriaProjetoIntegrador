@@ -71,8 +71,7 @@ public class SubscriptionsTests {
     @Test
     void testListSubscriptions_NotAuthenticated() throws Exception {
         mockMvc.perform(get("/subscriptions"))
-            .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("/login"));
+            .andExpect(status().isOk());
     }
 
 
