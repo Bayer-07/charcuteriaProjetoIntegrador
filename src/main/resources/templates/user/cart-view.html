@@ -18,10 +18,23 @@
     <script type="module" th:src="@{/js/cart/updateQuantity.js}"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <link rel="shortcut icon" th:href="@{/images/logo.png}" type="image/x-icon">
+    <link rel="shortcut icon" th:href="@{/images/logo.png}" href="/images/logo.png" type="image/x-icon">
 </head>
 
 <body>
+    <div class="popup-cep-invalido inactive">
+        <div class="popup-content">
+            <p>O CEP informado é inválido.</p>
+            <button class="close-btn" onclick="closePopup('popup-cep-invalido')">Fechar</button>
+        </div>
+    </div>
+
+    <div class="popup-cep-fora-pr inactive">
+        <div class="popup-content">
+            <p>Desculpe, não realizamos entregas fora do Paraná.</p>
+            <button class="close-btn" onclick="closePopup('popup-cep-fora-pr')">Fechar</button>
+        </div>
+    </div>
     <header class="main-header ">
         <div class="header-container">
             <div class="logo">
@@ -30,46 +43,71 @@
             </div>
             <nav class="nav-menu">
                 <ul>
-                    <li><a th:href="@{/}">Início</a></li>
-                    <li><a th:href="@{/produtos}">Catálogo</a></li>
-                    <li><a th:href="@{/subscriptions}">Assinaturas</a></li>
-                    <li><a th:href="@{/partners}">Parcerias</a></li>
+                    <nav class="nav-menu">
+                        <ul>
+                            <li><a th:href="@{/}" class="active">Início</a></li>
+                            <li><a th:href="@{/produtos}">Catálogo</a></li>
+                            <li><a th:href="@{/subscriptions}">Assinaturas</a></li>
+                            <li><a th:href="@{/partners}">Parcerias</a></li>
+                        </ul>
+                    </nav>
                 </ul>
             </nav>
             <div class="header-icons">
                 <a href="/cart" class="icon-link">
-                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><circle cx="9" cy="21" r="1"></circle><circle cx="21" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="21" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
                 </a>
                 <a href="/handleProfile" class="icon-link">
-                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
                 </a>
             </div>
         </div>
     </header>
 
     <main class="cart-container">
-        <div th:if="${errorMessage}" class="error-message" style="color: red; margin-bottom: 1rem;" th:text="${errorMessage}"></div>
-
+        <div th:if="${errorMessage}" class="error-message" style="color: red; margin-bottom: 1rem;"
+            th:text="${errorMessage}"></div>
         <h1 class="cart-title">Carrinho</h1>
 
         <div class="cart-content">
             <section class="cart-items">
                 <div th:each="item : ${cartItems}" class="cart-item-card">
                     <img th:src="${'/uploads/products/' + item.productFile}" alt="Produto" class="item-img">
+
                     <div class="item-details">
                         <h3 th:text="${item.productName}">Copa Lombo Defumada</h3>
-                        <p class="item-price" th:text="${'R$ ' + #numbers.formatDecimal(item.unitPrice, 1, 'POINT', 2, 'COMMA')}"></p>
+                        <p class="item-price"
+                            th:text="${'R$ ' + #numbers.formatDecimal(item.unitPrice, 1, 'POINT', 2, 'COMMA')}"></p>
+
                         <div class="quantity-control">
                             <button class="qty-btn" th:onclick="|updateQty(${item.id}, -1)|">-</button>
                             <span th:id="'qty-' + ${item.id}" class="qty-value" th:text="${item.quantity}">1</span>
                             <button class="qty-btn" th:onclick="|updateQty(${item.id}, 1)|">+</button>
                         </div>
                     </div>
-                    <div class="item-actions">
-                        <p th:id="'price-' + ${item.id}" class="item-subtotal" th:attr="data-unit-price=${item.unitPrice}" th:text="${'R$ ' + #numbers.formatDecimal(item.subtotal, 1, 'POINT', 2, 'COMMA')}"></p>
 
-                            <button class="delete-btn" type="button" th:onclick="|openDeleteProductModal('${item.id}')|">
-                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    <div class="item-actions">
+                        <p th:id="'price-' + ${item.id}" class="item-subtotal"
+                            th:attr="data-unit-price=${item.unitPrice}"
+                            th:text="${'R$ ' + #numbers.formatDecimal(item.subtotal, 1, 'POINT', 2, 'COMMA')}">
+                        </p>
+
+                        <form th:action="@{/cart/delete/{id}(id=${item.id})}" method="post">
+                            <button class="delete-btn" type="submit">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path
+                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                    </path>
+                                </svg>
                             </button>
                     </div>
                 </div>
@@ -78,30 +116,55 @@
             <aside class="cart-summary">
                 <div class="summary-card">
                     <h2>Resumo</h2>
+
                     <div class="summary-row">
                         <span>Subtotal</span>
-                        <span class="summary-subtotal" th:text="${'R$ ' + #numbers.formatDecimal(totalCart, 1, 'POINT', 2, 'COMMA')}"></span>
+                        <span class="summary-subtotal"
+                            th:text="${'R$ ' + #numbers.formatDecimal(totalCart, 1, 'POINT', 2, 'COMMA')}"></span>
                     </div>
 
                     <div class="address-section">
                         <div th:if="${#lists.isEmpty(addresses)}" class="address-empty">
                             Você ainda não cadastrou nenhum endereço.
                             <div style="margin-top:12px;">
-                                <button type="button" id="openAddressModal" class="btn-add-address">Adicionar endereço</button>
+                                <button type="button" id="openAddressModal" class="btn-add-address">Adicionar
+                                    endereço</button>
                             </div>
                         </div>
                     </div>
 
                     <div th:if="${!#lists.isEmpty(cartItems)}" class="shipping-section">
                         <label for="shippingAddressSelect">Endereço para calcular frete</label>
-                        <div th:if="${!#lists.isEmpty(addresses)}" class="shipping-input-group">
-                            <select id="shippingAddressSelect" class="shipping-select" onchange="syncSelectedAddressZip()">
-                                <option th:each="address : ${addresses}" th:value="${address.id}" th:data-zip="${address.zipCode}" th:selected="${address.isDefault}" th:text="${address.street + ', ' + address.number + ' - ' + address.city + ' | CEP ' + address.zipCode}"></option>
-                            </select>
-                            <input type="hidden" id="selectedAddressZip" th:value="${addresses[0].zipCode}">
-                            <button type="button" onclick="calculateShipping()" class="btn-calculate">Calcular</button>
-                            <button type="button" id="openAddressModal" class="btn-add-address-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></button>
+
+                        <div th:if="${#lists.isEmpty(addresses)}" class="shipping-empty-note">
+                            Cadastre um endereço para calcular o frete.
                         </div>
+
+                        <div th:if="${!#lists.isEmpty(addresses)}" class="shipping-input-group">
+                            <select id="shippingAddressSelect" class="shipping-select"
+                                onchange="syncSelectedAddressZip()">
+                                <option th:each="address : ${addresses}" th:value="${address.id}"
+                                    th:data-zip="${address.zipCode}" th:selected="${address.isDefault}"
+                                    th:text="${address.street + ', ' + address.number + ' - ' + address.city + ' / ' + address.state + ' | CEP ' + address.zipCode}">
+                                    Rua Principal, 123 - Cidade / UF | CEP 00000-000</option>
+                            </select>
+
+                            <input type="hidden" id="selectedAddressZip" th:value="${addresses[0].zipCode}">
+
+                            <button type="button" onclick="calculateShipping()" class="btn-calculate">Calcular</button>
+
+                            <button type="button" id="openAddressModal" class="btn-add-address-icon"
+                                aria-label="Adicionar novo endereco" title="Adicionar novo endereco"
+                                data-tooltip="Adicionar novo endereco">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+                                    focusable="false">
+                                    <path d="M12 5v14"></path>
+                                    <path d="M5 12h14"></path>
+                                </svg>
+                            </button>
+                        </div>
+
                         <p id="shippingResult" class="shipping-result"></p>
                     </div>
 
@@ -109,12 +172,14 @@
 
                     <div class="summary-row">
                         <span>Total Final</span>
-                        <span class="total-value" th:text="${'R$ ' + #numbers.formatDecimal(totalCart, 1, 'POINT', 2, 'COMMA')}"></span>
+                        <span class="total-value"
+                            th:text="${'R$ ' + #numbers.formatDecimal(totalCart, 1, 'POINT', 2, 'COMMA')}"></span>
                     </div>
 
                     <form th:action="@{/purchases/checkout}" method="post" onsubmit="prepareCheckout(event)">
                         <input type="hidden" id="checkoutAddressId" name="addressId" value="" required>
-                        <button type="submit" class="btn-checkout" th:disabled="${#lists.isEmpty(cartItems) or #lists.isEmpty(addresses)}">
+                        <button type="submit" class="btn-checkout"
+                            th:disabled="${#lists.isEmpty(cartItems) or #lists.isEmpty(addresses)}">
                             Finalizar Compra
                         </button>
                     </form>
@@ -123,23 +188,72 @@
         </div>
     </main>
 
-    <footer th:replace="~{fragments/footer :: footer}"></footer>
+    <div id="addressModal" class="modal" style="display:none;">
+        <div class="modal-overlay" id="addressModalOverlay"></div>
+        <div class="modal-content">
+            <div class="form-container">
+                <div class="form-shell">
+                    <div class="form-header">
+                        <h1>Novo Endereço</h1>
+                        <p>Preencha os dados abaixo para salvar o endereço na sua conta.</p>
+                    </div>
 
-    <div id="deleteProductModal" class="modal-overlay">
-        <div class="modal-card">
-            <h2>Deseja Excluir</h2>
-            <p>Deseja realmente excluir esse produto do carrinho?<br>
-            </p>
+                    <form th:action="@{/addresses}" method="POST" th:object="${addressDto}" class="address-modal-form">
+                        <input type="hidden" name="redirectTo" value="/cart">
 
-            <div class="modal-buttons">
-                <button type="button" class="btn-cancel" onclick="closeDeleteProductModal()">Cancelar</button>
-                <form id="deleteProductForm" method="post">
-                    <button type="submit" class="btn-confirm">Confirmar</button>
-                </form>
+                        <div class="form-group">
+                            <label for="street">Rua/Avenida *</label>
+                            <input type="text" id="street" name="street" th:field="*{street}" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="number">Número *</label>
+                                <input type="text" id="number" name="number" th:field="*{number}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="complement">Complemento</label>
+                                <input type="text" id="complement" name="complement" th:field="*{complement}"
+                                    placeholder="Apt, Casa, Sala...">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="neighborhood">Bairro *</label>
+                            <input type="text" id="neighborhood" name="neighborhood" th:field="*{neighborhood}"
+                                required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city">Cidade *</label>
+                                <input type="text" id="city" name="city" th:field="*{city}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="state">Estado *</label>
+                                <input type="text" id="state" name="state" th:field="*{state}" placeholder="SP"
+                                    maxlength="2" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="zipCode">CEP *</label>
+                            <input type="text" id="zipCode" name="zipCode" th:field="*{zipCode}" placeholder="12345-678"
+                                required>
+                            <span class="form-hint">Formato: 12345-678</span>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn-submit">Salvar Endereço</button>
+                            <button type="button" class="btn-cancel" id="closeAddressModal">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
     <script>
         function prepareCheckout(event) {
             const addressSelect = document.getElementById('shippingAddressSelect');
@@ -152,4 +266,5 @@
         }
     </script>
 </body>
+
 </html>
