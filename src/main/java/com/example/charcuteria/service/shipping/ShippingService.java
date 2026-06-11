@@ -1,14 +1,9 @@
 package com.example.charcuteria.service.shipping;
 
-import com.example.charcuteria.dto.cart.CartResponseDto;
-import com.example.charcuteria.dto.shipping.CepValidateResponse;
-import com.example.charcuteria.dto.shipping.OpenCepResponse;
-import com.example.charcuteria.service.cart.CartService;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -16,6 +11,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import com.example.charcuteria.dto.cart.CartResponseDto;
+import com.example.charcuteria.dto.shipping.CepValidateResponse;
+import com.example.charcuteria.dto.shipping.OpenCepResponse;
+import com.example.charcuteria.service.cart.CartService;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class ShippingService {
@@ -59,12 +61,7 @@ public class ShippingService {
     }
 
     public Double calculateShipping(String destinationCep, Integer userId) {
-        System.out.println("=== SHIPPING CALCULATION ===");
-        System.out.println("User ID: " + userId);
-        System.out.println("Destination CEP: " + destinationCep);
-
         Integer totalQuantity = calculateTotalQuantity(userId);
-        System.out.println("Total quantity from cart: " + totalQuantity);
 
         Map<String, Object> payload = new HashMap<>();
         payload.put("from", Map.of("postal_code", originCep));
@@ -82,8 +79,6 @@ public class ShippingService {
                                 "quantity", totalQuantity)));
         payload.put("services", "1,2,18");
 
-        System.out.println("Payload: " + payload);
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Accept", "application/json");
@@ -92,15 +87,8 @@ public class ShippingService {
 
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(payload, headers);
 
-        System.out.println("=== REQUEST TO MELHOR ENVIO ===");
-        System.out.println("URL: " + MELHOR_ENVIO_URL);
-        System.out.println("Headers: " + headers);
-        System.out.println("Body: " + payload);
-
         try {
             String response = restTemplate.postForObject(MELHOR_ENVIO_URL, request, String.class);
-            System.out.println("=== MELHOR ENVIO RESPONSE ===");
-            System.out.println(response);
             return extractLowestPrice(response);
         } catch (Exception e) {
             e.printStackTrace();
