@@ -78,7 +78,7 @@
                     </div>
 
                     <div class="card-footer">
-                        <form th:action="@{/subscriptions/subscribe}" method="post">
+                        <form th:action="@{/user/subscribe}" method="post">
                             <input type="hidden" name="planId" th:value="${plan.id}" />
                             <button type="submit" class="btn-subscribe">Assinar</button>
                         </form>

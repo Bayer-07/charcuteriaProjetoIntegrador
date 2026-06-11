@@ -7,8 +7,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -34,20 +34,21 @@ public class UserSubscriptionController {
     @GetMapping("/subscriptions")
     public String showSubscriptions(@AuthenticationPrincipal User loggedUser, Model model) {
         List<UserSubscriptionResponseDto> subscriptions = subscriptionService.getAllActiveSubscriptionsByUserId(loggedUser.getId());
-        
+
         if (!subscriptions.isEmpty()) {
             model.addAttribute("subscriptions", subscriptions);
             model.addAttribute("hasSubscriptions", true);
         } else {
             model.addAttribute("hasSubscriptions", false);
         }
-        
+
         return "user/subscriptions";
     }
 
     @GetMapping("/subscribe")
     public String showPlans(@AuthenticationPrincipal User loggedUser, Model model) {
         List<SubscriptionPlanResponse> plans = subscriptionPlanService.returnAll();
+
         model.addAttribute("plans", plans);
         return "public/subscribe";
     }
@@ -55,12 +56,12 @@ public class UserSubscriptionController {
     @PostMapping("/subscribe")
     public String subscribeToPlan(@AuthenticationPrincipal User loggedUser, @RequestParam Integer planId, Model model) {
         Optional<UserSubscriptionResponseDto> existingSubscription = subscriptionService.getActiveSubscriptionByUserId(loggedUser.getId());
-        
+
         if (existingSubscription.isPresent()) {
             model.addAttribute("error", "Você já possui uma assinatura ativa");
             List<SubscriptionPlanResponse> plans = subscriptionPlanService.returnAll();
             model.addAttribute("plans", plans);
-            return "public/subscribe";
+            return "public/subscriptions-options";
         }
 
         SubscriptionRequest request = new SubscriptionRequest();

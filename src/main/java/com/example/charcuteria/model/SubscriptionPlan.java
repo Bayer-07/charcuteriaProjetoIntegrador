@@ -10,7 +10,8 @@ public class SubscriptionPlan {
 
     public SubscriptionPlan() {}
 
-    public SubscriptionPlan(String name, String description, Double price) {
+    public SubscriptionPlan(Integer id, String name, String description, Double price) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
@@ -23,6 +24,7 @@ public class SubscriptionPlan {
     public Double getPrice() { return price; }
     public Boolean getIsActive() { return isActive; }
 
+    public void setId(Integer id) {this.id = id; }
     public void setName(String name) { this.name = name; }
     public void setDescription(String description) { this.description = description; }
     public void setPrice(Double price) { this.price = price; }

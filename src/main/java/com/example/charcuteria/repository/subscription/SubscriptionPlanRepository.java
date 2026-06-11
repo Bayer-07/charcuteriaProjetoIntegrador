@@ -24,6 +24,7 @@ public class SubscriptionPlanRepository {
             sql,
             (rs, rowNum) -> {
                 SubscriptionPlan p = new SubscriptionPlan();
+                p.setId(rs.getInt("id"));
                 p.setName(rs.getString("name"));
                 p.setDescription(rs.getString("description"));
                 p.setPrice(rs.getDouble("price"));
