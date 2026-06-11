@@ -35,17 +35,17 @@
             <button class="close-btn" onclick="closePopup('popup-cep-fora-pr')">Fechar</button>
         </div>
     </div>
-    <header class="main-header ">
+    <header class="main-header">
         <div class="header-container">
-            <div class="logo">
+            <a class="logo icon-link" href="/">
                 <span class="brand-name">Koch</span>
                 <span class="brand-suffix">Charcutaria</span>
-            </div>
+            </a>
             <nav class="nav-menu">
                 <ul>
                     <nav class="nav-menu">
                         <ul>
-                            <li><a th:href="@{/}" class="active">Início</a></li>
+                            <li><a th:href="@{/}">Início</a></li>
                             <li><a th:href="@{/produtos}">Catálogo</a></li>
                             <li><a th:href="@{/subscriptions}">Assinaturas</a></li>
                             <li><a th:href="@{/partners}">Parcerias</a></li>
@@ -67,6 +67,7 @@
                         <circle cx="12" cy="7" r="4"></circle>
                     </svg>
                 </a>
+                <a href="/logout" class="btn-logout">Sair</a>
             </div>
         </div>
     </header>

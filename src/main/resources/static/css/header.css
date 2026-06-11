@@ -103,3 +103,13 @@
 .nav-menu .active {
   color: #800000;
 }
+
+.icon-link {
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s;
+}
+
+.icon-link:hover {
+  transform: scale(1.1);
+}
