@@ -101,6 +101,7 @@ public class AdminProductController {
         try {
             String fileName = productService.findFileNameById(id);
             productService.deleteProductById(id);
+            if (fileName == null) { return "redirect:/admin/products"; }
             fileStorageService.deleteFile(fileName);
             return "redirect:/admin/products";
         } catch (IOException e) {
