@@ -1,5 +1,7 @@
 package com.example.charcuteria.model;
 
+import jakarta.validation.constraints.Min;
+
 public class Product {
 
     private Integer id;
@@ -7,7 +9,10 @@ public class Product {
     private String name;
     private String description;
     private Double price;
+
+    @Min(value = 0, message = "A quantidade não pode ser negativa")
     private Integer stockQuantity;
+    
     private String imagePath;
     private Boolean isActive;
 
