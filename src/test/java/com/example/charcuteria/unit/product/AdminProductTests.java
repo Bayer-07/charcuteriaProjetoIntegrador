@@ -47,7 +47,7 @@ public class AdminProductTests {
     @WithMockUser(roles = "ADMIN")
     void testCreateProduct_Success() throws Exception {
         MockMultipartFile imageFile = new MockMultipartFile(
-            "image", "test.jpg", MediaType.IMAGE_JPEG_VALUE, "content".getBytes()
+            "file", "test.jpg", MediaType.IMAGE_JPEG_VALUE, "content".getBytes()
         );
 
         when(fileStorageService.saveFile(any())).thenReturn("stored_image.jpg");
