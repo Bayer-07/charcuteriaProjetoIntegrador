@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -33,6 +34,7 @@ import com.example.charcuteria.service.cart.CartService;
 @WebMvcTest(CartController.class)
 @Import(SecurityConfig.class)
 public class CartTests {
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -58,6 +60,7 @@ public class CartTests {
     void testAddCart_Success() throws Exception {
         mockMvc.perform(post("/cart/add")
                 .with(user(testUser))
+                .with(csrf()) // Adicionado
                 .param("productId", "10")
                 .header("Referer", "/products"))
             .andExpect(status().is3xxRedirection())
@@ -73,6 +76,7 @@ public class CartTests {
 
         mockMvc.perform(post("/cart/add")
                 .with(user(testUser))
+                .with(csrf()) // Adicionado
                 .param("productId", "10")
                 .header("Referer", "/products"))
             .andExpect(status().is3xxRedirection())
@@ -112,6 +116,7 @@ public class CartTests {
     void testUpdateQuantity_Success() throws Exception {
         mockMvc.perform(post("/cart/update-quantity")
                 .with(user(testUser))
+                .with(csrf()) // Adicionado
                 .param("itemId", "5")
                 .param("delta", "1"))
             .andExpect(status().isOk());
@@ -123,6 +128,7 @@ public class CartTests {
     void testUpdateQuantity_Decrease() throws Exception {
         mockMvc.perform(post("/cart/update-quantity")
                 .with(user(testUser))
+                .with(csrf()) // Adicionado
                 .param("itemId", "5")
                 .param("delta", "-1"))
             .andExpect(status().isOk());
@@ -136,6 +142,7 @@ public class CartTests {
 
         mockMvc.perform(post("/cart/update-quantity")
                 .with(user(testUser))
+                .with(csrf()) // Adicionado
                 .param("itemId", "5")
                 .param("delta", "1"))
             .andExpect(status().isInternalServerError());
@@ -144,7 +151,8 @@ public class CartTests {
     @Test
     void testDeleteProductFromCart_Success() throws Exception {
         mockMvc.perform(post("/cart/delete/5")
-                .with(user(testUser)))
+                .with(user(testUser))
+                .with(csrf())) // Adicionado
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl("/cart"));
 
@@ -156,15 +164,16 @@ public class CartTests {
         doThrow(new RuntimeException("Produto não encontrado")).when(cartService).deleteProductFromCart(anyInt());
 
         mockMvc.perform(post("/cart/delete/5")
-                .with(user(testUser)))
+                .with(user(testUser))
+                .with(csrf())) // Adicionado
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl("/cart"));
     }
 
-    // Alta prioridade - Edge cases
     @Test
     void testAddCart_Unauthenticated_Redirects() throws Exception {
         mockMvc.perform(post("/cart/add")
+                .with(csrf()) // Adicionado para evitar 403 antes do 302 do login
                 .param("productId", "10")
                 .header("Referer", "/products"))
             .andExpect(status().is3xxRedirection());
@@ -174,6 +183,7 @@ public class CartTests {
     void testUpdateQuantity_ToZero() throws Exception {
         mockMvc.perform(post("/cart/update-quantity")
                 .with(user(testUser))
+                .with(csrf()) // Adicionado
                 .param("itemId", "5")
                 .param("delta", "-10"))
             .andExpect(status().isOk());

@@ -1,9 +1,11 @@
 package com.example.charcuteria.unit.category;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -50,6 +52,7 @@ public class CategoryTests {
     @WithMockUser(roles = "ADMIN")
     void testCreateCategory_Success() throws Exception {
         mockMvc.perform(post("/admin/categories/create")
+                .with(csrf()) // Adicionado token de segurança
                 .param("name", "Nova Categoria")
                 .param("description", "Descrição da categoria"))
             .andExpect(status().is3xxRedirection())
@@ -62,6 +65,7 @@ public class CategoryTests {
     @WithMockUser(roles = "ADMIN")
     void testUpdateCategory_Success() throws Exception {
         mockMvc.perform(post("/admin/categories/update")
+                .with(csrf()) // Adicionado token de segurança
                 .param("id", "1")
                 .param("name", "Nome Atualizado")
                 .param("description", "Descricao Atualizada"))
@@ -74,7 +78,8 @@ public class CategoryTests {
     @Test
     @WithMockUser(roles = "ADMIN")
     void testDeleteCategory_Success() throws Exception {
-        mockMvc.perform(post("/admin/categories/delete/1"))
+        mockMvc.perform(post("/admin/categories/delete/1")
+                .with(csrf())) // Adicionado token de segurança
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl("/admin/products?type=categories"));
 
@@ -87,7 +92,8 @@ public class CategoryTests {
         doThrow(new RuntimeException("Cannot delete: active products linked."))
             .when(categoryService).deleteById(1);
 
-        mockMvc.perform(post("/admin/categories/delete/1"))
+        mockMvc.perform(post("/admin/categories/delete/1")
+                .with(csrf())) // Adicionado token de segurança
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl("/admin/products?type=products"));
     }
@@ -95,22 +101,20 @@ public class CategoryTests {
     @Test
     @WithMockUser(roles = "CUSTOMER")
     void testAccessDeniedForCustomer() throws Exception {
-        mockMvc.perform(post("/admin/categories/create"))
+        mockMvc.perform(post("/admin/categories/create")
+                .with(csrf())) // Adicionado token de segurança
             .andExpect(status().isForbidden());
     }
 
-    // Alta prioridade - Edge cases
     @Test
     @WithMockUser(roles = "ADMIN")
     void testGetCategoryById_NotFound() throws Exception {
         when(categoryService.getById(999)).thenReturn(null);
 
-        // Controller lança RuntimeException quando response é null
-        try {
+        // Substituído try-catch pelo assertThrows idiomático do JUnit 5
+        assertThrows(Exception.class, () -> {
             mockMvc.perform(get("/admin/categories/999"));
-        } catch (Exception e) {
-            // Expected exception
-        }
+        });
 
         verify(categoryService).getById(999);
     }
@@ -122,6 +126,7 @@ public class CategoryTests {
             .when(categoryService).createCategory(any());
 
         mockMvc.perform(post("/admin/categories/create")
+                .with(csrf()) // Adicionado token de segurança
                 .param("name", "Defumados")
                 .param("description", "Duplicado"))
             .andExpect(status().is3xxRedirection())
@@ -131,6 +136,7 @@ public class CategoryTests {
     @Test
     void testCreateCategory_Unauthenticated() throws Exception {
         mockMvc.perform(post("/admin/categories/create")
+                .with(csrf()) // Adicionado token de segurança
                 .param("name", "Categoria")
                 .param("description", "Teste"))
             .andExpect(status().is3xxRedirection());
@@ -142,15 +148,14 @@ public class CategoryTests {
         doThrow(new RuntimeException("Categoria não encontrada"))
             .when(categoryService).updateCategoryById(any());
 
-        // Update não trata exception, propaga
-        try {
+        // Substituído try-catch pelo assertThrows idiomático do JUnit 5
+        assertThrows(Exception.class, () -> {
             mockMvc.perform(post("/admin/categories/update")
+                    .with(csrf())
                     .param("id", "999")
                     .param("name", "Inexistente")
                     .param("description", "Teste"));
-        } catch (Exception e) {
-            // Expected exception
-        }
+        });
 
         verify(categoryService).updateCategoryById(any());
     }
@@ -161,16 +166,17 @@ public class CategoryTests {
         doThrow(new RuntimeException("Categoria não encontrada"))
             .when(categoryService).deleteById(999);
 
-        mockMvc.perform(post("/admin/categories/delete/999"))
+        mockMvc.perform(post("/admin/categories/delete/999")
+                .with(csrf())) // Adicionado token de segurança
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl("/admin/products?type=products"));
     }
 
-    // Média prioridade - Validações
     @Test
     @WithMockUser(roles = "ADMIN")
     void testCreateCategory_EmptyName() throws Exception {
         mockMvc.perform(post("/admin/categories/create")
+                .with(csrf()) // Adicionado token de segurança
                 .param("name", "")
                 .param("description", "Descrição"))
             .andExpect(status().is3xxRedirection());
@@ -182,6 +188,7 @@ public class CategoryTests {
     @WithMockUser(roles = "ADMIN")
     void testCreateCategory_OnlyName() throws Exception {
         mockMvc.perform(post("/admin/categories/create")
+                .with(csrf()) // Adicionado token de segurança
                 .param("name", "Categoria Mínima"))
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl("/admin/products?type=categories"));
@@ -193,6 +200,7 @@ public class CategoryTests {
     @WithMockUser(roles = "ADMIN")
     void testUpdateCategory_EmptyDescription() throws Exception {
         mockMvc.perform(post("/admin/categories/update")
+                .with(csrf()) // Adicionado token de segurança
                 .param("id", "1")
                 .param("name", "Nome Válido")
                 .param("description", ""))
