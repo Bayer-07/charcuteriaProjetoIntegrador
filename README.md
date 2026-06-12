@@ -145,6 +145,12 @@ A plataforma permite:
 
 ---
 
+## Cart
+
+| Rota | Descrição |
+|------|-----------|
+| `/cart` | Carrinho de Compras |
+
 # Controle de Acesso
 
 O sistema utiliza autenticação com Spring Security para controle de acesso baseado em permissões.
