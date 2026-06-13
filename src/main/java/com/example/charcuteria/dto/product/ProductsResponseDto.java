@@ -6,7 +6,9 @@ import org.springframework.format.annotation.NumberFormat;
 
 public class ProductsResponseDto {
     private final int id;
+
     private final int stockQuantity;
+
     private final String category;
     private final String name;
 

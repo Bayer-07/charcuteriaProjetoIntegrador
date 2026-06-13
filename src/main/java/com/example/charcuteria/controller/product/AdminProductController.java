@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.charcuteria.dto.category.CategoryRequestDto;
 import com.example.charcuteria.dto.product.ProductsEditRequestDto;
 import com.example.charcuteria.dto.product.ProductsEditResponseDto;
 import com.example.charcuteria.dto.product.ProductsRequestDto;
@@ -51,10 +54,19 @@ public class AdminProductController {
     }
 
     @PostMapping("/create")
-    public String createProduct(@Valid @ModelAttribute("productDto") ProductsRequestDto product, BindingResult result,
-            Model model) {
-        if (result.hasErrors())
+    public String createProduct(
+            @Valid @ModelAttribute("productDto") ProductsRequestDto product,
+            BindingResult result,
+            RedirectAttributes redirectAttributes) {
+
+        if (result.hasErrors()) {
+            String errorMessage  = result.getAllErrors()
+            .get(0)
+            .getDefaultMessage();
+
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
             return "redirect:/admin/products";
+        }
 
         try {
             String imageName = fileStorageService.saveFile(product.getImage());
@@ -63,6 +75,7 @@ public class AdminProductController {
             productService.createProduct(product, categoryId, imageName);
 
             return "redirect:/admin/products";
+
         } catch (Exception e) {
             return "redirect:/admin/dashboard";
         }
