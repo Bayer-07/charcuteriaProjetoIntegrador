@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -59,10 +60,11 @@ public class AdminProductController {
             RedirectAttributes redirectAttributes) {
 
         if (result.hasErrors()) {
-            redirectAttributes.addFlashAttribute(
-                    "errorMessage",
-                    "A quantidade não pode ser negativa");
+            String errorMessage  = result.getAllErrors()
+            .get(0)
+            .getDefaultMessage();
 
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
             return "redirect:/admin/products";
         }
 

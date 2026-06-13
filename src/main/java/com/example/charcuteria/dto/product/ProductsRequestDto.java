@@ -5,13 +5,19 @@ import java.math.BigDecimal;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+
 
 public class ProductsRequestDto {
     private String name;
     private String description;
     private String category;
 
+    @NotNull(message = "O preço é obrigatório")
+    @DecimalMin(value = "0.0", inclusive = false,
+    message = "O preço deve ser maior que zero")
     @NumberFormat(pattern = "#,##0.00")
     private BigDecimal price;
 

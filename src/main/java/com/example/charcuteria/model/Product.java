@@ -1,16 +1,26 @@
 package com.example.charcuteria.model;
 
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class Product {
 
     private Integer id;
     private Integer categoryId;
+
+    @NotBlank(message = "O nome do produto é obrigatório.")
     private String name;
     private String description;
+
+    @NotNull(message = "O preço é obrigatório")
+    @DecimalMin(value = "0.0", inclusive = false,
+            message = "O preço deve ser maior que zero")
     private Double price;
 
-    @Min(value = 0, message = "A quantidade não pode ser negativa")
+    @NotNull(message = "A quantidade é obrigatória")
+    @Min(value = 0, message = "O preço não pode ser negativo.")
     private Integer stockQuantity;
     
     private String imagePath;
